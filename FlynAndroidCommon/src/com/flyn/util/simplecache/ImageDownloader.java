@@ -14,7 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.flyn.http.AsyncHttpClient;
+import com.flyn.asynchttp.AsyncHttpClient;
 
 public class ImageDownloader
 {
