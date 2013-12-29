@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.LogManager;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -41,7 +40,7 @@ import android.webkit.CookieSyncManager;
 import com.flyn.net.NetManager;
 import com.flyn.net.URLManager;
 import com.flyn.telephone.TelephoneMgr;
-import com.flyn.util.FileUtilities;
+import com.flyn.util.FileUtil;
 import com.flyn.util.Logger;
 
 public final class HttpConnectionManager
@@ -125,7 +124,7 @@ public final class HttpConnectionManager
         return null;
     }
 
-    public static HttpResponseResult doGet(String url, boolean followRedirects, int connOrReadTimeout, Map<String, List<String>> requestHeaders) throws IOException
+    public static HttpResponseResultStream doGet(String url, boolean followRedirects, int connOrReadTimeout, Map<String, List<String>> requestHeaders) throws IOException
     {
         HttpResponseResultStream result = doGetForStream(url, followRedirects, connOrReadTimeout, requestHeaders);
         result.generateData();
@@ -352,7 +351,7 @@ public final class HttpConnectionManager
             if ((method.equalsIgnoreCase("POST")) && (postData != null))
             {
                 output = httpConn.getOutputStream();
-                FileUtilities.readAndWrite(postData, output, 2048);
+                FileUtil.readAndWrite(postData, output, 2048);
                 output.close();
             }
             if (acceptCookie)

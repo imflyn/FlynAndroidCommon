@@ -3,9 +3,6 @@ package com.flyn.telephone;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.logging.LogManager;
-
-import com.flyn.util.Logger;
 
 import android.content.Context;
 import android.os.Build;
@@ -14,6 +11,8 @@ import android.os.IBinder;
 import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+
+import com.flyn.util.Logger;
 
 public final class TelephoneMgr
 {
@@ -226,7 +225,7 @@ public final class TelephoneMgr
     {
         try
         {
-            return Integer.valueOf(Build.VERSION.SDK).intValue();
+            return Integer.valueOf(Build.VERSION.SDK_INT).intValue();
         } catch (NumberFormatException e)
         {
             Logger.logW(TelephoneMgr.class, "can not convert SDK", e);

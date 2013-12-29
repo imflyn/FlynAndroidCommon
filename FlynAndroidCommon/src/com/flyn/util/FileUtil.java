@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class FileUtilities
+public abstract class FileUtil
 {
     public static void readFromFile(File targetFile, OutputStream output, int cacheBytesLength) throws IOException
     {
