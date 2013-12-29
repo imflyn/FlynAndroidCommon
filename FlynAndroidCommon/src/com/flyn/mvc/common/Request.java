@@ -6,9 +6,10 @@ package com.flyn.mvc.common;
 
 import java.io.Serializable;
 
-
-/** @Title Request
- * @Description Request是提交的数据 */
+/**
+ * @Title Request
+ * @Description Request是提交的数据
+ */
 public class Request implements Serializable
 {
     /**

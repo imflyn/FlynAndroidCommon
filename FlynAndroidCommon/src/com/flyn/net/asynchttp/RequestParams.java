@@ -4,7 +4,7 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import java.io.InputStream;
 import java.io.File;
@@ -22,7 +22,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
-/** A collection of string request parameters or files to send along with requests made from an {@link AsyncHttpClient} instance.
+/**
+ * A collection of string request parameters or files to send along with
+ * requests made from an {@link AsyncHttpClient} instance.
  * <p>
  * For example:
  * <p>
@@ -40,7 +42,8 @@ import org.apache.http.message.BasicNameValuePair;
  * 
  * AsyncHttpClient client = new AsyncHttpClient();
  * client.post(&quot;http://myendpoint.com&quot;, params, responseHandler);
- * </pre> */
+ * </pre>
+ */
 public class RequestParams
 {
     private static String                                  ENCODING = "UTF-8";
@@ -55,9 +58,13 @@ public class RequestParams
         init();
     }
 
-    /** Constructs a new RequestParams instance containing the key/value string params from the specified map.
+    /**
+     * Constructs a new RequestParams instance containing the key/value string
+     * params from the specified map.
      * 
-     * @param source the source key/value string map to add. */
+     * @param source
+     *            the source key/value string map to add.
+     */
     public RequestParams(Map<String, String> source)
     {
         init();
@@ -68,10 +75,15 @@ public class RequestParams
         }
     }
 
-    /** Constructs a new RequestParams instance and populate it with a single initial key/value string param.
+    /**
+     * Constructs a new RequestParams instance and populate it with a single
+     * initial key/value string param.
      * 
-     * @param key the key name for the intial param.
-     * @param value the value string for the initial param. */
+     * @param key
+     *            the key name for the intial param.
+     * @param value
+     *            the value string for the initial param.
+     */
     public RequestParams(String key, String value)
     {
         init();
@@ -79,10 +91,16 @@ public class RequestParams
         put(key, value);
     }
 
-    /** Constructs a new RequestParams instance and populate it with multiple initial key/value string param.
+    /**
+     * Constructs a new RequestParams instance and populate it with multiple
+     * initial key/value string param.
      * 
-     * @param keysAndValues a sequence of keys and values. Objects are automatically converted to Strings (including the value {@code null}).
-     * @throws IllegalArgumentException if the number of arguments isn't even. */
+     * @param keysAndValues
+     *            a sequence of keys and values. Objects are automatically
+     *            converted to Strings (including the value {@code null}).
+     * @throws IllegalArgumentException
+     *             if the number of arguments isn't even.
+     */
     public RequestParams(Object... keysAndValues)
     {
         init();
@@ -97,10 +115,14 @@ public class RequestParams
         }
     }
 
-    /** Adds a key/value string pair to the request.
+    /**
+     * Adds a key/value string pair to the request.
      * 
-     * @param key the key name for the new param.
-     * @param value the value string for the new param. */
+     * @param key
+     *            the key name for the new param.
+     * @param value
+     *            the value string for the new param.
+     */
     public void put(String key, String value)
     {
         if (key != null && value != null)
@@ -109,19 +131,27 @@ public class RequestParams
         }
     }
 
-    /** Adds a file to the request.
+    /**
+     * Adds a file to the request.
      * 
-     * @param key the key name for the new param.
-     * @param file the file to add. */
+     * @param key
+     *            the key name for the new param.
+     * @param file
+     *            the file to add.
+     */
     public void put(String key, File file) throws FileNotFoundException
     {
         put(key, new FileInputStream(file), file.getName());
     }
 
-    /** Adds param with more than one value.
+    /**
+     * Adds param with more than one value.
      * 
-     * @param key the key name for the new param.
-     * @param values is the ArrayList with values for the param. */
+     * @param key
+     *            the key name for the new param.
+     * @param values
+     *            is the ArrayList with values for the param.
+     */
     public void put(String key, ArrayList<String> values)
     {
         if (key != null && values != null)
@@ -130,31 +160,46 @@ public class RequestParams
         }
     }
 
-    /** Adds an input stream to the request.
+    /**
+     * Adds an input stream to the request.
      * 
-     * @param key the key name for the new param.
-     * @param stream the input stream to add. */
+     * @param key
+     *            the key name for the new param.
+     * @param stream
+     *            the input stream to add.
+     */
     public void put(String key, InputStream stream)
     {
         put(key, stream, null);
     }
 
-    /** Adds an input stream to the request.
+    /**
+     * Adds an input stream to the request.
      * 
-     * @param key the key name for the new param.
-     * @param stream the input stream to add.
-     * @param fileName the name of the file. */
+     * @param key
+     *            the key name for the new param.
+     * @param stream
+     *            the input stream to add.
+     * @param fileName
+     *            the name of the file.
+     */
     public void put(String key, InputStream stream, String fileName)
     {
         put(key, stream, fileName, null);
     }
 
-    /** Adds an input stream to the request.
+    /**
+     * Adds an input stream to the request.
      * 
-     * @param key the key name for the new param.
-     * @param stream the input stream to add.
-     * @param fileName the name of the file.
-     * @param contentType the content type of the file, eg. application/json */
+     * @param key
+     *            the key name for the new param.
+     * @param stream
+     *            the input stream to add.
+     * @param fileName
+     *            the name of the file.
+     * @param contentType
+     *            the content type of the file, eg. application/json
+     */
     public void put(String key, InputStream stream, String fileName, String contentType)
     {
         if (key != null && stream != null)
@@ -163,9 +208,12 @@ public class RequestParams
         }
     }
 
-    /** Removes a parameter from the request.
+    /**
+     * Removes a parameter from the request.
      * 
-     * @param key the key name for the parameter to remove. */
+     * @param key
+     *            the key name for the parameter to remove.
+     */
     public void remove(String key)
     {
         urlParams.remove(key);

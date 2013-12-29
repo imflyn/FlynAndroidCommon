@@ -8,8 +8,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-/** @Title NetWorkUtil
- * @Description 是检测网络的一个工具包 */
+/**
+ * @Title NetWorkUtil
+ * @Description 是检测网络的一个工具包
+ */
 public class NetWorkUtil
 {
     public static enum netType
@@ -17,10 +19,12 @@ public class NetWorkUtil
         wifi, CMNET, CMWAP, noneNet
     }
 
-    /** 网络是否可用
+    /**
+     * 网络是否可用
      * 
      * @param context
-     * @return */
+     * @return
+     */
     public static boolean isNetworkAvailable(Context context)
     {
         ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -38,10 +42,12 @@ public class NetWorkUtil
         return false;
     }
 
-    /** 判断是否有网络连接
+    /**
+     * 判断是否有网络连接
      * 
      * @param context
-     * @return */
+     * @return
+     */
     public static boolean isNetworkConnected(Context context)
     {
         if (context != null)
@@ -56,10 +62,12 @@ public class NetWorkUtil
         return false;
     }
 
-    /** 判断WIFI网络是否可用
+    /**
+     * 判断WIFI网络是否可用
      * 
      * @param context
-     * @return */
+     * @return
+     */
     public static boolean isWifiConnected(Context context)
     {
         if (context != null)
@@ -74,10 +82,12 @@ public class NetWorkUtil
         return false;
     }
 
-    /** 判断MOBILE网络是否可用
+    /**
+     * 判断MOBILE网络是否可用
      * 
      * @param context
-     * @return */
+     * @return
+     */
     public static boolean isMobileConnected(Context context)
     {
         if (context != null)
@@ -92,10 +102,12 @@ public class NetWorkUtil
         return false;
     }
 
-    /** 获取当前网络连接的类型信息
+    /**
+     * 获取当前网络连接的类型信息
      * 
      * @param context
-     * @return */
+     * @return
+     */
     public static int getConnectedType(Context context)
     {
         if (context != null)
@@ -110,11 +122,13 @@ public class NetWorkUtil
         return -1;
     }
 
-    /** 获取当前的网络状态 -1：没有网络 1：WIFI网络2：wap 网络3：net网络
+    /**
+     * 获取当前的网络状态 -1：没有网络 1：WIFI网络2：wap 网络3：net网络
      * 
      * @param context
      * 
-     * @return */
+     * @return
+     */
     public static netType getAPNType(Context context)
     {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

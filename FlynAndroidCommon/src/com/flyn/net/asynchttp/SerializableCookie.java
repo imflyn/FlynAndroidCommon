@@ -4,7 +4,7 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import java.io.Serializable;
 import java.io.ObjectInputStream;
@@ -15,7 +15,10 @@ import java.util.Date;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
-/** A wrapper class around {@link Cookie} and/or {@link BasicClientCookie} designed for use in {@link PersistentCookieStore}. */
+/**
+ * A wrapper class around {@link Cookie} and/or {@link BasicClientCookie}
+ * designed for use in {@link PersistentCookieStore}.
+ */
 public class SerializableCookie implements Serializable
 {
     private static final long           serialVersionUID = 6374381828722046732L;

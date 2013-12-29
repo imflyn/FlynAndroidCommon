@@ -4,7 +4,7 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
@@ -14,13 +14,17 @@ import org.json.JSONTokener;
 import org.apache.http.Header;
 import android.os.Message;
 
-/** Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}, with automatic parsing into a {@link JSONObject} or
+/**
+ * Used to intercept and handle the responses from requests made using
+ * {@link AsyncHttpClient}, with automatic parsing into a {@link JSONObject} or
  * {@link JSONArray}.
  * <p>
- * This class is designed to be passed to get, post, put and delete requests with the {@link #onSuccess(JSONObject)} or {@link #onSuccess(JSONArray)} methods
- * anonymously overridden.
+ * This class is designed to be passed to get, post, put and delete requests
+ * with the {@link #onSuccess(JSONObject)} or {@link #onSuccess(JSONArray)}
+ * methods anonymously overridden.
  * <p>
- * Additionally, you can override the other event methods from the parent class. */
+ * Additionally, you can override the other event methods from the parent class.
+ */
 public class JsonHttpResponseHandler extends AsyncHttpResponseHandler
 {
     protected static final int SUCCESS_JSON_MESSAGE = 100;
@@ -29,53 +33,83 @@ public class JsonHttpResponseHandler extends AsyncHttpResponseHandler
     // Callbacks to be overridden, typically anonymously
     //
 
-    /** Fired when a request returns successfully and contains a json object at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json object at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param response the parsed json object found in the server response (if any) */
+     * @param response
+     *            the parsed json object found in the server response (if any)
+     */
     public void onSuccess(JSONObject response)
     {
     }
 
-    /** Fired when a request returns successfully and contains a json array at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json array at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param response the parsed json array found in the server response (if any) */
+     * @param response
+     *            the parsed json array found in the server response (if any)
+     */
     public void onSuccess(JSONArray response)
     {
     }
 
-    /** Fired when a request returns successfully and contains a json object at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json object at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param statusCode the status code of the response
-     * @param headers the headers of the HTTP response
-     * @param response the parsed json object found in the server response (if any) */
+     * @param statusCode
+     *            the status code of the response
+     * @param headers
+     *            the headers of the HTTP response
+     * @param response
+     *            the parsed json object found in the server response (if any)
+     */
     public void onSuccess(int statusCode, Header[] headers, JSONObject response)
     {
         onSuccess(statusCode, response);
     }
 
-    /** Fired when a request returns successfully and contains a json object at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json object at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param statusCode the status code of the response
-     * @param response the parsed json object found in the server response (if any) */
+     * @param statusCode
+     *            the status code of the response
+     * @param response
+     *            the parsed json object found in the server response (if any)
+     */
     public void onSuccess(int statusCode, JSONObject response)
     {
         onSuccess(response);
     }
 
-    /** Fired when a request returns successfully and contains a json array at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json array at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param statusCode the status code of the response
-     * @param headers the headers of the HTTP response
-     * @param response the parsed json array found in the server response (if any) */
+     * @param statusCode
+     *            the status code of the response
+     * @param headers
+     *            the headers of the HTTP response
+     * @param response
+     *            the parsed json array found in the server response (if any)
+     */
     public void onSuccess(int statusCode, Header[] headers, JSONArray response)
     {
         onSuccess(statusCode, response);
     }
 
-    /** Fired when a request returns successfully and contains a json array at the base of the response string. Override to handle in your own code.
+    /**
+     * Fired when a request returns successfully and contains a json array at
+     * the base of the response string. Override to handle in your own code.
      * 
-     * @param statusCode the status code of the response
-     * @param response the parsed json array found in the server response (if any) */
+     * @param statusCode
+     *            the status code of the response
+     * @param response
+     *            the parsed json array found in the server response (if any)
+     */
     public void onSuccess(int statusCode, JSONArray response)
     {
         onSuccess(response);

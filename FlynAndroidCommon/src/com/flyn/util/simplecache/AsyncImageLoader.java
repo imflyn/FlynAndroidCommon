@@ -126,7 +126,7 @@ public class AsyncImageLoader
         if (b != null)
             return b;
         b = ImageDownloader.downloadBitmap(url);
-       
+
         mFileCache.saveBitmap(b, url);
         return b;
     }
@@ -194,7 +194,7 @@ public class AsyncImageLoader
             Bitmap bmp = getBitmapByUrl(url);
             if (round != 0 && bmp != null)
             {
-//                bmp = ImageUtils.getRoundedCornerBitmap(bmp, round);
+                // bmp = ImageUtils.getRoundedCornerBitmap(bmp, round);
             }
             mMemoryCache.addBitmapToCache(url, bmp);
             if (imageViewReused(imageView, url))
@@ -247,7 +247,7 @@ public class AsyncImageLoader
             if (bitmap != null)
             {
                 if (imageView instanceof ImageView)
-                mImageViews.remove(imageView);
+                    mImageViews.remove(imageView);
             }
 
         }

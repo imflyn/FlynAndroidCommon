@@ -3,8 +3,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
-
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -19,8 +18,11 @@ import org.apache.http.util.EntityUtils;
 
 import android.os.Message;
 
-/** Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}. Receives response body as byte array with a content-type
- * whitelist. (e.g. checks Content-Type against allowed list, Content-length).
+/**
+ * Used to intercept and handle the responses from requests made using
+ * {@link AsyncHttpClient}. Receives response body as byte array with a
+ * content-type whitelist. (e.g. checks Content-Type against allowed list,
+ * Content-length).
  * <p>
  * For example:
  * <p>
@@ -42,7 +44,8 @@ import android.os.Message;
  *         // Response failed :(
  *     }
  * });
- * </pre> */
+ * </pre>
+ */
 public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
 {
     // Allow images by default
@@ -54,7 +57,11 @@ public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         super();
     }
 
-    /** Creates a new BinaryHttpResponseHandler, and overrides the default allowed content types with passed String array (hopefully) of content types. */
+    /**
+     * Creates a new BinaryHttpResponseHandler, and overrides the default
+     * allowed content types with passed String array (hopefully) of content
+     * types.
+     */
     public BinaryHttpResponseHandler(String[] allowedContentTypes)
     {
         this();
@@ -65,27 +72,41 @@ public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
     // Callbacks to be overridden, typically anonymously
     //
 
-    /** Fired when a request returns successfully, override to handle in your own code
+    /**
+     * Fired when a request returns successfully, override to handle in your own
+     * code
      * 
-     * @param binaryData the body of the HTTP response from the server */
+     * @param binaryData
+     *            the body of the HTTP response from the server
+     */
     public void onSuccess(byte[] binaryData)
     {
     }
 
-    /** Fired when a request returns successfully, override to handle in your own code
+    /**
+     * Fired when a request returns successfully, override to handle in your own
+     * code
      * 
-     * @param statusCode the status code of the response
-     * @param binaryData the body of the HTTP response from the server */
+     * @param statusCode
+     *            the status code of the response
+     * @param binaryData
+     *            the body of the HTTP response from the server
+     */
     public void onSuccess(int statusCode, byte[] binaryData)
     {
         onSuccess(binaryData);
     }
 
-    /** Fired when a request fails to complete, override to handle in your own code
+    /**
+     * Fired when a request fails to complete, override to handle in your own
+     * code
      * 
-     * @param error the underlying cause of the failure
-     * @param binaryData the response body, if any
-     * @deprecated */
+     * @param error
+     *            the underlying cause of the failure
+     * @param binaryData
+     *            the response body, if any
+     * @deprecated
+     */
     @Deprecated
     public void onFailure(Throwable error, byte[] binaryData)
     {

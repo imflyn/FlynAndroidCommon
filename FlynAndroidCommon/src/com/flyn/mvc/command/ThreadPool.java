@@ -9,12 +9,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** @Title ThreadPool
- * @Description ThreadPool是command的线程池 */
+/**
+ * @Title ThreadPool
+ * @Description ThreadPool是command的线程池
+ */
 public class ThreadPool
 {
     private ExecutorService   executor;
-    private volatile boolean           started = false;
+    private volatile boolean  started = false;
     private static ThreadPool instance;
 
     private ThreadPool()

@@ -4,7 +4,7 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,11 +22,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-/** A persistent cookie store which implements the Apache HttpClient {@link CookieStore} interface. Cookies are stored and will persist on the user's device
- * between application sessions since they are serialized and stored in {@link SharedPreferences}.
+/**
+ * A persistent cookie store which implements the Apache HttpClient
+ * {@link CookieStore} interface. Cookies are stored and will persist on the
+ * user's device between application sessions since they are serialized and
+ * stored in {@link SharedPreferences}.
  * <p>
- * Instances of this class are designed to be used with {@link AsyncHttpClient#setCookieStore}, but can also be used with a regular old apache
- * HttpClient/HttpContext if you prefer. */
+ * Instances of this class are designed to be used with
+ * {@link AsyncHttpClient#setCookieStore}, but can also be used with a regular
+ * old apache HttpClient/HttpContext if you prefer.
+ */
 public class PersistentCookieStore implements CookieStore
 {
     private static final String                     COOKIE_PREFS       = "CookiePrefsFile";

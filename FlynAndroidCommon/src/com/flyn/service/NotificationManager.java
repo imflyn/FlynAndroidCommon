@@ -11,9 +11,9 @@ import android.os.Vibrator;
 public class NotificationManager
 {
 
-    public static final int                       PERSISTENT_NOTIFICATION_ID    = 1;
+    public static final int                       PERSISTENT_NOTIFICATION_ID = 1;
 
-    private static final long                     VIBRATION_DURATION            = 500;
+    private static final long                     VIBRATION_DURATION         = 500;
     private final long                            startTime;
     private Application                           application;
     private final android.app.NotificationManager notificationManager;

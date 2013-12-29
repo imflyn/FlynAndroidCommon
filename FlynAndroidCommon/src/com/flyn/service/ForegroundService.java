@@ -100,7 +100,10 @@ public abstract class ForegroundService extends Service
         }
     }
 
-    /** This is a wrapper around the new startForeground method, using the older APIs if it is not available. */
+    /**
+     * This is a wrapper around the new startForeground method, using the older
+     * APIs if it is not available.
+     */
     private void startForegroundCompat(int id, Notification notification)
     {
         // If we have the new startForeground API, then use it.
@@ -119,7 +122,10 @@ public abstract class ForegroundService extends Service
         mNM.notify(id, notification);
     }
 
-    /** This is a wrapper around the new stopForeground method, using the older APIs if it is not available. */
+    /**
+     * This is a wrapper around the new stopForeground method, using the older
+     * APIs if it is not available.
+     */
     private void stopForegroundCompat(int id)
     {
         // If we have the new stopForeground API, then use it.

@@ -155,7 +155,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
                 db.close();
         }
     }
-    
+
     public void execSQLByTransaction(String sql, boolean closeDB) throws SQLException
     {
         SQLiteDatabase db = null;
@@ -165,10 +165,9 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-        }
-        finally
+        } finally
         {
-            
+
             if ((db != null) && (closeDB))
             {
                 db.endTransaction();
@@ -176,7 +175,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
             }
         }
     }
-    
+
     public void execSQLByTransaction(String sql, Object[] bindArgs, boolean closeDB) throws SQLException
     {
         SQLiteDatabase db = null;
@@ -186,10 +185,9 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
             db.beginTransaction();
             db.execSQL(sql, bindArgs);
             db.setTransactionSuccessful();
-        }
-        finally
+        } finally
         {
-            
+
             if ((db != null) && (closeDB))
             {
                 db.endTransaction();

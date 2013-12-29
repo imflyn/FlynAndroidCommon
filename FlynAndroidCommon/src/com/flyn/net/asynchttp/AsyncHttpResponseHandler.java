@@ -4,7 +4,7 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License. */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -18,10 +18,13 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.util.EntityUtils;
 
-/** Used to intercept and handle the responses from requests made using {@link AsyncHttpClient}. The {@link #onSuccess(String)} method is designed to be
- * anonymously overridden with your own response handling code.
+/**
+ * Used to intercept and handle the responses from requests made using
+ * {@link AsyncHttpClient}. The {@link #onSuccess(String)} method is designed to
+ * be anonymously overridden with your own response handling code.
  * <p>
- * Additionally, you can override the {@link #onFailure(Throwable, String)}, {@link #onStart()}, and {@link #onFinish()} methods as required.
+ * Additionally, you can override the {@link #onFailure(Throwable, String)},
+ * {@link #onStart()}, and {@link #onFinish()} methods as required.
  * <p>
  * For example:
  * <p>
@@ -54,7 +57,8 @@ import org.apache.http.util.EntityUtils;
  *         // Completed the request (either success or failure)
  *     }
  * });
- * </pre> */
+ * </pre>
+ */
 public class AsyncHttpResponseHandler
 {
     protected static final int SUCCESS_MESSAGE = 0;
@@ -91,50 +95,77 @@ public class AsyncHttpResponseHandler
     {
     }
 
-    /** Fired in all cases when the request is finished, after both success and failure, override to handle in your own code */
+    /**
+     * Fired in all cases when the request is finished, after both success and
+     * failure, override to handle in your own code
+     */
     public void onFinish()
     {
     }
 
-    /** Fired when a request returns successfully, override to handle in your own code
+    /**
+     * Fired when a request returns successfully, override to handle in your own
+     * code
      * 
-     * @param content the body of the HTTP response from the server */
+     * @param content
+     *            the body of the HTTP response from the server
+     */
     public void onSuccess(String content)
     {
     }
 
-    /** Fired when a request returns successfully, override to handle in your own code
+    /**
+     * Fired when a request returns successfully, override to handle in your own
+     * code
      * 
-     * @param statusCode the status code of the response
-     * @param headers the headers of the HTTP response
-     * @param content the body of the HTTP response from the server */
+     * @param statusCode
+     *            the status code of the response
+     * @param headers
+     *            the headers of the HTTP response
+     * @param content
+     *            the body of the HTTP response from the server
+     */
     public void onSuccess(int statusCode, Header[] headers, String content)
     {
         onSuccess(statusCode, content);
     }
 
-    /** Fired when a request returns successfully, override to handle in your own code
+    /**
+     * Fired when a request returns successfully, override to handle in your own
+     * code
      * 
-     * @param statusCode the status code of the response
-     * @param content the body of the HTTP response from the server */
+     * @param statusCode
+     *            the status code of the response
+     * @param content
+     *            the body of the HTTP response from the server
+     */
     public void onSuccess(int statusCode, String content)
     {
         onSuccess(content);
     }
 
-    /** Fired when a request fails to complete, override to handle in your own code
+    /**
+     * Fired when a request fails to complete, override to handle in your own
+     * code
      * 
-     * @param error the underlying cause of the failure
-     * @deprecated use {@link #onFailure(Throwable, String)} */
+     * @param error
+     *            the underlying cause of the failure
+     * @deprecated use {@link #onFailure(Throwable, String)}
+     */
     @Deprecated
     public void onFailure(Throwable error)
     {
     }
 
-    /** Fired when a request fails to complete, override to handle in your own code
+    /**
+     * Fired when a request fails to complete, override to handle in your own
+     * code
      * 
-     * @param error the underlying cause of the failure
-     * @param content the response body, if any */
+     * @param error
+     *            the underlying cause of the failure
+     * @param content
+     *            the response body, if any
+     */
     public void onFailure(Throwable error, String content)
     {
         // By default, call the deprecated onFailure(Throwable) for

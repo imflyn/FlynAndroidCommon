@@ -2,7 +2,7 @@
  * License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is
  * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. */
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -11,8 +11,10 @@ import org.apache.http.protocol.HttpContext;
 import android.content.Context;
 import android.os.Message;
 
-/** @Title SyncHttpClient
- * @Description SyncHttpClient是网络请求的一个类,可以支持异步,也可以不开启异步来处理程序 */
+/**
+ * @Title SyncHttpClient
+ * @Description SyncHttpClient是网络请求的一个类,可以支持异步,也可以不开启异步来处理程序
+ */
 public class SyncHttpClient extends AsyncHttpClient
 {
     private int                        responseCode;

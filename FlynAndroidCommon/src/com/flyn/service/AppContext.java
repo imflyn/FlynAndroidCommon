@@ -11,21 +11,20 @@ import android.app.Application;
 import android.os.Handler;
 
 /** 应用全局数据类 */
-public class AppContext extends Application 
+public class AppContext extends Application
 {
-    private static AppContext                                                                      appContext        = null;
+    private static AppContext appContext = null;
 
     /** Where data load was requested. */
-    private boolean                                                                                serviceStarted;
+    private boolean           serviceStarted;
     /** Future for loading process. */
-    private Future<Void>                                                                           loadFuture;
+    private Future<Void>      loadFuture;
     /** Thread to execute tasks in background.. */
-    private ExecutorService                                                                        backgroundExecutor;
+    private ExecutorService   backgroundExecutor;
     /** Handler to execute runnable in UI thread. */
-    private Handler                                                                                handler;
-    
-    private boolean isRunning=false;
+    private Handler           handler;
 
+    private boolean           isRunning  = false;
 
     @Override
     public void onCreate()
@@ -54,17 +53,17 @@ public class AppContext extends Application
 
     }
 
-   
-
     /** 获得单一实例 */
     public static AppContext getInstance()
     {
         return appContext;
     }
 
-    /** Starts data loading in background if not started yet.
+    /**
+     * Starts data loading in background if not started yet.
      * 
-     * @return */
+     * @return
+     */
     public void onServiceStarted()
     {
         if (serviceStarted)
@@ -116,9 +115,11 @@ public class AppContext extends Application
         });
     }
 
-    /** Submits request to be executed in background.
+    /**
+     * Submits request to be executed in background.
      * 
-     * @param runnable */
+     * @param runnable
+     */
     public void runInBackground(final Runnable runnable)
     {
         backgroundExecutor.submit(new Runnable()
@@ -137,18 +138,22 @@ public class AppContext extends Application
         });
     }
 
-    /** Submits request to be executed in UI thread.
+    /**
+     * Submits request to be executed in UI thread.
      * 
-     * @param runnable */
+     * @param runnable
+     */
     public void runOnUiThread(final Runnable runnable)
     {
         handler.post(runnable);
     }
 
-    /** Submits request to be executed in UI thread.
+    /**
+     * Submits request to be executed in UI thread.
      * 
      * @param runnable
-     * @param delayMillis */
+     * @param delayMillis
+     */
     public void runOnUiThreadDelay(final Runnable runnable, long delayMillis)
     {
         handler.postDelayed(runnable, delayMillis);
@@ -163,5 +168,5 @@ public class AppContext extends Application
     {
         this.isRunning = isRunning;
     }
-    
+
 }

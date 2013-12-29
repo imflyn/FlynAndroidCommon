@@ -4,8 +4,10 @@
  * permissions and limitations under the License. */
 package com.flyn.mvc.common;
 
-/** @Title IResponseListener
- * @Description IResponseListener是数据返回的一个监听器 */
+/**
+ * @Title IResponseListener
+ * @Description IResponseListener是数据返回的一个监听器
+ */
 public interface IResponseListener
 {
     void onStart();

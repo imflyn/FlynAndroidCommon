@@ -19,24 +19,24 @@ import android.util.Log;
 public abstract class OptionalExecutorTask<Params, Progress, Result>
 {
 
-    private static final InternalHandler         sHandler              = new InternalHandler();
+    private static final InternalHandler         sHandler         = new InternalHandler();
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static volatile Executor             sDefaultExecutor      = new ThreadPoolExecutor(0, 2147483647, 0L, TimeUnit.MILLISECONDS, new SynchronousQueue(),new ThreadFactory( )
-    {
-        
-        @Override
-        public Thread newThread(Runnable r)
-        {
-            return new Thread(r,"OptionalExecutorTask #"+r.hashCode());
-        }
-       
-    });
+    private static volatile Executor             sDefaultExecutor = new ThreadPoolExecutor(0, 2147483647, 0L, TimeUnit.MILLISECONDS, new SynchronousQueue(), new ThreadFactory()
+                                                                  {
+
+                                                                      @Override
+                                                                      public Thread newThread(Runnable r)
+                                                                      {
+                                                                          return new Thread(r, "OptionalExecutorTask #" + r.hashCode());
+                                                                      }
+
+                                                                  });
     private final WorkerRunnable<Params, Result> mWorker;
     private final FutureTask<Result>             mFuture;
-    private volatile Status                      mStatus               = Status.PENDING;
+    private volatile Status                      mStatus          = Status.PENDING;
 
-    private final AtomicBoolean                  mTaskInvoked          = new AtomicBoolean();
+    private final AtomicBoolean                  mTaskInvoked     = new AtomicBoolean();
 
     public static void init()
     {
@@ -69,7 +69,7 @@ public abstract class OptionalExecutorTask<Params, Progress, Result>
                 {
                     Result result = (Result) get();
 
-                    OptionalExecutorTask.this.postResultIfNotInvoked( result);
+                    OptionalExecutorTask.this.postResultIfNotInvoked(result);
                 } catch (InterruptedException e)
                 {
                     Log.w("AsyncTask", e);
@@ -215,13 +215,14 @@ public abstract class OptionalExecutorTask<Params, Progress, Result>
             this.mData = data;
         }
     }
+
     @SuppressWarnings("unchecked")
     private static class InternalHandler extends Handler
     {
-    
+
         public void handleMessage(Message msg)
         {
-           
+
             @SuppressWarnings("rawtypes")
             OptionalExecutorTask.AsyncTaskResult result = (OptionalExecutorTask.AsyncTaskResult) msg.obj;
             switch (msg.what)

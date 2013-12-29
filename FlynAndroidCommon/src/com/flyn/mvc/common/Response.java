@@ -6,12 +6,13 @@ package com.flyn.mvc.common;
 
 import java.io.Serializable;
 
-
-/** @Title Response
- * @Description Response是返回的数据 */
+/**
+ * @Title Response
+ * @Description Response是返回的数据
+ */
 public class Response implements Serializable
 {
-   
+
     private static final long serialVersionUID = -6232245099529026420L;
     private Object            tag;
     private Object            data;

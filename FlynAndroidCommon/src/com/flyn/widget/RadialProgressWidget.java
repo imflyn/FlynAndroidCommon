@@ -24,7 +24,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-/** 
+/**
  * 圆形进度条显示百分比
  * 
  * */
@@ -270,7 +270,10 @@ public class RadialProgressWidget extends View
         mCallback = callback;
     }
 
-    /** @param mCurrentValue the mCurrentValue to set */
+    /**
+     * @param mCurrentValue
+     *            the mCurrentValue to set
+     */
     public void setCurrentValue(int mCurrentValue)
     {
         this.mCurrentValue = mCurrentValue;
@@ -283,7 +286,10 @@ public class RadialProgressWidget extends View
         return mMaxValue;
     }
 
-    /** @param mMaxValue the mMaxValue to set */
+    /**
+     * @param mMaxValue
+     *            the mMaxValue to set
+     */
     public void setMaxValue(int mMaxValue)
     {
         this.mMaxValue = mMaxValue;
@@ -295,7 +301,10 @@ public class RadialProgressWidget extends View
         return mScoreColorRange;
     }
 
-    /** @param mScoreColorRange the mScoreColorRange to set */
+    /**
+     * @param mScoreColorRange
+     *            the mScoreColorRange to set
+     */
     public void setScoreColorRange(int[] mScoreColorRange)
     {
         this.mScoreColorRange = mScoreColorRange;
@@ -307,7 +316,10 @@ public class RadialProgressWidget extends View
         return mBaseColor;
     }
 
-    /** @param mBaseColor the mBaseColor to set */
+    /**
+     * @param mBaseColor
+     *            the mBaseColor to set
+     */
     public void setBaseColor(int mBaseColor)
     {
         this.mBaseColor = mBaseColor;
@@ -319,7 +331,10 @@ public class RadialProgressWidget extends View
         return mBorderColor;
     }
 
-    /** @param mBorderColor the mBorderColor to set */
+    /**
+     * @param mBorderColor
+     *            the mBorderColor to set
+     */
     public void setBorderColor(int mBorderColor)
     {
         this.mBorderColor = mBorderColor;
@@ -331,7 +346,10 @@ public class RadialProgressWidget extends View
         return mCenterTextColor;
     }
 
-    /** @param mCenterTextColor the mCenterTextColor to set */
+    /**
+     * @param mCenterTextColor
+     *            the mCenterTextColor to set
+     */
     public void setCenterTextColor(int mCenterTextColor)
     {
         this.mCenterTextColor = mCenterTextColor;
@@ -343,7 +361,10 @@ public class RadialProgressWidget extends View
         return mSecondaryTextColor;
     }
 
-    /** @param mSecondaryTextColor the mSecondaryTextColor to set */
+    /**
+     * @param mSecondaryTextColor
+     *            the mSecondaryTextColor to set
+     */
     public void setSecondaryTextColor(int mSecondaryTextColor)
     {
         this.mSecondaryTextColor = mSecondaryTextColor;
@@ -355,7 +376,10 @@ public class RadialProgressWidget extends View
         return mShadowColor;
     }
 
-    /** @param mShadowColor the mShadowColor to set */
+    /**
+     * @param mShadowColor
+     *            the mShadowColor to set
+     */
     public void setShadowColor(int mShadowColor)
     {
         this.mShadowColor = mShadowColor;
@@ -367,7 +391,10 @@ public class RadialProgressWidget extends View
         return mBorderStrokeThickness;
     }
 
-    /** @param mBorderStrokeThickness the mBorderStrokeThickness to set */
+    /**
+     * @param mBorderStrokeThickness
+     *            the mBorderStrokeThickness to set
+     */
     public void setBorderStrokeThickness(float mBorderStrokeThickness)
     {
         this.mBorderStrokeThickness = mBorderStrokeThickness;
@@ -379,7 +406,10 @@ public class RadialProgressWidget extends View
         return mShadowRadius;
     }
 
-    /** @param mShadowRadius the mShadowRadius to set */
+    /**
+     * @param mShadowRadius
+     *            the mShadowRadius to set
+     */
     public void setShadowRadius(float mShadowRadius)
     {
         this.mShadowRadius = mShadowRadius;
@@ -391,7 +421,10 @@ public class RadialProgressWidget extends View
         return mSecondaryText;
     }
 
-    /** @param mSecondaryText the mSecondaryText to set */
+    /**
+     * @param mSecondaryText
+     *            the mSecondaryText to set
+     */
     public void setSecondaryText(String mSecondaryText)
     {
         this.mSecondaryText = mSecondaryText;
@@ -403,7 +436,10 @@ public class RadialProgressWidget extends View
         return isShowPercentText;
     }
 
-    /** @param isShowPercentText the isShowPercentText to set */
+    /**
+     * @param isShowPercentText
+     *            the isShowPercentText to set
+     */
     public void setShowPercentText(boolean isShowPercentText)
     {
         this.isShowPercentText = isShowPercentText;
@@ -415,7 +451,10 @@ public class RadialProgressWidget extends View
         return mCenterTextSize;
     }
 
-    /** @param mCenterTextSize the mCenterTextSize to set */
+    /**
+     * @param mCenterTextSize
+     *            the mCenterTextSize to set
+     */
     public void setCenterTextSize(float mCenterTextSize)
     {
         this.mCenterTextSize = mCenterTextSize;
@@ -427,7 +466,10 @@ public class RadialProgressWidget extends View
         return mSecondaryTextSize;
     }
 
-    /** @param mSecondaryTextSize the mSecondaryTextSize to set */
+    /**
+     * @param mSecondaryTextSize
+     *            the mSecondaryTextSize to set
+     */
     public void setSecondaryTextSize(float mSecondaryTextSize)
     {
         this.mSecondaryTextSize = mSecondaryTextSize;
@@ -439,7 +481,10 @@ public class RadialProgressWidget extends View
         return isTouchEnabled;
     }
 
-    /** @param isTouchEnabled the isTouchEnabled to set */
+    /**
+     * @param isTouchEnabled
+     *            the isTouchEnabled to set
+     */
     public void setTouchEnabled(boolean isTouchEnabled)
     {
         this.isTouchEnabled = isTouchEnabled;
@@ -451,7 +496,10 @@ public class RadialProgressWidget extends View
         return mMinChangeValue;
     }
 
-    /** @param mMinChangeValue the mMinChangeValue to set */
+    /**
+     * @param mMinChangeValue
+     *            the mMinChangeValue to set
+     */
     public void setMinChangeValue(int mMinChangeValue)
     {
         this.mMinChangeValue = mMinChangeValue;
@@ -463,7 +511,10 @@ public class RadialProgressWidget extends View
         return mMaxChangeValue;
     }
 
-    /** @param mMaxChangeValue the mMaxChangeValue to set */
+    /**
+     * @param mMaxChangeValue
+     *            the mMaxChangeValue to set
+     */
     public void setMaxChangeValue(int mMaxChangeValue)
     {
         this.mMaxChangeValue = mMaxChangeValue;

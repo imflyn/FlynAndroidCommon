@@ -37,17 +37,21 @@ public class ImageDownloader
             if (entity != null)
             {
                 InputStream inputStream = null;
-                FilterInputStream fit=null;
+                FilterInputStream fit = null;
                 try
                 {
                     inputStream = entity.getContent();
-                     fit = new FlushedInputStream(inputStream);
-//                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                     BitmapFactory.decodeStream(fit).compress(Bitmap.CompressFormat.JPEG, 50, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-//                     ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
-//                     Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
-                     return BitmapFactory.decodeStream(fit);
-                     
+                    fit = new FlushedInputStream(inputStream);
+                    // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    // BitmapFactory.decodeStream(fit).compress(Bitmap.CompressFormat.JPEG,
+                    // 50, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+                    // ByteArrayInputStream isBm = new
+                    // ByteArrayInputStream(baos.toByteArray());//
+                    // 把压缩后的数据baos存放到ByteArrayInputStream中
+                    // Bitmap bitmap = BitmapFactory.decodeStream(isBm, null,
+                    // null);// 把ByteArrayInputStream数据生成图片
+                    return BitmapFactory.decodeStream(fit);
+
                 } finally
                 {
                     if (inputStream != null)

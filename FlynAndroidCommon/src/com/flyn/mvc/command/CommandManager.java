@@ -8,7 +8,7 @@ import com.flyn.mvc.common.Response;
 
 public class CommandManager implements IResponseListener
 {
-    private CommandExecutor     mCommandExecutor;
+    private CommandExecutor mCommandExecutor;
 
     public void registerCommand(int resID, Class<? extends ICommand> command, Context context)
     {

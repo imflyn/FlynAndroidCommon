@@ -10,14 +10,24 @@ import android.util.Log;
 
 import com.flyn.util.netstate.NetWorkUtil.netType;
 
-/** @Title NetworkStateReceiver
- * @Description 是一个检测网络状态改变的，需要配置 <receiver android:name="com.talkingoa.util.netstate.NetworkStateReceiver" > <intent-filter> <action
- *              android:name="android.net.conn.CONNECTIVITY_CHANGE" /> <action android:name="android.gzcpc.conn.CONNECTIVITY_CHANGE" /> </intent-filter>
- *              </receiver>
+/**
+ * @Title NetworkStateReceiver
+ * @Description 是一个检测网络状态改变的，需要配置 <receiver
+ *              android:name="com.talkingoa.util.netstate.NetworkStateReceiver"
+ *              > <intent-filter> <action
+ *              android:name="android.net.conn.CONNECTIVITY_CHANGE" /> <action
+ *              android:name="android.gzcpc.conn.CONNECTIVITY_CHANGE" />
+ *              </intent-filter> </receiver>
  * 
- *              需要开启权限 <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <uses-permission
- *              android:name="android.permission.CHANGE_WIFI_STATE" /> <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
- *              <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> */
+ *              需要开启权限 <uses-permission
+ *              android:name="android.permission.CHANGE_NETWORK_STATE" />
+ *              <uses-permission
+ *              android:name="android.permission.CHANGE_WIFI_STATE" />
+ *              <uses-permission
+ *              android:name="android.permission.ACCESS_NETWORK_STATE" />
+ *              <uses-permission
+ *              android:name="android.permission.ACCESS_WIFI_STATE" />
+ */
 public class NetworkStateReceiver extends BroadcastReceiver
 {
     private static Boolean                      networkAvailable                    = false;
@@ -71,9 +81,11 @@ public class NetworkStateReceiver extends BroadcastReceiver
         }
     }
 
-    /** 注册网络状态广播
+    /**
+     * 注册网络状态广播
      * 
-     * @param mContext */
+     * @param mContext
+     */
     public static void registerNetworkStateReceiver(Context mContext)
     {
         IntentFilter filter = new IntentFilter();
@@ -82,9 +94,11 @@ public class NetworkStateReceiver extends BroadcastReceiver
         mContext.getApplicationContext().registerReceiver(getReceiver(), filter);
     }
 
-    /** 检查网络状态
+    /**
+     * 检查网络状态
      * 
-     * @param mContext */
+     * @param mContext
+     */
     public static void checkNetworkState(Context mContext)
     {
         Intent intent = new Intent();
@@ -92,9 +106,11 @@ public class NetworkStateReceiver extends BroadcastReceiver
         mContext.sendBroadcast(intent);
     }
 
-    /** 注销网络状态广播
+    /**
+     * 注销网络状态广播
      * 
-     * @param mContext */
+     * @param mContext
+     */
     public static void unRegisterNetworkStateReceiver(Context mContext)
     {
         if (receiver != null)
@@ -110,9 +126,11 @@ public class NetworkStateReceiver extends BroadcastReceiver
 
     }
 
-    /** 获取当前网络状态，true为网络连接成功，否则网络连接失败
+    /**
+     * 获取当前网络状态，true为网络连接成功，否则网络连接失败
      * 
-     * @return */
+     * @return
+     */
     public static Boolean isNetworkAvailable()
     {
         return networkAvailable;
@@ -143,9 +161,12 @@ public class NetworkStateReceiver extends BroadcastReceiver
 
     }
 
-    /** 注册网络连接观察者
+    /**
+     * 注册网络连接观察者
      * 
-     * @param observerKey observerKey */
+     * @param observerKey
+     *            observerKey
+     */
     public static void registerObserver(NetChangeObserver observer)
     {
         if (netChangeObserverArrayList == null)
@@ -155,9 +176,12 @@ public class NetworkStateReceiver extends BroadcastReceiver
         netChangeObserverArrayList.add(observer);
     }
 
-    /** 注销网络连接观察者
+    /**
+     * 注销网络连接观察者
      * 
-     * @param resID observerKey */
+     * @param resID
+     *            observerKey
+     */
     public static void removeRegisterObserver(NetChangeObserver observer)
     {
         if (netChangeObserverArrayList != null)

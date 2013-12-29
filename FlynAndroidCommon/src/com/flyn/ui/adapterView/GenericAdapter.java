@@ -103,13 +103,13 @@ public class GenericAdapter extends BaseAdapter
         this.mHolders.remove(holder);
         notifyDataSetChanged();
     }
-    
-    public void replaceDataHolder(int location,DataHolder holder)
+
+    public void replaceDataHolder(int location, DataHolder holder)
     {
         this.mHolders.set(location, holder);
         notifyDataSetChanged();
     }
-    
+
     public DataHolder queryDataHolder(int location)
     {
         if (this.mIsLoopView)

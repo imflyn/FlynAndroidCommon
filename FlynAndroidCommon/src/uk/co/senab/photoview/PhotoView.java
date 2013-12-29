@@ -28,8 +28,9 @@ import android.widget.ImageView;
 
 /**
  * 手势放大缩小图片控件
+ * 
  * @author V
- *
+ * 
  */
 public class PhotoView extends ImageView implements IPhotoView
 {

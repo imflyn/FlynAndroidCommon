@@ -1,7 +1,9 @@
 package com.flyn.mvc.command;
 
-/** @Title TACommandQueueManager
- * @Description TACommandQueueManager是command队列的管理者 */
+/**
+ * @Title TACommandQueueManager
+ * @Description TACommandQueueManager是command队列的管理者
+ */
 public final class CommandQueueManager
 {
     private static CommandQueueManager instance;
@@ -35,9 +37,11 @@ public final class CommandQueueManager
         }
     }
 
-    /** 从队列中获取Command
+    /**
+     * 从队列中获取Command
      * 
-     * @return TAICommand */
+     * @return TAICommand
+     */
     public ICommand getNextCommand()
     {
         ICommand cmd = queue.getNextCommand();

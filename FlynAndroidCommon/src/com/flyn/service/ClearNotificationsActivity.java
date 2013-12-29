@@ -23,6 +23,4 @@ public class ClearNotificationsActivity extends Activity
         return intent;
     }
 
-
-
 }

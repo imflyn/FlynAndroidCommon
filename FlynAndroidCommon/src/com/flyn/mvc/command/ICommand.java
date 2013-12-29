@@ -8,8 +8,10 @@ import com.flyn.mvc.common.IResponseListener;
 import com.flyn.mvc.common.Request;
 import com.flyn.mvc.common.Response;
 
-/** @Title ICommand
- * @Description ICommand一个命令接口所有命令需要从此实现 */
+/**
+ * @Title ICommand
+ * @Description ICommand一个命令接口所有命令需要从此实现
+ */
 public interface ICommand
 {
     Request getRequest();

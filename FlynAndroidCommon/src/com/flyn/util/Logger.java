@@ -187,7 +187,7 @@ public final class Logger
             {
                 Log.w(tagStr, msg);
                 if (ENABLED_JLOG)
-                    JLog.writeLogtoFile("W", tagStr,msg);
+                    JLog.writeLogtoFile("W", tagStr, msg);
             } else
             {
                 Log.w(tagStr, msg, tr);

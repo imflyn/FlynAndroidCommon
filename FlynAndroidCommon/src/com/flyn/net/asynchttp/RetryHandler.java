@@ -6,7 +6,7 @@
 
 /* Some of the retry logic in this class is heavily borrowed from the fantastic droid-fu project: https://github.com/donnfelker/droid-fu */
 
-package com.flyn.asynchttp;
+package com.flyn.net.asynchttp;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;

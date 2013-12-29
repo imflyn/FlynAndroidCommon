@@ -21,8 +21,8 @@ public class FileCache
     private static final int    MB                            = 1024 * 1024;
     private static final int    CACHE_SIZE                    = 10;
     private static final int    FREE_SD_SPACE_NEEDED_TO_CACHE = 10;
-    
-    private final static String DEFAULT_SAVE_IMAGE_PATH="** where you what to save**";
+
+    private final static String DEFAULT_SAVE_IMAGE_PATH       = "** where you what to save**";
 
     public FileCache()
     {
