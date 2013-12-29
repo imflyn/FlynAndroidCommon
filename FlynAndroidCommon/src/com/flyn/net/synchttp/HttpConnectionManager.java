@@ -108,9 +108,6 @@ public final class HttpConnectionManager
             return result;
         } catch (IOException e)
         {
-            e.printStackTrace();
-        } finally
-        {
             try
             {
                 if (input != null)
@@ -160,9 +157,6 @@ public final class HttpConnectionManager
             result.setHttpURLConn(httpConn);
             return result;
         } catch (IOException e)
-        {
-            e.printStackTrace();
-        } finally
         {
             try
             {
@@ -214,8 +208,6 @@ public final class HttpConnectionManager
         } catch (IOException e)
         {
             e.printStackTrace();
-        } finally
-        {
             try
             {
                 if (input != null)
@@ -463,10 +455,19 @@ public final class HttpConnectionManager
                 }
             }
             return httpConn;
-        } catch (Exception e)
+        } catch (IOException e)
         {
-            e.printStackTrace();
-        } finally
+            try
+            {
+                if (output != null)
+                    output.close();
+            } finally
+            {
+                if (httpConn != null)
+                    httpConn.disconnect();
+            }
+            throw e;
+        } catch (Exception e)
         {
             try
             {
