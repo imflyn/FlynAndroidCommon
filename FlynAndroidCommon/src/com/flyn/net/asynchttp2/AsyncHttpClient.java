@@ -105,8 +105,8 @@ public class AsyncHttpClient
 
     public static final String                      VERSION                         = "1.4.5";
     public static final int                         DEFAULT_MAX_CONNECTIONS         = 10;
-    public static final int                         DEFAULT_SOCKET_TIMEOUT          = 10 * 1000;
-    public static final int                         DEFAULT_MAX_RETRIES             = 5;
+    public static final int                         DEFAULT_SOCKET_TIMEOUT          = 6 * 1000;
+    public static final int                         DEFAULT_MAX_RETRIES             = 3;
     public static final int                         DEFAULT_RETRY_SLEEP_TIME_MILLIS = 1500;
     public static final int                         DEFAULT_SOCKET_BUFFER_SIZE      = 8192;
     public static final String                      HEADER_ACCEPT_ENCODING          = "Accept-Encoding";
