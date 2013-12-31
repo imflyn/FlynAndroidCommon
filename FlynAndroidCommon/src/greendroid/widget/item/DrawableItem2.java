@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -15,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * A DrawableItem displays a single Drawable on the left of the itemview and a
  * description text on the right. A DrawableItem takes care of adapting itself

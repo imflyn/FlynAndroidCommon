@@ -1,4 +1,3 @@
-
 package greendroid.image;
 
 import android.graphics.Bitmap;

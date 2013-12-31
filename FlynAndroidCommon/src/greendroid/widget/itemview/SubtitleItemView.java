@@ -1,4 +1,3 @@
-
 package greendroid.widget.itemview;
 
 import greendroid.widget.item.Item;
@@ -9,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flynAndroidCommon.R;
+
 /**
  * View representation of the {@link SubtitleItem}.
  * 

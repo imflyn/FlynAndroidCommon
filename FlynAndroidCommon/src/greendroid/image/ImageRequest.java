@@ -1,4 +1,3 @@
-
 package greendroid.image;
 
 import greendroid.image.ImageLoader.ImageLoaderCallback;

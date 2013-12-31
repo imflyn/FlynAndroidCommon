@@ -1,4 +1,3 @@
-
 package greendroid.app;
 
 import greendroid.widget.ActionBar;

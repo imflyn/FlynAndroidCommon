@@ -1,4 +1,3 @@
-
 package greendroid.image;
 
 import greendroid.app.GDApplication.OnLowMemoryListener;

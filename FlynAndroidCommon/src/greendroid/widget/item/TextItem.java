@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -15,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * A TextItem is a very basic item that only contains a single text. The text
  * will be displayed on a single line on screen.

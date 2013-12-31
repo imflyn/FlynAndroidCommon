@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -17,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * Base class for all items used in GreenDroid. An item represents a wrapper of
  * data. Each item contains at least all the information needed to display a

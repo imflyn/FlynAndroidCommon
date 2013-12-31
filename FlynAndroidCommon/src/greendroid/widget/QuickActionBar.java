@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import java.lang.ref.WeakReference;
@@ -122,7 +121,7 @@ public class QuickActionBar extends QuickActionWidget
                                                   {
 
                                                       @Override
-                                                    public void onClick(View view)
+                                                      public void onClick(View view)
                                                       {
 
                                                           final OnQuickActionClickListener listener = getOnQuickActionClickListener();

@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import greendroid.graphics.drawable.ActionBarDrawable;
@@ -414,7 +413,7 @@ public class ActionBar extends LinearLayout
                                           {
 
                                               @Override
-                                            public void onClick(View v)
+                                              public void onClick(View v)
                                               {
                                                   if (mOnActionBarListener != null)
                                                   {

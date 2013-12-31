@@ -1,4 +1,3 @@
-
 package greendroid.widget.itemview;
 
 import greendroid.widget.item.DrawableItem;
@@ -12,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flynAndroidCommon.R;
+
 /**
  * View representation of the {@link DrawableItem}.
  * 

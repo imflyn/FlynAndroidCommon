@@ -17,12 +17,11 @@ package com.flyn.util.cache;
 
 import java.io.Serializable;
 
-
-public class CacheEntity<T>  implements Serializable
+public class CacheEntity<T> implements Serializable
 {
     private static final long serialVersionUID = 1L;
     private T                 t;
-    private AsyncEntity     asyncEntity;
+    private AsyncEntity       asyncEntity;
 
     public T getT()
     {

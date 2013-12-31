@@ -1,4 +1,3 @@
-
 package com.flyn.util;
 
 import android.os.Build;

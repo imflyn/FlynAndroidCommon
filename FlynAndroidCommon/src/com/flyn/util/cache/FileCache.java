@@ -1,4 +1,3 @@
-
 package com.flyn.util.cache;
 
 import java.io.ByteArrayOutputStream;
@@ -27,7 +26,7 @@ public class FileCache
     // 这些常量帮助轻松切换不同的缓存
     private static final boolean     DEFAULT_MEM_CACHE_ENABLED         = true;            // 默认内存缓存启用
     private static final boolean     DEFAULT_DISK_CACHE_ENABLED        = true;            // 默认磁盘缓存启用
-    private static final boolean     DEFAULT_CLEAR_DISK_CACHE_ON_START = false;            // 默认的清晰的磁盘缓存开始
+    private static final boolean     DEFAULT_CLEAR_DISK_CACHE_ON_START = false;           // 默认的清晰的磁盘缓存开始
     private static final boolean     DEFAULT_INIT_DISK_CACHE_ON_CREATE = false;           // 默认的初始化的磁盘高速缓存开始
     private TACacheParams            mCacheParams;
     private boolean                  mDiskCacheStarting                = true;

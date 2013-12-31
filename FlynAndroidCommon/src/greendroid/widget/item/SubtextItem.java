@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -15,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * <p>
  * A SubtextItem is really similar to a {@link SubtitleItem} as it displays two

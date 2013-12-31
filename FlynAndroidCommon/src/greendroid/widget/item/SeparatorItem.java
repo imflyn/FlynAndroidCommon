@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -6,6 +5,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * Act as a separator between important ListView sections. A separator display
  * text on a single line.

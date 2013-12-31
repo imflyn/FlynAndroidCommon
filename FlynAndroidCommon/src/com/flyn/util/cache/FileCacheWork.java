@@ -1,4 +1,3 @@
-
 package com.flyn.util.cache;
 
 import java.lang.ref.WeakReference;
@@ -12,17 +11,17 @@ import android.os.AsyncTask;
 @SuppressWarnings("rawtypes")
 public class FileCacheWork<ResponseObject extends Object>
 {
-    private FileCache                       mTAFileCache;
-    private boolean                           mExitTasksEarly         = false;
-    protected boolean                         mPauseWork              = false;
-    private final Object                      mPauseWorkLock          = new Object();
-    protected static final int                MESSAGE_CLEAR           = 0;
-    protected static final int                MESSAGE_INIT_DISK_CACHE = 1;
-    protected static final int                MESSAGE_FLUSH           = 2;
-    protected static final int                MESSAGE_CLOSE           = 3;
-    private HashMap<String, CacheEntity>    mCacheEntityHashMap     = new HashMap<String, CacheEntity>();
+    private FileCache                            mTAFileCache;
+    private boolean                              mExitTasksEarly         = false;
+    protected boolean                            mPauseWork              = false;
+    private final Object                         mPauseWorkLock          = new Object();
+    protected static final int                   MESSAGE_CLEAR           = 0;
+    protected static final int                   MESSAGE_INIT_DISK_CACHE = 1;
+    protected static final int                   MESSAGE_FLUSH           = 2;
+    protected static final int                   MESSAGE_CLOSE           = 3;
+    private HashMap<String, CacheEntity>         mCacheEntityHashMap     = new HashMap<String, CacheEntity>();
     private CacheCallBackHandler<ResponseObject> mCallBackHandler;
-    private ProcessDataHandler              mProcessDataHandler;
+    private ProcessDataHandler                   mProcessDataHandler;
 
     /**
      * 从缓存加载数据
@@ -292,7 +291,7 @@ public class FileCacheWork<ResponseObject extends Object>
 
     public class BufferWorkerTask extends AsyncTask<Object, Void, byte[]>
     {
-        private Object                             data;
+        private Object                           data;
         private final WeakReference<CacheEntity> cacheEntityReference;
 
         public BufferWorkerTask(CacheEntity cacheEntity)

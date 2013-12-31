@@ -61,14 +61,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * params.put(&quot;profile_picture&quot;, new File(&quot;pic.jpg&quot;)); // Upload a File
  * params.put(&quot;profile_picture2&quot;, someInputStream); // Upload an InputStream
  * params.put(&quot;profile_picture3&quot;, new ByteArrayInputStream(someBytes)); // Upload
- *                                                                      // some
- *                                                                      // bytes
+ * // some
+ * // bytes
  * 
  * Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
  * map.put(&quot;first_name&quot;, &quot;James&quot;);
  * map.put(&quot;last_name&quot;, &quot;Smith&quot;);
  * params.put(&quot;user&quot;, map); // url params:
- *                          // &quot;user[first_name]=James&amp;user[last_name]=Smith&quot;
+ * // &quot;user[first_name]=James&amp;user[last_name]=Smith&quot;
  * 
  * Set&lt;String&gt; set = new HashSet&lt;String&gt;(); // unordered collection
  * set.add(&quot;music&quot;);
@@ -93,7 +93,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * listOfMaps.add(user1);
  * listOfMaps.add(user2);
  * params.put(&quot;users&quot;, listOfMaps); // url params:
- *                                  // &quot;users[][age]=30&amp;users[][gender]=male&amp;users[][age]=25&amp;users[][gender]=female&quot;
+ * // &quot;users[][age]=30&amp;users[][gender]=male&amp;users[][age]=25&amp;users[][gender]=female&quot;
  * 
  * AsyncHttpClient client = new AsyncHttpClient();
  * client.post(&quot;http://myendpoint.com&quot;, params, responseHandler);

@@ -1,4 +1,3 @@
-
 package greendroid.app;
 
 import greendroid.util.Config;
@@ -407,7 +406,7 @@ public class GDSlidingFragmentActivity extends SlidingFragmentActivity implement
     private OnActionBarListener mActionBarListener = new OnActionBarListener()
                                                    {
                                                        @Override
-                                                    public void onActionBarItemClicked(int position)
+                                                       public void onActionBarItemClicked(int position)
                                                        {
                                                            if (position == OnActionBarListener.HOME_ITEM)
                                                            {

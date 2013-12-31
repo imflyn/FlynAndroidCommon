@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -15,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * An {@link Item} that contains two Strings : a text and a subtitle. The
  * representation of this {@link Item} is a view containing two lines of text.

@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import greendroid.util.Config;
@@ -38,13 +37,13 @@ public class SegmentedHost extends LinearLayout
                                                  {
 
                                                      @Override
-                                                    public void onChanged()
+                                                     public void onChanged()
                                                      {
                                                          setupSegmentedHost(mSelectedSegment);
                                                      }
 
                                                      @Override
-                                                    public void onInvalidated()
+                                                     public void onInvalidated()
                                                      {
                                                          // Do nothing - method
                                                          // never called

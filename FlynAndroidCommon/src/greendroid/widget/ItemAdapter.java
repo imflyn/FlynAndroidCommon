@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import greendroid.widget.item.DescriptionItem;

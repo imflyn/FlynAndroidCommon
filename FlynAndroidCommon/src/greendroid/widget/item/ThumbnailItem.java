@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.AsyncImageView;
@@ -16,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * <p>
  * A ThumbnailItem item is a complex item that wraps a Drawable and two Strings:

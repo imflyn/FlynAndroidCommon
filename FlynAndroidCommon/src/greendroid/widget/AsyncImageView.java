@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import greendroid.image.ImageProcessor;
@@ -436,13 +435,13 @@ public class AsyncImageView extends ImageView implements ImageRequestCallback
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>()
                                                                    {
                                                                        @Override
-                                                                    public SavedState createFromParcel(Parcel in)
+                                                                       public SavedState createFromParcel(Parcel in)
                                                                        {
                                                                            return new SavedState(in);
                                                                        }
 
                                                                        @Override
-                                                                    public SavedState[] newArray(int size)
+                                                                       public SavedState[] newArray(int size)
                                                                        {
                                                                            return new SavedState[size];
                                                                        }

@@ -43,7 +43,7 @@ public class CustomViewAbove extends ViewGroup
     private static final Interpolator sInterpolator          = new Interpolator()
                                                              {
                                                                  @Override
-                                                                public float getInterpolation(float t)
+                                                                 public float getInterpolation(float t)
                                                                  {
                                                                      t -= 1.0f;
                                                                      return t * t * t * t * t + 1.0f;

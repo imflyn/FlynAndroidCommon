@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import java.lang.ref.WeakReference;

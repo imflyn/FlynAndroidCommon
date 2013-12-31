@@ -1,11 +1,10 @@
-
 package com.flyn.util.cache;
 
 import java.io.Serializable;
 
 import android.os.AsyncTask;
 
-public class FileResponseEntity  implements Serializable
+public class FileResponseEntity implements Serializable
 {
     private static final long  serialVersionUID = 5525015855679979479L;
     private AsyncTask<?, ?, ?> task;

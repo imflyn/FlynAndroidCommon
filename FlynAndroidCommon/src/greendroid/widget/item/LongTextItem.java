@@ -1,4 +1,3 @@
-
 package greendroid.widget.item;
 
 import greendroid.widget.itemview.ItemView;
@@ -6,6 +5,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.flynAndroidCommon.R;
+
 /**
  * A LongTextItem is very similar to a regular {@link TextItem}. The only
  * difference is it may display the text on several lines.

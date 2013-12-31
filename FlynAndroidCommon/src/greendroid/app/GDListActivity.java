@@ -1,4 +1,3 @@
-
 package greendroid.app;
 
 import greendroid.util.Config;
@@ -33,7 +32,7 @@ public class GDListActivity extends GDActivity
     private Runnable            mRequestFocus  = new Runnable()
                                                {
                                                    @Override
-                                                public void run()
+                                                   public void run()
                                                    {
                                                        mListView.focusableViewAvailable(mListView);
                                                    }
@@ -222,7 +221,7 @@ public class GDListActivity extends GDActivity
     private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener()
                                                                  {
                                                                      @Override
-                                                                    public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+                                                                     public void onItemClick(AdapterView<?> parent, View v, int position, long id)
                                                                      {
                                                                          onListItemClick((ListView) parent, v, position, id);
                                                                      }

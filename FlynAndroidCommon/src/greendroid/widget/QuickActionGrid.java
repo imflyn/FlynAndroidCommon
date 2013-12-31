@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import java.util.List;
@@ -112,7 +111,7 @@ public class QuickActionGrid extends QuickActionWidget
     private OnItemClickListener mInternalItemClickListener = new OnItemClickListener()
                                                            {
                                                                @Override
-                                                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+                                                               public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
                                                                {
                                                                    getOnQuickActionClickListener().onQuickActionClicked(QuickActionGrid.this, position);
                                                                    if (getDismissOnClick())

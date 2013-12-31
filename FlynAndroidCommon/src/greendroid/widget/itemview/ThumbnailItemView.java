@@ -1,4 +1,3 @@
-
 package greendroid.widget.itemview;
 
 import greendroid.widget.AsyncImageView;
@@ -10,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flynAndroidCommon.R;
+
 /**
  * View representation of the {@link ThumbnailItem}.
  * 

@@ -1,4 +1,3 @@
-
 package greendroid.widget;
 
 import greendroid.util.Config;
@@ -667,13 +666,13 @@ public class PagedView extends ViewGroup
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>()
                                                                    {
                                                                        @Override
-                                                                    public SavedState createFromParcel(Parcel in)
+                                                                       public SavedState createFromParcel(Parcel in)
                                                                        {
                                                                            return new SavedState(in);
                                                                        }
 
                                                                        @Override
-                                                                    public SavedState[] newArray(int size)
+                                                                       public SavedState[] newArray(int size)
                                                                        {
                                                                            return new SavedState[size];
                                                                        }
@@ -704,13 +703,13 @@ public class PagedView extends ViewGroup
                                               {
 
                                                   @Override
-                                                public void onInvalidated()
+                                                  public void onInvalidated()
                                                   {
                                                       // Not handled
                                                   };
 
                                                   @Override
-                                                public void onChanged()
+                                                  public void onChanged()
                                                   {
                                                       // TODO Cyril : When data
                                                       // has changed we should

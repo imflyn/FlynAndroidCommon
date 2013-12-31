@@ -1,4 +1,3 @@
-
 package com.flyn.util.cache;
 
 import java.lang.ref.WeakReference;

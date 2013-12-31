@@ -1,4 +1,3 @@
-
 package greendroid.app;
 
 import greendroid.image.ImageCache;
@@ -47,7 +46,7 @@ public class GDApplication extends Application
                                                                              private final AtomicInteger mCount = new AtomicInteger(1);
 
                                                                              @Override
-                                                                            public Thread newThread(Runnable r)
+                                                                             public Thread newThread(Runnable r)
                                                                              {
                                                                                  return new Thread(r, "GreenDroid thread #" + mCount.getAndIncrement());
                                                                              }

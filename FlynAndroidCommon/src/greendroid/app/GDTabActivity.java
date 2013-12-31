@@ -1,4 +1,3 @@
-
 package greendroid.app;
 
 import greendroid.util.Config;
@@ -179,7 +178,7 @@ public class GDTabActivity extends TabActivity implements ActionBarActivity
     private OnActionBarListener mActionBarListener = new OnActionBarListener()
                                                    {
                                                        @Override
-                                                    public void onActionBarItemClicked(int position)
+                                                       public void onActionBarItemClicked(int position)
                                                        {
                                                            if (position == OnActionBarListener.HOME_ITEM)
                                                            {

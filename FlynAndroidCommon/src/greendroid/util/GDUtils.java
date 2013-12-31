@@ -1,4 +1,3 @@
-
 package greendroid.util;
 
 import greendroid.app.GDApplication;
