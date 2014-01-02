@@ -214,7 +214,7 @@ public abstract class RequestParams
         }
     }
 
-    public HttpEntity getEntity(ResponseHandlerInterface progressHandler) throws IOException
+    public HttpEntity getEntity(IResponseHandler progressHandler) throws IOException
     {
         if (useJsonStreamer)
         {
@@ -232,5 +232,5 @@ public abstract class RequestParams
 
     public abstract HttpEntity createFormEntity();
 
-    public abstract HttpEntity createMultipartEntity(ResponseHandlerInterface progressHandler);
+    public abstract HttpEntity createMultipartEntity(IResponseHandler progressHandler);
 }

@@ -12,6 +12,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
+/**
+ * HttpClient方法的请求参数容器
+ * 
+ * @author V
+ * 
+ */
 public class HttpClientRequestParams extends RequestParams
 {
 
@@ -98,12 +104,9 @@ public class HttpClientRequestParams extends RequestParams
     }
 
     @Override
-    public HttpEntity createMultipartEntity(ResponseHandlerInterface progressHandler)
+    public HttpEntity createMultipartEntity(IResponseHandler progressHandler)
     {
         return null;
     }
-    
-    
-    
-    
+
 }

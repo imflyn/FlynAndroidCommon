@@ -1,6 +1,6 @@
 package com.flyn.net.volcano;
 
-public interface ResponseHandlerInterface
+public interface IResponseHandler
 {
         
 }
