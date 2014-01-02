@@ -5,13 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.protocol.HTTP;
 
+/**
+ * 装载http请求参数(可以是字符串或文件)的容器
+ * 
+ * @author V
+ * 
+ */
 public abstract class RequestParams
 {
     protected ConcurrentHashMap<String, String>        urlParams;
@@ -22,6 +30,10 @@ public abstract class RequestParams
     protected boolean                                  useJsonStreamer;
     protected String                                   contentEncoding = HTTP.UTF_8;
 
+    /**
+     * 设置编码
+     * @param encoding
+     */
     public void setContentEncoding(final String encoding)
     {
         if (encoding != null)
@@ -29,12 +41,16 @@ public abstract class RequestParams
         else
             new NullPointerException("encoding is null ");
     }
-
+    /**
+     * 构造一个空的实例
+     */
     public RequestParams()
     {
         this((Map<String, String>) null);
     }
-
+    /**
+     * 构造一个包含字符串键值对map的实例
+     */
     public RequestParams(Map<String, String> source)
     {
         init();
@@ -46,7 +62,9 @@ public abstract class RequestParams
             }
         }
     }
-
+    /**
+     * 构造一个只包含一组字符串键值对的map的实例
+     */
     public RequestParams(final String key, final String value)
     {
         this(new HashMap<String, String>()
@@ -56,6 +74,25 @@ public abstract class RequestParams
             }
         });
     }
+    
+    /**
+     * 构造一个包含多个字符串键值对的map的实例
+     * @param keysAndValues
+     */
+    public RequestParams(Object... keysAndValues)
+    {
+        init();
+        int len = keysAndValues.length;
+        if (len % 2 != 0)
+            throw new IllegalArgumentException("Supplied arguments must be even");
+        for (int i = 0; i < len; i += 2)
+        {
+            String key = String.valueOf(keysAndValues[i]);
+            String val = String.valueOf(keysAndValues[i + 1]);
+            put(key, val);
+        }
+    }
+
 
     public void setHttpEntityIsRepeatable(boolean isRepeatable)
     {
@@ -111,6 +148,31 @@ public abstract class RequestParams
         if (key != null && stream != null)
         {
             this.streamParams.put(key, new StreamWrapper(stream, name, contentType));
+        }
+    }
+    
+    /**
+     * 添加请求参数
+     * @param key
+     * @param value
+     */
+    public void add(String key, String value)
+    {
+        if (key != null && value != null)
+        {
+            Object params = urlParamsWithObjects.get(key);
+            if (params == null)
+            {
+                params = new HashSet<String>();
+                this.put(key, params);
+            }
+            if (params instanceof List)
+            {
+                ((List<Object>) params).add(value);
+            } else if (params instanceof Set)
+            {
+                ((Set<Object>) params).add(value);
+            }
         }
     }
 

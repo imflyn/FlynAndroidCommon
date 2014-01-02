@@ -6,7 +6,6 @@ public class Response
         
     public interface ErrorListener
     {
-        
         public void onErrorResponse(HttpError error);
     }
 }
