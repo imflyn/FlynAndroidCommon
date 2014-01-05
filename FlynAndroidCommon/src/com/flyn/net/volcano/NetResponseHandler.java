@@ -12,7 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public abstract class HttpResponseHandler implements IResponseHandler
+public abstract class NetResponseHandler implements IResponseHandler
 {
     private static final String LOG_TAG            = "AsyncHttpResponseHandler";
 
@@ -33,7 +33,7 @@ public abstract class HttpResponseHandler implements IResponseHandler
     private URI                 requestURI         = null;
     private Map<String, String> requestHeaders     = null;
 
-    public HttpResponseHandler()
+    public NetResponseHandler()
     {
         postRunnable(null);
     }
@@ -62,17 +62,17 @@ public abstract class HttpResponseHandler implements IResponseHandler
 
     static class ResponderHandler extends Handler
     {
-        private final WeakReference<HttpResponseHandler> mResponder;
+        private final WeakReference<NetResponseHandler> mResponder;
 
-        ResponderHandler(HttpResponseHandler handler)
+        ResponderHandler(NetResponseHandler handler)
         {
-            this.mResponder = new WeakReference<HttpResponseHandler>(handler);
+            this.mResponder = new WeakReference<NetResponseHandler>(handler);
         }
 
         @Override
         public void handleMessage(Message msg)
         {
-            HttpResponseHandler handler = this.mResponder.get();
+            NetResponseHandler handler = this.mResponder.get();
             if (null != handler)
             {
                 handler.handleMessage(msg);
