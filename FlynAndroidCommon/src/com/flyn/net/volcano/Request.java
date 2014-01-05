@@ -97,9 +97,9 @@ public abstract class Request implements Runnable
     public boolean cancel(boolean mayInterruptIfRunning)
     {
         isCancelled = true;
-        if (mayInterruptIfRunning && httpStack != null && !httpStack.isAbort())
+        if (mayInterruptIfRunning && httpStack != null && !httpStack.isAbort(this))
         {
-            httpStack.abort();
+            httpStack.abort(this);
         }
         return isCancelled();
 
