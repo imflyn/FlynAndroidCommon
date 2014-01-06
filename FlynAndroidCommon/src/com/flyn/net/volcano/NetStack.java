@@ -1,6 +1,5 @@
 package com.flyn.net.volcano;
 
-
 public interface NetStack
 {
     public void prepare(Request request);

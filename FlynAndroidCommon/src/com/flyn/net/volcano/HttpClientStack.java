@@ -290,39 +290,63 @@ public class HttpClientStack implements NetStack
     {
         this.httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", sslSocketFactory, 443));
     }
-    
-    public void setMaxRetriesAndTimeout(int retries,int timeout)
+
+    public void setMaxRetriesAndTimeout(int retries, int timeout)
     {
         this.httpClient.setHttpRequestRetryHandler(new RetryHandler(retries, timeout));
     }
-    public void addHeader(String header,String value)
+
+    public void addHeader(String header, String value)
     {
         this.httpHeaderMap.put(header, value);
     }
-    
-    public void removeHeader(String  header)
+
+    public void removeHeader(String header)
     {
         this.httpHeaderMap.remove(header);
-            
+
     }
-    
-    public void setBasicAuth(String username,String password,AuthScope authScope)
+
+    public void setBasicAuth(String username, String password, AuthScope authScope)
     {
-        
-        UsernamePasswordCredentials credentials=new UsernamePasswordCredentials(username, password);
+
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
         this.httpClient.getCredentialsProvider().setCredentials(authScope, credentials);
-        
+
     }
+
     public void setBasicAuth(String username, String password)
     {
         AuthScope scope = AuthScope.ANY;
         setBasicAuth(username, password, scope);
     }
-    
+
+    public static String getUrlWithParams(boolean shouldEncodeUrl, String url, RequestParams params)
+    {
+        if (shouldEncodeUrl)
+        {
+            url = url.replace(" ", "%20");
+        }
+        if (null != params)
+        {
+            String paramString = params.getParamString();
+            if (!url.contains("?"))
+            {
+                url += "?" + paramString;
+            } else
+            {
+                url += "&" + paramString;
+            }
+        }
+
+        return url;
+    }
+
     public void clearBasicAuth()
     {
         this.httpClient.getCredentialsProvider().clear();
     }
+
     public void cancelRequests(Context context, boolean mayInterruptIfRunning)
     {
         List<RequestHandle> requestList = this.requestMap.get(context);

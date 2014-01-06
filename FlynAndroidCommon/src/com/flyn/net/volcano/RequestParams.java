@@ -32,6 +32,7 @@ public abstract class RequestParams
 
     /**
      * 设置编码
+     * 
      * @param encoding
      */
     public void setContentEncoding(final String encoding)
@@ -41,6 +42,7 @@ public abstract class RequestParams
         else
             new NullPointerException("encoding is null ");
     }
+
     /**
      * 构造一个空的实例
      */
@@ -48,6 +50,7 @@ public abstract class RequestParams
     {
         this((Map<String, String>) null);
     }
+
     /**
      * 构造一个包含字符串键值对map的实例
      */
@@ -62,6 +65,7 @@ public abstract class RequestParams
             }
         }
     }
+
     /**
      * 构造一个只包含一组字符串键值对的map的实例
      */
@@ -74,9 +78,10 @@ public abstract class RequestParams
             }
         });
     }
-    
+
     /**
      * 构造一个包含多个字符串键值对的map的实例
+     * 
      * @param keysAndValues
      */
     public RequestParams(Object... keysAndValues)
@@ -92,7 +97,6 @@ public abstract class RequestParams
             put(key, val);
         }
     }
-
 
     public void setHttpEntityIsRepeatable(boolean isRepeatable)
     {
@@ -150,9 +154,10 @@ public abstract class RequestParams
             this.streamParams.put(key, new StreamWrapper(stream, name, contentType));
         }
     }
-    
+
     /**
      * 添加请求参数
+     * 
      * @param key
      * @param value
      */
@@ -187,6 +192,8 @@ public abstract class RequestParams
     protected abstract List<?> getParamsList();
 
     protected abstract List<?> getParamsList(String key, Object value);
+
+    protected abstract String getParamString();
 
     public static class FileWrapper
     {
