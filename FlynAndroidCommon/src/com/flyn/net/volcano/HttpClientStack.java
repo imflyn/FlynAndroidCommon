@@ -2,7 +2,6 @@ package com.flyn.net.volcano;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpVersion;
 import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
@@ -132,9 +130,10 @@ public class HttpClientStack implements NetStack
                 {
                     for (HeaderElement element : encoding.getElements())
                     {
-                        // 响应内容返回给客户端（通常是浏览器，或者HttpClient等）之前先进行压缩，以此来节省宽带占用
+                        
                         if (element.getName().equalsIgnoreCase(ENCODING_GZIP))
                         {
+                         // 响应内容返回给客户端（通常是浏览器，或者HttpClient等）之前先进行压缩，以此来节省宽带占用
                             response.setEntity(new InflatingEntity(response.getEntity()));
                             break;
                         }
@@ -181,9 +180,9 @@ public class HttpClientStack implements NetStack
     }
 
     @Override
-    public void prepare(Request request)
+    public void sendRequest(Request request)
     {
-
+        
     }
 
     @Override
@@ -345,6 +344,12 @@ public class HttpClientStack implements NetStack
     public void clearBasicAuth()
     {
         this.httpClient.getCredentialsProvider().clear();
+    }
+    
+
+    public  void setURLEncodingEnabled(boolean isURLEncodingEnabled)
+    {
+        this.isURLEncodingEnabled = isURLEncodingEnabled;
     }
 
     public void cancelRequests(Context context, boolean mayInterruptIfRunning)
