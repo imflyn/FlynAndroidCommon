@@ -14,7 +14,7 @@ import android.util.Log;
 
 public abstract class NetResponseHandler implements IResponseHandler
 {
-    private static final String LOG_TAG            = "AsyncHttpResponseHandler";
+    private static final String LOG_TAG            = "NetResponseHandler";
 
     protected static final int  SUCCESS_MESSAGE    = 0;
     protected static final int  FAILURE_MESSAGE    = 1;
