@@ -3,8 +3,11 @@ package com.flyn.net.volcano;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +28,11 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRouteBean;
@@ -37,6 +45,7 @@ import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -46,10 +55,10 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
-import com.flyn.net.asynchttp.MySSLSocketFactory;
-import com.flyn.net.asynchttp.RequestHandle;
+import com.flyn.net.volcano.Request.Method;
 
 public class HttpClientStack implements NetStack
 {
@@ -63,7 +72,7 @@ public class HttpClientStack implements NetStack
     private static final String                     HEADER_ACCEPT_ENCODING          = "Accept-Encoding";
     private static final String                     ENCODING_GZIP                   = "gzip";
     private static final String                     TAG                             = HttpClientStack.class.getName();
-    private static final boolean                    fixNoHttpResponseException      = false;
+    private final boolean                           fixNoHttpResponseException      = false;
     private static int                              httpPort                        = 80;
     private static int                              httpsPort                       = 443;
 
@@ -130,10 +139,10 @@ public class HttpClientStack implements NetStack
                 {
                     for (HeaderElement element : encoding.getElements())
                     {
-                        
+
                         if (element.getName().equalsIgnoreCase(ENCODING_GZIP))
                         {
-                         // 响应内容返回给客户端（通常是浏览器，或者HttpClient等）之前先进行压缩，以此来节省宽带占用
+                            // 响应内容返回给客户端（通常是浏览器，或者HttpClient等）之前先进行压缩，以此来节省宽带占用
                             response.setEntity(new InflatingEntity(response.getEntity()));
                             break;
                         }
@@ -146,7 +155,7 @@ public class HttpClientStack implements NetStack
         this.httpClient.setHttpRequestRetryHandler(new RetryHandler(DEFAULT_MAX_RETRIES, DEFAULT_RETRY_SLEEP_TIME_MILLIS));
     }
 
-    private static SchemeRegistry getDefaultSchemeRegistry()
+    private SchemeRegistry getDefaultSchemeRegistry()
     {
         if (fixNoHttpResponseException)
         {
@@ -164,11 +173,9 @@ public class HttpClientStack implements NetStack
             Log.d(TAG, "Invalid HTTPS port number specified, defaulting to 443");
         }
 
-        // Fix to SSL flaw in API < ICS
-        // See https://code.google.com/p/android/issues/detail?id=13117
         SSLSocketFactory sslSocketFactory;
         if (fixNoHttpResponseException)
-            sslSocketFactory = MySSLSocketFactory.getFixedSocketFactory();
+            sslSocketFactory = CustomSSLSocketFactory.getFixedSocketFactory();
         else
             sslSocketFactory = SSLSocketFactory.getSocketFactory();
 
@@ -180,21 +187,149 @@ public class HttpClientStack implements NetStack
     }
 
     @Override
-    public void sendRequest(Request request)
+    public RequestHandle makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-        
+        RequestHandle requestHandle = null;
+
+        switch (method)
+        {
+            case Method.GET:
+                requestHandle = get(context, url, headers, params, responseHandler);
+                break;
+            case Method.POST:
+                requestHandle = post(context, url, headers, params, contentType, responseHandler);
+                break;
+            case Method.PUT:
+                requestHandle = put(context, url, headers, params, contentType, responseHandler);
+                break;
+            case Method.DELETE:
+                requestHandle = delete(context, url, headers, params, responseHandler);
+                break;
+        }
+        return requestHandle;
     }
 
-    @Override
-    public boolean isAbort(Request request)
+    public RequestHandle get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-        return false;
+        HttpGet request = new HttpGet(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        if (headers != null)
+        {
+            List<Header> headerList = new LinkedList<Header>();
+            for (Entry<String, String> entry : headers.entrySet())
+            {
+                Header header = new BasicHeader(entry.getKey(), entry.getValue());
+                headerList.add(header);
+            }
+            request.setHeaders((Header[]) headerList.toArray());
+        }
+        return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+
     }
 
-    @Override
-    public void abort(Request request)
+    public RequestHandle post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
+        HttpPost request = new HttpPost(url);
+        if (params != null)
+            request.setEntity(paramsToEntity(params, responseHandler));
+        if (headers != null)
+        {
+            List<Header> headerList = new LinkedList<Header>();
+            for (Entry<String, String> entry : headers.entrySet())
+            {
+                Header header = new BasicHeader(entry.getKey(), entry.getValue());
+                headerList.add(header);
+            }
+            request.setHeaders((Header[]) headerList.toArray());
+        }
+        return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+    }
 
+    public RequestHandle delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    {
+        HttpDelete request = new HttpDelete(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        if (headers != null)
+        {
+            List<Header> headerList = new LinkedList<Header>();
+            for (Entry<String, String> entry : headers.entrySet())
+            {
+                Header header = new BasicHeader(entry.getKey(), entry.getValue());
+                headerList.add(header);
+            }
+            request.setHeaders((Header[]) headerList.toArray());
+        }
+        return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+    }
+
+    public RequestHandle put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    {
+        HttpPut request = new HttpPut(url);
+        request.setEntity(paramsToEntity(params, responseHandler));
+        if (headers != null)
+        {
+            List<Header> headerList = new LinkedList<Header>();
+            for (Entry<String, String> entry : headers.entrySet())
+            {
+                Header header = new BasicHeader(entry.getKey(), entry.getValue());
+                headerList.add(header);
+            }
+            request.setHeaders((Header[]) headerList.toArray());
+        }
+        return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+    }
+
+    private Object prepareArgument(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest)
+    {
+        return new Object[] { client, httpContext, uriRequest };
+    }
+
+    @SuppressWarnings("serial")
+    @Override
+    public RequestHandle sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object... objs)
+    {
+        final DefaultHttpClient client = (DefaultHttpClient) objs[0];
+        final HttpContext httpContext = (HttpContext) objs[1];
+        final HttpUriRequest uriRequest = (HttpUriRequest) objs[2];
+
+        if (!TextUtils.isEmpty(contentType))
+        {
+            uriRequest.setHeader("ContentType", contentType);
+        }
+
+        responseHandler.setRequestHeaders(new HashMap<String, String>()
+        {
+            {
+                for (Header header : uriRequest.getAllHeaders())
+                {
+                    put(header.getName(), header.getValue());
+                }
+            }
+        });
+        responseHandler.setRequestURI(uriRequest.getURI());
+
+        Request request = new HttpClientRequest(client, httpContext, uriRequest, responseHandler);
+        this.threadPool.submit(request);
+        RequestHandle requestHandle = new RequestHandle(request);
+
+        if (null != context)
+        {
+            List<RequestHandle> list = this.requestMap.get(context);
+            if (null == list)
+            {
+                list = new LinkedList<RequestHandle>();
+                this.requestMap.put(context, list);
+            }
+            list.add(requestHandle);
+
+            Iterator<RequestHandle> iterator = list.iterator();
+            while (iterator.hasNext())
+            {
+                if (requestHandle.shouldBeGarbageCollected())
+                    iterator.remove();
+            }
+
+        }
+
+        return requestHandle;
     }
 
     public HttpClient getHttpClient()
@@ -320,7 +455,7 @@ public class HttpClientStack implements NetStack
         setBasicAuth(username, password, scope);
     }
 
-    public static String getUrlWithParams(boolean shouldEncodeUrl, String url, RequestParams params)
+    public String getUrlWithParams(boolean shouldEncodeUrl, String url, RequestParams params)
     {
         if (shouldEncodeUrl)
         {
@@ -341,13 +476,33 @@ public class HttpClientStack implements NetStack
         return url;
     }
 
+    private HttpEntity paramsToEntity(RequestParams params, IResponseHandler responseHandler)
+    {
+        HttpEntity entity = null;
+
+        try
+        {
+            if (params != null)
+            {
+                entity = params.getEntity(responseHandler);
+            }
+        } catch (Throwable t)
+        {
+            if (responseHandler != null)
+                responseHandler.sendFailureMessage(0, null, null, t);
+            else
+                t.printStackTrace();
+        }
+
+        return entity;
+    }
+
     public void clearBasicAuth()
     {
         this.httpClient.getCredentialsProvider().clear();
     }
-    
 
-    public  void setURLEncodingEnabled(boolean isURLEncodingEnabled)
+    public void setURLEncodingEnabled(boolean isURLEncodingEnabled)
     {
         this.isURLEncodingEnabled = isURLEncodingEnabled;
     }

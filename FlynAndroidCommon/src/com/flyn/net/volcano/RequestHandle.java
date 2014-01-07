@@ -14,7 +14,7 @@ public class RequestHandle
     public boolean cancel(boolean mayInterruptIfRunning)
     {
         Request _request = this.request.get();
-        return _request == null || _request.isFinished();
+        return _request == null || _request.cancel(mayInterruptIfRunning);
 
     }
 

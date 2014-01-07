@@ -223,10 +223,10 @@ public abstract class RequestParams
 
     public HttpEntity getEntity(IResponseHandler progressHandler) throws IOException
     {
-        if (useJsonStreamer)
+        if (this.useJsonStreamer)
         {
             return createJsonStreamerEntity();
-        } else if (streamParams.isEmpty() && fileParams.isEmpty())
+        } else if (this.streamParams.isEmpty() &&this.fileParams.isEmpty())
         {
             return createFormEntity();
         } else

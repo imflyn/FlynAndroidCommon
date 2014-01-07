@@ -271,13 +271,13 @@ public abstract class ResponseHandler implements IResponseHandler
     @Override
     public boolean getUseSynchronousMode()
     {
-        return useSynchronousMode;
+        return this.useSynchronousMode;
     }
 
     @Override
     public void setUseSynchronousMode(boolean value)
     {
-        useSynchronousMode = value;
+        this.useSynchronousMode = value;
     }
 
     public final String getReponseCharse()

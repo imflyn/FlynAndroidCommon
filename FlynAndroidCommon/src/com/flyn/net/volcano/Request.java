@@ -2,28 +2,20 @@ package com.flyn.net.volcano;
 
 import java.io.IOException;
 
-import org.apache.http.protocol.HTTP;
-
 import android.util.Log;
 
 public abstract class Request implements Runnable
 {
-    public static final int     TYPE_HTTPCLIENT         = 0x01;
-    public static final int     TYPE_HTTPCONNECTION     = 0x02;
 
-    private static final String DEFAULT_PARAMS_ENCODING = HTTP.UTF_8;
+    protected IResponseHandler responseHandler;
 
-    private NetStack            httpStack;
-    private IResponseHandler    responseHandler;
+    protected int              executionCount;
+    protected boolean          isCancelled         = false;
+    protected boolean          cancelIsNotified    = false;
+    protected boolean          isFinished          = false;
 
-    private int                 executionCount;
-    private boolean             isCancelled             = false;
-    private boolean             cancelIsNotified        = false;
-    private boolean             isFinished              = false;
-
-    public Request(NetStack httpStack, IResponseHandler responseHandler)
+    protected Request(IResponseHandler responseHandler)
     {
-        this.httpStack = httpStack;
         this.responseHandler = responseHandler;
     }
 
@@ -33,8 +25,8 @@ public abstract class Request implements Runnable
         if (isCancelled())
             return;
 
-        if (null != responseHandler)
-            responseHandler.sendStartMessage();
+        if (null != this.responseHandler)
+            this.responseHandler.sendStartMessage();
 
         if (isCancelled())
         {
@@ -46,12 +38,12 @@ public abstract class Request implements Runnable
             makeRequestWithRetries();
         } catch (IOException e)
         {
-            if (!isCancelled() && responseHandler != null)
+            if (!isCancelled() && this.responseHandler != null)
             {
-                responseHandler.sendFailureMessage(0, null, null, e);
+                this.responseHandler.sendFailureMessage(0, null, null, e);
             } else
             {
-                Log.e("HttpRequest", "makeRequestWithRetries returned error, but handler is null", e);
+                Log.e(this.getClass().getName(), "makeRequestWithRetries returned error, but handler is null", e);
             }
         }
         if (isCancelled())
@@ -59,12 +51,12 @@ public abstract class Request implements Runnable
             return;
         }
 
-        if (responseHandler != null)
+        if (this.responseHandler != null)
         {
-            responseHandler.sendFinishMessage();
+            this.responseHandler.sendFinishMessage();
         }
 
-        isFinished = true;
+        this.isFinished = true;
     }
 
     protected abstract void makeRequest() throws IOException;
@@ -73,37 +65,28 @@ public abstract class Request implements Runnable
 
     public final boolean isCancelled()
     {
-        if (isCancelled)
+        if (this.isCancelled)
             sendCancleNotification();
 
-        return isCancelled;
+        return this.isCancelled;
     }
 
     private synchronized void sendCancleNotification()
     {
-        if (!isFinished && isCancelled && !cancelIsNotified)
+        if (!this.isFinished && this.isCancelled && !this.cancelIsNotified)
         {
-            cancelIsNotified = true;
-            if (null != responseHandler)
-                responseHandler.sendCancleMessage();
+            this.cancelIsNotified = true;
+            if (null != this.responseHandler)
+                this.responseHandler.sendCancleMessage();
         }
     }
 
     public final boolean isFinished()
     {
-        return isCancelled() || isFinished;
+        return isCancelled() || this.isFinished;
     }
 
-    public boolean cancel(boolean mayInterruptIfRunning)
-    {
-        isCancelled = true;
-        if (mayInterruptIfRunning && httpStack != null && !httpStack.isAbort(this))
-        {
-            httpStack.abort(this);
-        }
-        return isCancelled();
-
-    }
+    public abstract boolean cancel(boolean mayInterruptIfRunning);
 
     public interface Method
     {
