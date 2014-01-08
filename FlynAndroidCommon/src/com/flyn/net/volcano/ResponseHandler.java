@@ -268,7 +268,7 @@ public abstract class ResponseHandler implements IResponseHandler
             {
                 buffer = mPool.getBuf(1024);
                 int count;
-                while ((count = inStream.read(buffer)) != -1)
+                while ((count = inStream.read(buffer)) != -1 && !Thread.currentThread().isInterrupted())
                 {
                     bytes.write(buffer, 0, count);
                     if (contentLength >= 0 && ((count / (contentLength / 100)) % 10 == 0))
@@ -311,9 +311,7 @@ public abstract class ResponseHandler implements IResponseHandler
                 msg.what = responseMessageId;
                 msg.obj = responseMessage;
             }
-
         }
-
         return msg;
     }
 
@@ -329,7 +327,6 @@ public abstract class ResponseHandler implements IResponseHandler
     protected void handleMessage(Message msg)
     {
         Object[] response;
-
         switch (msg.what)
         {
             case SUCCESS_MESSAGE:

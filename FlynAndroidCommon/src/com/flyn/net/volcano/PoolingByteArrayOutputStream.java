@@ -42,7 +42,7 @@ public class PoolingByteArrayOutputStream extends ByteArrayOutputStream
         }
         byte[] newbuf = this.mPool.getBuf((this.count + i) * 2);
         System.arraycopy(this.buf, 0, newbuf, 0, this.count);
-        this.mPool.returnBuf(buf);
+        this.mPool.returnBuf(this.buf);
         this.buf = newbuf;
     }
 

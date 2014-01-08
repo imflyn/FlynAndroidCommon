@@ -217,7 +217,7 @@ public class HttpClientStack implements NetStack
         return requestHandle;
     }
 
-    public RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    private RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpGet request = new HttpGet(getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);
@@ -225,7 +225,7 @@ public class HttpClientStack implements NetStack
 
     }
 
-    public RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    private RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPost request = new HttpPost(url);
         if (params != null)
@@ -234,14 +234,14 @@ public class HttpClientStack implements NetStack
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    public RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    private RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpDelete request = new HttpDelete(getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    public RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    private RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPut request = new HttpPut(url);
         if (null != params)
@@ -250,7 +250,7 @@ public class HttpClientStack implements NetStack
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    public RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    private RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpUriRequest request = new HttpHead(getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);

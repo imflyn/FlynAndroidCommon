@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.protocol.HTTP;
@@ -23,11 +23,12 @@ public abstract class RequestParams
 {
     protected ConcurrentHashMap<String, String>        urlParams;
     protected ConcurrentHashMap<String, FileWrapper>   fileParams;
-    protected ConcurrentHashMap<String, Object>        urlParamsWithObjects;
     protected ConcurrentHashMap<String, StreamWrapper> streamParams;
     protected boolean                                  isRepeatable;
     protected boolean                                  useJsonStreamer;
-    protected String                                   contentEncoding = HTTP.UTF_8;
+    protected String                                   contentEncoding      = HTTP.UTF_8;
+    private static final String                        PARAMETER_SEPARATOR  = "&";
+    private static final String                        NAME_VALUE_SEPARATOR = "=";
 
     /**
      * 设置编码
@@ -113,7 +114,6 @@ public abstract class RequestParams
         this.urlParams = new ConcurrentHashMap<String, String>();
         this.fileParams = new ConcurrentHashMap<String, FileWrapper>();
         this.streamParams = new ConcurrentHashMap<String, StreamWrapper>();
-        this.urlParamsWithObjects = new ConcurrentHashMap<String, Object>();
     }
 
     public void put(String key, String value)
@@ -121,14 +121,6 @@ public abstract class RequestParams
         if (key != null && value != null)
         {
             this.urlParams.put(key, value);
-        }
-    }
-
-    public void put(String key, Object value)
-    {
-        if (key != null && value != null)
-        {
-            this.urlParamsWithObjects.put(key, value);
         }
     }
 
@@ -155,46 +147,17 @@ public abstract class RequestParams
         }
     }
 
-    /**
-     * 添加请求参数
-     * 
-     * @param key
-     * @param value
-     */
-    @SuppressWarnings("unchecked")
-    public void add(String key, String value)
-    {
-        if (key != null && value != null)
-        {
-            Object params = this.urlParamsWithObjects.get(key);
-            if (params == null)
-            {
-                params = new HashSet<String>();
-                this.put(key, params);
-            }
-            if (params instanceof List)
-            {
-                ((List<Object>) params).add(value);
-            } else if (params instanceof Set)
-            {
-                ((Set<Object>) params).add(value);
-            }
-        }
-    }
-
     public void remove(String key)
     {
         this.urlParams.remove(key);
         this.fileParams.remove(key);
         this.streamParams.remove(key);
-        this.urlParamsWithObjects.remove(key);
     }
 
-    protected abstract List<?> getParamsList();
-
-    protected abstract List<?> getParamsList(String key, Object value);
-
-    protected abstract String getParamString();
+    protected String getParamString()
+    {
+        return format(this.urlParams, this.contentEncoding);
+    }
 
     public static class FileWrapper
     {
@@ -229,7 +192,7 @@ public abstract class RequestParams
             return createJsonStreamData();
         } else if (this.streamParams.isEmpty() && this.fileParams.isEmpty())
         {
-            return createFormData();
+            return createNormalData();
         } else
         {
             return createMultipartData(progressHandler);
@@ -238,7 +201,45 @@ public abstract class RequestParams
 
     protected abstract byte[] createJsonStreamData();
 
-    protected abstract byte[] createFormData();
+    protected abstract byte[] createNormalData();
 
     protected abstract byte[] createMultipartData(IResponseHandler progressHandler);
+
+    /**
+     * 通过集合获取URL
+     * 
+     * @param parameters
+     * @param encoding
+     * @return
+     */
+    private String format(Map<String, String> parameters, final String encoding)
+    {
+        StringBuilder result = new StringBuilder();
+        for (Entry<String, String> parameter : parameters.entrySet())
+        {
+            final String encodedName = encode(parameter.getKey(), encoding);
+            final String value = parameter.getValue();
+            final String encodedValue = value != null ? encode(value, encoding) : "";
+            if (result.length() > 0)
+                result.append(PARAMETER_SEPARATOR);
+            result.append(encodedName);
+
+            result.append(NAME_VALUE_SEPARATOR);
+            result.append(encodedValue);
+        }
+        return result.toString();
+
+    }
+
+    private String encode(final String content, final String encoding)
+    {
+        try
+        {
+            return URLEncoder.encode(content, encoding != null ? encoding : this.contentEncoding);
+        } catch (UnsupportedEncodingException problem)
+        {
+            throw new IllegalArgumentException(problem);
+        }
+    }
+
 }
