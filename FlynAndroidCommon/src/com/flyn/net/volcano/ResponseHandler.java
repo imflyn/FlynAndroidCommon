@@ -14,7 +14,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.ByteArrayBuffer;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -145,7 +144,7 @@ public abstract class ResponseHandler implements IResponseHandler
     @Override
     public void sendProgress(int bytesWritten, int bytesTotal)
     {
-        sendMessage(obtainMessage(START_MESSAGE, new Object[] { bytesWritten, bytesTotal }));
+        sendMessage(obtainMessage(PROGRESS_MESSAGE, new Object[] { bytesWritten, bytesTotal }));
     }
 
     @Override
@@ -157,7 +156,7 @@ public abstract class ResponseHandler implements IResponseHandler
     @Override
     public void sendSuccessMessage(int statusCode, Map<String, String> headers, byte[] responseData)
     {
-        sendMessage(obtainMessage(FAILURE_MESSAGE, new Object[] { statusCode, headers, responseData }));
+        sendMessage(obtainMessage(SUCCESS_MESSAGE, new Object[] { statusCode, headers, responseData }));
     }
 
     @Override
@@ -176,7 +175,7 @@ public abstract class ResponseHandler implements IResponseHandler
             byte[] responseData;
 
             if (response.getEntity() != null)
-                responseData = getResponseData(response.getEntity());
+                responseData = entityToBytes(response.getEntity());
             else
                 responseData = new byte[0];
 
@@ -200,7 +199,55 @@ public abstract class ResponseHandler implements IResponseHandler
         return map;
     }
 
-    protected byte[] getResponseData(HttpEntity entity) throws IOException
+    // protected byte[] entityToBytes(HttpEntity entity) throws IOException
+    // {
+    //
+    // byte[] responseData = null;
+    //
+    // InputStream inStream = entity.getContent();
+    // if (inStream != null)
+    // {
+    // long contentLength = entity.getContentLength();
+    // if (contentLength > Integer.MAX_VALUE)
+    // {
+    // throw new
+    // IllegalArgumentException("HttpEntity is too large to be buffered.");
+    // }
+    // int buffersize = (contentLength < 0) ? BUFFER_SIZE : (int) contentLength;
+    //
+    // try
+    // {
+    // ByteArrayBuffer buffer = new ByteArrayBuffer(buffersize);
+    //
+    // byte[] temp = new byte[BUFFER_SIZE];
+    // int l, count = 0;
+    // try
+    // {
+    // while ((l = inStream.read(temp)) != -1 &&
+    // !Thread.currentThread().isInterrupted())
+    // {
+    // count += l;
+    // buffer.append(temp, 0, l);
+    //
+    // if (contentLength>=0&&((count / (contentLength / 100)) % 10 == 0))
+    // sendProgress(count, (int) contentLength);
+    // }
+    // } finally
+    // {
+    // inStream.close();
+    // }
+    // responseData = buffer.toByteArray();
+    // } catch (OutOfMemoryError e)
+    // {
+    // System.gc();
+    // throw new IOException("Data too large to get in memory.");
+    // }
+    // }
+    //
+    // return responseData;
+    // }
+
+    protected byte[] entityToBytes(HttpEntity entity) throws IOException
     {
 
         byte[] responseData = null;
@@ -213,33 +260,37 @@ public abstract class ResponseHandler implements IResponseHandler
             {
                 throw new IllegalArgumentException("HttpEntity is too large to be buffered.");
             }
-            int buffersize = (contentLength <= 0) ? BUFFER_SIZE : (int) contentLength;
 
+            ByteArrayPool mPool = new ByteArrayPool(BUFFER_SIZE);
+            PoolingByteArrayOutputStream bytes = new PoolingByteArrayOutputStream(mPool, (int) contentLength);
+            byte[] buffer = null;
             try
             {
-                ByteArrayBuffer buffer = new ByteArrayBuffer(buffersize);
-
-                byte[] temp = new byte[BUFFER_SIZE];
-                int l, count = 0;
-                try
+                buffer = mPool.getBuf(1024);
+                int count;
+                while ((count = inStream.read(buffer)) != -1)
                 {
-                    while ((l = inStream.read(temp)) != -1 && !Thread.currentThread().isInterrupted())
-                    {
-                        count += l;
-                        buffer.append(temp, 0, l);
-
-                        if ((count / (contentLength / 100)) % 10 == 0)
-                            sendProgress(count, (int) contentLength);
-                    }
-                } finally
-                {
-                    inStream.close();
+                    bytes.write(buffer, 0, count);
+                    if (contentLength >= 0 && ((count / (contentLength / 100)) % 10 == 0))
+                        sendProgress(count, (int) contentLength);
                 }
-                responseData = buffer.toByteArray();
+
+                responseData = bytes.toByteArray();
             } catch (OutOfMemoryError e)
             {
                 System.gc();
                 throw new IOException("Data too large to get in memory.");
+            } finally
+            {
+                try
+                {
+                    entity.consumeContent();
+                } catch (IOException e)
+                {
+                    Log.e(ResponseHandler.class.getName(), "Error occured when calling consumingContent", e);
+                }
+                mPool.returnBuf(buffer);
+                bytes.close();
             }
         }
 

@@ -52,6 +52,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
@@ -90,18 +91,20 @@ public class HttpClientStack implements NetStack
     {
         BasicHttpParams httpParams = new BasicHttpParams();
 
-        ConnManagerParams.setTimeout(httpParams, timeout);
-        ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(maxConnections));
+        ConnManagerParams.setTimeout(httpParams, this.timeout);
+        ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
         ConnManagerParams.setMaxTotalConnections(httpParams, DEFAULT_MAX_CONNETIONS);
 
-        HttpConnectionParams.setSoTimeout(httpParams, timeout);
-        HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
+        HttpConnectionParams.setSoTimeout(httpParams, this.timeout);
+        HttpConnectionParams.setConnectionTimeout(httpParams, this.timeout);
         HttpConnectionParams.setTcpNoDelay(httpParams, true);// 禁用nagle算法,排除对小封包的处理(降低延迟)
         HttpConnectionParams.setSocketBufferSize(httpParams, DEFAULT_SOCKET_BUFFER_SIZE);
 
         HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setUserAgent(httpParams, "Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) " + "AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1");
-
+        HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
+        HttpProtocolParams.setHttpElementCharset(httpParams, HTTP.UTF_8);
+        
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, getDefaultSchemeRegistry());
 
         this.threadPool = Executors.newCachedThreadPool();
@@ -254,7 +257,7 @@ public class HttpClientStack implements NetStack
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    private Object prepareArgument(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest)
+    private Object[] prepareArgument(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest)
     {
         return new Object[] { client, httpContext, uriRequest };
     }
@@ -272,7 +275,7 @@ public class HttpClientStack implements NetStack
 
     @SuppressWarnings("serial")
     @Override
-    public RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object... objs)
+    public RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
     {
         final DefaultHttpClient client = (DefaultHttpClient) objs[0];
         final HttpContext httpContext = (HttpContext) objs[1];
@@ -311,7 +314,7 @@ public class HttpClientStack implements NetStack
             Iterator<RequestFuture> iterator = list.iterator();
             while (iterator.hasNext())
             {
-                if (requestHandle.shouldBeGarbageCollected())
+                if (iterator.next().shouldBeGarbageCollected())
                     iterator.remove();
             }
 
