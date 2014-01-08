@@ -22,7 +22,7 @@ import android.util.Log;
 
 public abstract class ResponseHandler implements IResponseHandler
 {
-    private static final String LOG_TAG            = "NetResponseHandler";
+    private static final String TAG            = "ResponseHandler";
 
     protected static final int  SUCCESS_MESSAGE    = 0;
     protected static final int  FAILURE_MESSAGE    = 1;
@@ -284,6 +284,7 @@ public abstract class ResponseHandler implements IResponseHandler
             {
                 try
                 {
+                    //释放http连接所占用的资源
                     entity.consumeContent();
                 } catch (IOException e)
                 {
@@ -334,14 +335,14 @@ public abstract class ResponseHandler implements IResponseHandler
                 if (null != response && response.length >= 3)
                     onSuccess((Integer) response[0], (Map<String, String>) response[1], (byte[]) response[2]);
                 else
-                    Log.e(LOG_TAG, "SUCCESS_MESSAGE didn't got enough params");
+                    Log.e(TAG, "SUCCESS_MESSAGE didn't got enough params");
                 break;
             case FAILURE_MESSAGE:
                 response = (Object[]) msg.obj;
                 if (response != null && response.length >= 4)
                     onFailure((Integer) response[0], (Map<String, String>) response[1], (byte[]) response[2], (Throwable) response[3]);
                 else
-                    Log.e(LOG_TAG, "FAILURE_MESSAGE didn't got enough params");
+                    Log.e(TAG, "FAILURE_MESSAGE didn't got enough params");
                 break;
             case START_MESSAGE:
                 onStart();
@@ -358,17 +359,17 @@ public abstract class ResponseHandler implements IResponseHandler
                         onProgress((Integer) response[0], (Integer) response[1]);
                     } catch (Throwable t)
                     {
-                        Log.e(LOG_TAG, "custom onProgress contains an error", t);
+                        Log.e(TAG, "custom onProgress contains an error", t);
                     }
                 } else
-                    Log.e(LOG_TAG, "PROGRESS_MESSAGE didn't got enough params");
+                    Log.e(TAG, "PROGRESS_MESSAGE didn't got enough params");
                 break;
             case RETRY_MESSAGE:
                 response = (Object[]) msg.obj;
                 if (response != null && response.length == 1)
                     onRetry((Integer) response[0]);
                 else
-                    Log.e(LOG_TAG, "RETRY_MESSAGE didn't get enough params");
+                    Log.e(TAG, "RETRY_MESSAGE didn't get enough params");
                 break;
             case CANCEL_MESSAGE:
                 onCancel();

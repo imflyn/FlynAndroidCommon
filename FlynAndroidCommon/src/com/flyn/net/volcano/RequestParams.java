@@ -30,11 +30,6 @@ public abstract class RequestParams
     private static final String                        PARAMETER_SEPARATOR  = "&";
     private static final String                        NAME_VALUE_SEPARATOR = "=";
 
-    /**
-     * 设置编码
-     * 
-     * @param encoding
-     */
     public void setContentEncoding(final String encoding)
     {
         if (encoding != null)
@@ -43,17 +38,11 @@ public abstract class RequestParams
             new NullPointerException("encoding is null ");
     }
 
-    /**
-     * 构造一个空的实例
-     */
     public RequestParams()
     {
         this((Map<String, String>) null);
     }
 
-    /**
-     * 构造一个包含字符串键值对map的实例
-     */
     public RequestParams(Map<String, String> source)
     {
         init();
@@ -66,9 +55,6 @@ public abstract class RequestParams
         }
     }
 
-    /**
-     * 构造一个只包含一组字符串键值对的map的实例
-     */
     @SuppressWarnings("serial")
     public RequestParams(final String key, final String value)
     {
@@ -78,25 +64,6 @@ public abstract class RequestParams
                 put(key, value);
             }
         });
-    }
-
-    /**
-     * 构造一个包含多个字符串键值对的map的实例
-     * 
-     * @param keysAndValues
-     */
-    public RequestParams(Object... keysAndValues)
-    {
-        init();
-        int len = keysAndValues.length;
-        if (len % 2 != 0)
-            throw new IllegalArgumentException("Supplied arguments must be even");
-        for (int i = 0; i < len; i += 2)
-        {
-            String key = String.valueOf(keysAndValues[i]);
-            String val = String.valueOf(keysAndValues[i + 1]);
-            put(key, val);
-        }
     }
 
     public void setHttpEntityIsRepeatable(boolean isRepeatable)

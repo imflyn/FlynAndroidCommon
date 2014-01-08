@@ -62,7 +62,7 @@ import android.util.Log;
 
 import com.flyn.net.volcano.Request.Method;
 
-public class HttpClientStack implements NetStack
+public class HttpClientStack extends NetStack
 {
 
     private static final int                        DEFAULT_MAX_CONNETIONS          = 10;
@@ -446,26 +446,6 @@ public class HttpClientStack implements NetStack
         setBasicAuth(username, password, scope);
     }
 
-    public String getUrlWithParams(boolean shouldEncodeUrl, String url, RequestParams params)
-    {
-        if (shouldEncodeUrl)
-        {
-            url = url.replace(" ", "%20");
-        }
-        if (null != params)
-        {
-            String paramString = params.getParamString();
-            if (!url.contains("?"))
-            {
-                url += "?" + paramString;
-            } else
-            {
-                url += "&" + paramString;
-            }
-        }
-
-        return url;
-    }
 
     private HttpEntity paramsToEntity(RequestParams params, IResponseHandler responseHandler)
     {

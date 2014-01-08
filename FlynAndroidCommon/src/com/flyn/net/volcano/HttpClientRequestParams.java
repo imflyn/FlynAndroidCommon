@@ -11,8 +11,6 @@ public class HttpClientRequestParams extends RequestParams
 {
 
 
-
-
     @Override
     protected byte[] createJsonStreamData()
     {
