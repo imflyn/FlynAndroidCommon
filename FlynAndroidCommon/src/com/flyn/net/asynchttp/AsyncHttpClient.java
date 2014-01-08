@@ -1220,7 +1220,6 @@ public class AsyncHttpClient
     private HttpEntity paramsToEntity(RequestParams params, ResponseHandlerInterface responseHandler)
     {
         HttpEntity entity = null;
-
         try
         {
             if (params != null)

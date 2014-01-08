@@ -2,11 +2,11 @@ package com.flyn.net.volcano;
 
 import java.lang.ref.WeakReference;
 
-public class RequestHandle
+public class RequestFuture
 {
     private final WeakReference<Request> request;
 
-    public RequestHandle(Request request)
+    public RequestFuture(Request request)
     {
         this.request = new WeakReference<Request>(request);
     }

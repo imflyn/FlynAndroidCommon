@@ -30,6 +30,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -45,7 +46,6 @@ import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -81,7 +81,7 @@ public class HttpClientStack implements NetStack
     private final DefaultHttpClient                 httpClient;
     private final HttpContext                       httpContext;
     private ExecutorService                         threadPool;
-    private final Map<Context, List<RequestHandle>> requestMap;
+    private final Map<Context, List<RequestFuture>> requestMap;
     private final Map<String, String>               httpHeaderMap;
     private boolean                                 isURLEncodingEnabled            = true;
 
@@ -104,7 +104,7 @@ public class HttpClientStack implements NetStack
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, getDefaultSchemeRegistry());
 
         this.threadPool = Executors.newCachedThreadPool();
-        this.requestMap = new WeakHashMap<Context, List<RequestHandle>>();
+        this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
         this.httpHeaderMap = new HashMap<String, String>();
         this.httpContext = new SyncBasicHttpContext(new BasicHttpContext());
         this.httpClient = new DefaultHttpClient(cm, httpParams);
@@ -186,9 +186,9 @@ public class HttpClientStack implements NetStack
     }
 
     @Override
-    public RequestHandle makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    public RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-        RequestHandle requestHandle = null;
+        RequestFuture requestHandle = null;
 
         switch (method)
         {
@@ -204,74 +204,80 @@ public class HttpClientStack implements NetStack
             case Method.DELETE:
                 requestHandle = delete(context, url, headers, params, responseHandler);
                 break;
+            case Method.HEAD:
+                requestHandle = head(context, url, headers, params, contentType, responseHandler);
+                break;
+            default:
+                throw new IllegalStateException("Unknown request method.");
         }
         return requestHandle;
     }
 
-    public RequestHandle get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    public RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpGet request = new HttpGet(getUrlWithParams(this.isURLEncodingEnabled, url, params));
         if (headers != null)
         {
-            List<Header> headerList = new LinkedList<Header>();
             for (Entry<String, String> entry : headers.entrySet())
             {
-                Header header = new BasicHeader(entry.getKey(), entry.getValue());
-                headerList.add(header);
+                request.setHeader(entry.getKey(), entry.getValue());
             }
-            request.setHeaders((Header[]) headerList.toArray());
         }
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
 
     }
 
-    public RequestHandle post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    public RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPost request = new HttpPost(url);
         if (params != null)
             request.setEntity(paramsToEntity(params, responseHandler));
         if (headers != null)
         {
-            List<Header> headerList = new LinkedList<Header>();
             for (Entry<String, String> entry : headers.entrySet())
             {
-                Header header = new BasicHeader(entry.getKey(), entry.getValue());
-                headerList.add(header);
+                request.setHeader(entry.getKey(), entry.getValue());
             }
-            request.setHeaders((Header[]) headerList.toArray());
         }
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    public RequestHandle delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    public RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpDelete request = new HttpDelete(getUrlWithParams(this.isURLEncodingEnabled, url, params));
         if (headers != null)
         {
-            List<Header> headerList = new LinkedList<Header>();
             for (Entry<String, String> entry : headers.entrySet())
             {
-                Header header = new BasicHeader(entry.getKey(), entry.getValue());
-                headerList.add(header);
+                request.setHeader(entry.getKey(), entry.getValue());
             }
-            request.setHeaders((Header[]) headerList.toArray());
         }
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
-    public RequestHandle put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    public RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPut request = new HttpPut(url);
         request.setEntity(paramsToEntity(params, responseHandler));
         if (headers != null)
         {
-            List<Header> headerList = new LinkedList<Header>();
             for (Entry<String, String> entry : headers.entrySet())
             {
-                Header header = new BasicHeader(entry.getKey(), entry.getValue());
-                headerList.add(header);
+                request.setHeader(entry.getKey(), entry.getValue());
             }
-            request.setHeaders((Header[]) headerList.toArray());
+        }
+        return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+    }
+
+    public RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    {
+        HttpUriRequest request = new HttpHead(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        if (headers != null)
+        {
+            for (Entry<String, String> entry : headers.entrySet())
+            {
+                request.setHeader(entry.getKey(), entry.getValue());
+            }
         }
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
@@ -283,7 +289,7 @@ public class HttpClientStack implements NetStack
 
     @SuppressWarnings("serial")
     @Override
-    public RequestHandle sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object... objs)
+    public RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object... objs)
     {
         final DefaultHttpClient client = (DefaultHttpClient) objs[0];
         final HttpContext httpContext = (HttpContext) objs[1];
@@ -307,19 +313,19 @@ public class HttpClientStack implements NetStack
 
         Request request = new HttpClientRequest(client, httpContext, uriRequest, responseHandler);
         this.threadPool.submit(request);
-        RequestHandle requestHandle = new RequestHandle(request);
+        RequestFuture requestHandle = new RequestFuture(request);
 
         if (null != context)
         {
-            List<RequestHandle> list = this.requestMap.get(context);
+            List<RequestFuture> list = this.requestMap.get(context);
             if (null == list)
             {
-                list = new LinkedList<RequestHandle>();
+                list = new LinkedList<RequestFuture>();
                 this.requestMap.put(context, list);
             }
             list.add(requestHandle);
 
-            Iterator<RequestHandle> iterator = list.iterator();
+            Iterator<RequestFuture> iterator = list.iterator();
             while (iterator.hasNext())
             {
                 if (requestHandle.shouldBeGarbageCollected())
@@ -478,7 +484,6 @@ public class HttpClientStack implements NetStack
     private HttpEntity paramsToEntity(RequestParams params, IResponseHandler responseHandler)
     {
         HttpEntity entity = null;
-
         try
         {
             if (params != null)
@@ -508,10 +513,10 @@ public class HttpClientStack implements NetStack
 
     public void cancelRequests(Context context, boolean mayInterruptIfRunning)
     {
-        List<RequestHandle> requestList = this.requestMap.get(context);
+        List<RequestFuture> requestList = this.requestMap.get(context);
         if (requestList != null)
         {
-            for (RequestHandle requestHandle : requestList)
+            for (RequestFuture requestHandle : requestList)
             {
                 requestHandle.cancel(mayInterruptIfRunning);
             }

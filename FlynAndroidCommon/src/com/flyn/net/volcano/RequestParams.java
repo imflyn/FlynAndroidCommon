@@ -69,6 +69,7 @@ public abstract class RequestParams
     /**
      * 构造一个只包含一组字符串键值对的map的实例
      */
+    @SuppressWarnings("serial")
     public RequestParams(final String key, final String value)
     {
         this(new HashMap<String, String>()
@@ -161,11 +162,12 @@ public abstract class RequestParams
      * @param key
      * @param value
      */
+    @SuppressWarnings("unchecked")
     public void add(String key, String value)
     {
         if (key != null && value != null)
         {
-            Object params = urlParamsWithObjects.get(key);
+            Object params = this.urlParamsWithObjects.get(key);
             if (params == null)
             {
                 params = new HashSet<String>();

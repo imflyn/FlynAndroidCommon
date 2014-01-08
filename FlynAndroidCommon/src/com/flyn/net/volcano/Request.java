@@ -10,9 +10,9 @@ public abstract class Request implements Runnable
     protected IResponseHandler responseHandler;
 
     protected int              executionCount;
-    protected boolean          isCancelled         = false;
-    protected boolean          cancelIsNotified    = false;
-    protected boolean          isFinished          = false;
+    protected boolean          isCancelled      = false;
+    protected boolean          cancelIsNotified = false;
+    protected boolean          isFinished       = false;
 
     protected Request(IResponseHandler responseHandler)
     {
@@ -95,6 +95,7 @@ public abstract class Request implements Runnable
         int POST                   = 1;
         int PUT                    = 2;
         int DELETE                 = 3;
+        int HEAD                   = 4;
     }
 
 }
