@@ -63,7 +63,6 @@ import com.flyn.net.volcano.Request.Method;
 public class HttpClientStack implements NetStack
 {
 
-    private static final String                     VERSION                         = "1.0.0";
     private static final int                        DEFAULT_MAX_CONNETIONS          = 10;
     private static final int                        DEFAULT_SOCKET_TIMEOUT          = 10 * 1000;
     private static final int                        DEFAULT_MAX_RETRIES             = 3;
