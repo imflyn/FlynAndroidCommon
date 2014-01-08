@@ -42,6 +42,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
@@ -216,13 +217,7 @@ public class HttpClientStack implements NetStack
     public RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpGet request = new HttpGet(getUrlWithParams(this.isURLEncodingEnabled, url, params));
-        if (headers != null)
-        {
-            for (Entry<String, String> entry : headers.entrySet())
-            {
-                request.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
+        addHeaders(request, headers);
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
 
     }
@@ -232,46 +227,40 @@ public class HttpClientStack implements NetStack
         HttpPost request = new HttpPost(url);
         if (params != null)
             request.setEntity(paramsToEntity(params, responseHandler));
-        if (headers != null)
-        {
-            for (Entry<String, String> entry : headers.entrySet())
-            {
-                request.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
+        addHeaders(request, headers);
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
     public RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpDelete request = new HttpDelete(getUrlWithParams(this.isURLEncodingEnabled, url, params));
-        if (headers != null)
-        {
-            for (Entry<String, String> entry : headers.entrySet())
-            {
-                request.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
+        addHeaders(request, headers);
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
     public RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPut request = new HttpPut(url);
-        request.setEntity(paramsToEntity(params, responseHandler));
-        if (headers != null)
-        {
-            for (Entry<String, String> entry : headers.entrySet())
-            {
-                request.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
+        if (null != params)
+            request.setEntity(paramsToEntity(params, responseHandler));
+        addHeaders(request, headers);
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
     public RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpUriRequest request = new HttpHead(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        addHeaders(request, headers);
+        return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
+    }
+
+    private Object prepareArgument(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest)
+    {
+        return new Object[] { client, httpContext, uriRequest };
+    }
+
+    private void addHeaders(HttpUriRequest request, Map<String, String> headers)
+    {
         if (headers != null)
         {
             for (Entry<String, String> entry : headers.entrySet())
@@ -279,12 +268,6 @@ public class HttpClientStack implements NetStack
                 request.setHeader(entry.getKey(), entry.getValue());
             }
         }
-        return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
-    }
-
-    private Object prepareArgument(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest)
-    {
-        return new Object[] { client, httpContext, uriRequest };
     }
 
     @SuppressWarnings("serial")
@@ -488,7 +471,7 @@ public class HttpClientStack implements NetStack
         {
             if (params != null)
             {
-                entity = params.getEntity(responseHandler);
+                entity = new ByteArrayEntity(params.getBody(responseHandler));
             }
         } catch (Throwable t)
         {
@@ -513,6 +496,7 @@ public class HttpClientStack implements NetStack
 
     public void cancelRequests(Context context, boolean mayInterruptIfRunning)
     {
+
         List<RequestFuture> requestList = this.requestMap.get(context);
         if (requestList != null)
         {

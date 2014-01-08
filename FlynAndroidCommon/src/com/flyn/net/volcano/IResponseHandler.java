@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+
 public interface IResponseHandler
 {
-    void sendResponseMessage() throws IOException;
+    void sendResponseMessage(HttpResponse response) throws IOException;
 
     void sendStartMessage();
 

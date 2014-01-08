@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.protocol.HTTP;
 
 /**
@@ -223,23 +222,23 @@ public abstract class RequestParams
         }
     }
 
-    public HttpEntity getEntity(IResponseHandler progressHandler) throws IOException
+    public byte[] getBody(IResponseHandler progressHandler) throws IOException
     {
         if (this.useJsonStreamer)
         {
-            return createJsonStreamerEntity();
-        } else if (this.streamParams.isEmpty() &&this.fileParams.isEmpty())
+            return createJsonStreamData();
+        } else if (this.streamParams.isEmpty() && this.fileParams.isEmpty())
         {
-            return createFormEntity();
+            return createFormData();
         } else
         {
-            return createMultipartEntity(progressHandler);
+            return createMultipartData(progressHandler);
         }
     }
 
-    public abstract HttpEntity createJsonStreamerEntity();
+    protected abstract byte[] createJsonStreamData();
 
-    public abstract HttpEntity createFormEntity();
+    protected abstract byte[] createFormData();
 
-    public abstract HttpEntity createMultipartEntity(IResponseHandler progressHandler);
+    protected abstract byte[] createMultipartData(IResponseHandler progressHandler);
 }

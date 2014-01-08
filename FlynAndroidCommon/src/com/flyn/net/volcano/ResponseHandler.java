@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.protocol.HTTP;
 
 import android.os.Handler;
@@ -152,8 +153,9 @@ public abstract class ResponseHandler implements IResponseHandler
     }
 
     @Override
-    public void sendResponseMessage() throws IOException
+    public void sendResponseMessage(HttpResponse response) throws IOException
     {
+
     }
 
     private Message obtainMessage(int responseMessageId, Object responseMessage)

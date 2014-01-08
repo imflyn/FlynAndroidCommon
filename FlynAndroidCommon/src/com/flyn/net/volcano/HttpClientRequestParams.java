@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -92,19 +91,19 @@ public class HttpClientRequestParams extends RequestParams
     }
 
     @Override
-    public HttpEntity createJsonStreamerEntity()
+    protected byte[] createJsonStreamData()
     {
         return null;
     }
 
     @Override
-    public HttpEntity createFormEntity()
+    protected byte[] createFormData()
     {
         return null;
     }
 
     @Override
-    public HttpEntity createMultipartEntity(IResponseHandler progressHandler)
+    protected byte[] createMultipartData(IResponseHandler progressHandler)
     {
         return null;
     }

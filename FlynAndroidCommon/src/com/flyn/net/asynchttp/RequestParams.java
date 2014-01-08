@@ -495,7 +495,7 @@ public class RequestParams
 
     private HttpEntity createMultipartEntity(ResponseHandlerInterface progressHandler) throws IOException
     {
-        
+
         SimpleMultipartEntity entity = new SimpleMultipartEntity(progressHandler);
         entity.setIsRepeatable(isRepeatable);
 

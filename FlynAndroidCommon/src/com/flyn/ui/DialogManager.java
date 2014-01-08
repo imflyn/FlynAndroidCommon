@@ -43,7 +43,7 @@ public abstract class DialogManager
         {
             throw new RuntimeException(e);
         }
-     
+
     }
 
     public static AlertDialog.Builder createAlertDialogBuilder(Context context, String title, String[] buttons, DialogInterface.OnClickListener onClickListener, boolean cancelable)
