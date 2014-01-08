@@ -1,12 +1,20 @@
 package com.flyn.net.volcano;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.ByteArrayBuffer;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -155,7 +163,87 @@ public abstract class ResponseHandler implements IResponseHandler
     @Override
     public void sendResponseMessage(HttpResponse response) throws IOException
     {
+        if (!Thread.currentThread().isInterrupted())
+        {
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
 
+            if (statusCode == HttpStatus.SC_NOT_MODIFIED)
+            {
+                // 还未加入Cache缓存处理,加入后可以添加具体处理逻辑
+            }
+
+            byte[] responseData;
+
+            if (response.getEntity() != null)
+                responseData = getResponseData(response.getEntity());
+            else
+                responseData = new byte[0];
+
+            if (!Thread.currentThread().isInterrupted())
+            {
+                if (statusCode >= 200 && statusCode < 300)
+                    sendSuccessMessage(statusCode, convertHeaders(response.getAllHeaders()), responseData);
+                else
+                    sendFailureMessage(statusCode, convertHeaders(response.getAllHeaders()), responseData, new HttpResponseException(statusCode, statusLine.getReasonPhrase()));
+            }
+        }
+    }
+
+    private Map<String, String> convertHeaders(Header[] headers)
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Header header : headers)
+        {
+            map.put(header.getName(), header.getValue());
+        }
+        return map;
+    }
+
+    protected byte[] getResponseData(HttpEntity entity) throws IOException
+    {
+
+        byte[] responseData = null;
+
+        InputStream inStream = entity.getContent();
+        if (inStream != null)
+        {
+            long contentLength = entity.getContentLength();
+            if (contentLength > Integer.MAX_VALUE)
+            {
+                throw new IllegalArgumentException("HttpEntity is too large to be buffered.");
+            }
+            int buffersize = (contentLength <= 0) ? BUFFER_SIZE : (int) contentLength;
+
+            try
+            {
+                ByteArrayBuffer buffer = new ByteArrayBuffer(buffersize);
+
+                byte[] temp = new byte[BUFFER_SIZE];
+                int l, count = 0;
+                try
+                {
+                    while ((l = inStream.read(temp)) != -1 && !Thread.currentThread().isInterrupted())
+                    {
+                        count += l;
+                        buffer.append(temp, 0, l);
+
+                        if ((count / (contentLength / 100)) % 10 == 0)
+                            sendProgress(count, (int) contentLength);
+                    }
+                } finally
+                {
+                    inStream.close();
+                }
+                responseData = buffer.toByteArray();
+            } catch (OutOfMemoryError e)
+            {
+                System.gc();
+                throw new IOException("Data too large to get in memory.");
+            }
+        }
+
+        return responseData;
     }
 
     private Message obtainMessage(int responseMessageId, Object responseMessage)
@@ -181,14 +269,9 @@ public abstract class ResponseHandler implements IResponseHandler
     private void sendMessage(Message msg)
     {
         if (this.handler == null || getUseSynchronousMode())
-        {
-
             handleMessage(msg);
-        } else
-        {
+        else
             this.handler.sendMessage(msg);
-
-        }
     }
 
     @SuppressWarnings("unchecked")
