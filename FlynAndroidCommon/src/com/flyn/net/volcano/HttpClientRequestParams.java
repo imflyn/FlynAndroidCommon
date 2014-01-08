@@ -24,11 +24,11 @@ public class HttpClientRequestParams extends RequestParams
     protected List<BasicNameValuePair> getParamsList()
     {
         List<BasicNameValuePair> lparams = new LinkedList<BasicNameValuePair>();
-        for (ConcurrentHashMap.Entry<String, String> entry : urlParams.entrySet())
+        for (ConcurrentHashMap.Entry<String, String> entry : this.urlParams.entrySet())
         {
             lparams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
-        lparams.addAll(getParamsList(null, urlParamsWithObjects));
+        lparams.addAll(getParamsList(null, this.urlParamsWithObjects));
 
         return lparams;
     }
@@ -87,7 +87,7 @@ public class HttpClientRequestParams extends RequestParams
 
     protected String getParamString()
     {
-        return URLEncodedUtils.format(getParamsList(), contentEncoding);
+        return URLEncodedUtils.format(getParamsList(), this.contentEncoding);
     }
 
     @Override
