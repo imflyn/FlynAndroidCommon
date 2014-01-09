@@ -25,7 +25,6 @@ public abstract class RequestParams
     protected ConcurrentHashMap<String, FileWrapper>   fileParams;
     protected ConcurrentHashMap<String, StreamWrapper> streamParams;
     protected boolean                                  isRepeatable;
-    protected boolean                                  useJsonStreamer;
     protected String                                   contentEncoding      = HTTP.UTF_8;
     private static final String                        PARAMETER_SEPARATOR  = "&";
     private static final String                        NAME_VALUE_SEPARATOR = "=";
@@ -71,10 +70,6 @@ public abstract class RequestParams
         this.isRepeatable = isRepeatable;
     }
 
-    public void setUseJsonStreamer(boolean useJsonStreamer)
-    {
-        this.useJsonStreamer = useJsonStreamer;
-    }
 
     public void init()
     {
@@ -154,10 +149,7 @@ public abstract class RequestParams
 
     public byte[] getBody(IResponseHandler progressHandler) throws IOException
     {
-        if (this.useJsonStreamer)
-        {
-            return createJsonStreamData();
-        } else if (this.streamParams.isEmpty() && this.fileParams.isEmpty())
+        if (this.streamParams.isEmpty() && this.fileParams.isEmpty())
         {
             return createNormalData();
         } else
@@ -166,7 +158,6 @@ public abstract class RequestParams
         }
     }
 
-    protected abstract byte[] createJsonStreamData();
 
     protected abstract byte[] createNormalData();
 

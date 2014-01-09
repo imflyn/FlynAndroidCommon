@@ -34,7 +34,7 @@ public class MultiByteParser
     private PoolingByteArrayOutputStream out;
     private List<FilePart>               fileParts                = new ArrayList<FilePart>(3);
 
-    public MultiByteParser()
+    public MultiByteParser(IResponseHandler progressHandler)
     {
         final StringBuilder buf = new StringBuilder();
         final Random rand = new Random();
@@ -49,7 +49,8 @@ public class MultiByteParser
 
         this.mPool = new ByteArrayPool(DEAULT_BUFFER_SIZE);
         this.out = new PoolingByteArrayOutputStream(this.mPool);
-
+        
+        this.progressHandler=progressHandler;
     }
 
     public void addPart(String key, String value, String contentType)
@@ -126,14 +127,15 @@ public class MultiByteParser
         this.bytesWritten = 0;
         this.totalSize = (int) getContentLength();
         updateProgress(this.out.size());
-
+        byte [] result=null;
         try
         {
             for (FilePart filePart : this.fileParts)
             {
                 filePart.writeTo(this.out);
             }
-            this.out.write(boundaryEnd);
+            this.out.write(this.boundaryEnd);
+            result=this.out.toByteArray();
         } catch (IOException e)
         {
             Log.e(TAG, "Uploading IOException:" + e.getMessage());
@@ -149,7 +151,7 @@ public class MultiByteParser
         }
         updateProgress(this.boundaryEnd.length);
 
-        return this.out.toByteArray();
+        return result;
     }
 
     private byte[] createContentDisposition(final String key)
@@ -204,6 +206,7 @@ public class MultiByteParser
 
         private byte[] createHeader(String key, String filename, String type)
         {
+            byte [] result=null;
             PoolingByteArrayOutputStream outStream = new PoolingByteArrayOutputStream(mPool);
             try
             {
@@ -214,6 +217,7 @@ public class MultiByteParser
                 outStream.write(createContentType(type));
                 outStream.write(TRANSFER_ENCODING_BINARY);
                 outStream.write(CR_LF);
+                result=outStream.toByteArray();
             } catch (IOException e)
             {
 
@@ -231,7 +235,7 @@ public class MultiByteParser
                 }
             }
 
-            return outStream.toByteArray();
+            return result;
         }
 
         private long getTotalLength()

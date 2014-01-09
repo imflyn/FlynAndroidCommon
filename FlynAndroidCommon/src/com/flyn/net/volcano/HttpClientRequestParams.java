@@ -14,21 +14,15 @@ public class HttpClientRequestParams extends RequestParams
 {
 
     @Override
-    protected byte[] createJsonStreamData()
-    {
-        return null;
-    }
-
-    @Override
     protected byte[] createNormalData()
     {
         return getParamString().getBytes();
     }
-    
+
     @Override
     protected byte[] createMultipartData(IResponseHandler progressHandler) throws IOException
     {
-        MultiByteParser parser = new MultiByteParser();
+        MultiByteParser parser = new MultiByteParser(progressHandler);
 
         for (ConcurrentHashMap.Entry<String, String> entry : this.urlParams.entrySet())
         {
