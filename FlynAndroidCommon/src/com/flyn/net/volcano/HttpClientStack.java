@@ -1,7 +1,6 @@
 package com.flyn.net.volcano;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -12,7 +11,6 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -43,7 +41,6 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -52,6 +49,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
@@ -64,27 +62,11 @@ import com.flyn.net.volcano.Request.Method;
 public class HttpClientStack extends NetStack
 {
 
-    private static final int                        DEFAULT_MAX_CONNETIONS          = 10;
-    private static final int                        DEFAULT_SOCKET_TIMEOUT          = 10 * 1000;
-    private static final int                        DEFAULT_MAX_RETRIES             = 3;
-    private static final int                        DEFAULT_RETRY_SLEEP_TIME_MILLIS = 1500;
-    private static final int                        DEFAULT_SOCKET_BUFFER_SIZE      = 8192;
-    private static final String                     HEADER_ACCEPT_ENCODING          = "Accept-Encoding";
-    private static final String                     ENCODING_GZIP                   = "gzip";
-    private static final String                     TAG                             = HttpClientStack.class.getName();
-    private final boolean                           fixNoHttpResponseException      = false;
-    private static int                              httpPort                        = 80;
-    private static int                              httpsPort                       = 443;
+    private static final String     TAG = HttpClientStack.class.getName();
 
-    private int                                     maxConnections                  = DEFAULT_MAX_CONNETIONS;
-    private int                                     timeout                         = DEFAULT_SOCKET_TIMEOUT;
-
-    private final DefaultHttpClient                 httpClient;
-    private final HttpContext                       httpContext;
-    private ExecutorService                         threadPool;
-    private final Map<Context, List<RequestFuture>> requestMap;
-    private final Map<String, String>               httpHeaderMap;
-    private boolean                                 isURLEncodingEnabled            = true;
+    private final DefaultHttpClient httpClient;
+    private final HttpContext       httpContext;
+    private ExecutorService         threadPool;
 
     public HttpClientStack()
     {
@@ -92,25 +74,25 @@ public class HttpClientStack extends NetStack
         ConnManagerParams.setTimeout(httpParams, this.timeout);
         ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
         ConnManagerParams.setMaxTotalConnections(httpParams, DEFAULT_MAX_CONNETIONS);
-     
+
         HttpConnectionParams.setSoTimeout(httpParams, this.timeout);
         HttpConnectionParams.setConnectionTimeout(httpParams, this.timeout);
         HttpConnectionParams.setTcpNoDelay(httpParams, true);// 禁用nagle算法,排除对小封包的处理(降低延迟)
         HttpConnectionParams.setSocketBufferSize(httpParams, DEFAULT_SOCKET_BUFFER_SIZE);
- 
+
         HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setUserAgent(httpParams, "Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) " + "AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1");
-//        HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
-//        HttpProtocolParams.setHttpElementCharset(httpParams, HTTP.UTF_8);
-   
+        HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
+        HttpProtocolParams.setHttpElementCharset(httpParams, HTTP.UTF_8);
+
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, getDefaultSchemeRegistry());
-       
+
         this.threadPool = Executors.newCachedThreadPool();
         this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
         this.httpHeaderMap = new HashMap<String, String>();
         this.httpContext = new SyncBasicHttpContext(new BasicHttpContext());
         this.httpClient = new DefaultHttpClient(cm, httpParams);
-    
+
         this.httpClient.addRequestInterceptor(new HttpRequestInterceptor()
         {
             @Override
@@ -118,7 +100,7 @@ public class HttpClientStack extends NetStack
             {
                 if (!request.containsHeader(HEADER_ACCEPT_ENCODING))
                 {
-                    request.addHeader(HEADER_ACCEPT_ENCODING,ENCODING_GZIP);
+                    request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
                 }
                 for (String header : HttpClientStack.this.httpHeaderMap.keySet())
                 {
@@ -158,8 +140,7 @@ public class HttpClientStack extends NetStack
 
     private SchemeRegistry getDefaultSchemeRegistry()
     {
-        
-        
+
         if (fixNoHttpResponseException)
         {
             Log.d(TAG, "Using the fix is insecure, as it doesn't verify SSL certificates.");
@@ -192,9 +173,8 @@ public class HttpClientStack extends NetStack
     @Override
     public RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-       
-        RequestFuture requestHandle = null;
 
+        RequestFuture requestHandle = null;
         switch (method)
         {
             case Method.GET:
@@ -362,11 +342,6 @@ public class HttpClientStack extends NetStack
         HttpProtocolParams.setUserAgent(this.httpClient.getParams(), userAgent);
     }
 
-    public int getMaxConnections()
-    {
-        return this.maxConnections;
-    }
-
     public void setMaxConnections(int maxConnections)
     {
         if (maxConnections < 1)
@@ -390,7 +365,6 @@ public class HttpClientStack extends NetStack
         final HttpParams httpParams = this.httpClient.getParams();
         ConnManagerParams.setTimeout(httpParams, this.timeout);
         HttpConnectionParams.setConnectionTimeout(httpParams, this.timeout);
-
     }
 
     public void setProxy(String hostname, int port)
@@ -422,17 +396,6 @@ public class HttpClientStack extends NetStack
         this.httpClient.setHttpRequestRetryHandler(new RetryHandler(retries, timeout));
     }
 
-    public void addHeader(String header, String value)
-    {
-        this.httpHeaderMap.put(header, value);
-    }
-
-    public void removeHeader(String header)
-    {
-        this.httpHeaderMap.remove(header);
-
-    }
-
     public void setBasicAuth(String username, String password, AuthScope authScope)
     {
 
@@ -446,7 +409,6 @@ public class HttpClientStack extends NetStack
         AuthScope scope = AuthScope.ANY;
         setBasicAuth(username, password, scope);
     }
-
 
     private HttpEntity paramsToEntity(RequestParams params, IResponseHandler responseHandler)
     {
@@ -471,47 +433,6 @@ public class HttpClientStack extends NetStack
     public void clearBasicAuth()
     {
         this.httpClient.getCredentialsProvider().clear();
-    }
-
-    public void setURLEncodingEnabled(boolean isURLEncodingEnabled)
-    {
-        this.isURLEncodingEnabled = isURLEncodingEnabled;
-    }
-
-    public void cancelRequests(Context context, boolean mayInterruptIfRunning)
-    {
-
-        List<RequestFuture> requestList = this.requestMap.get(context);
-        if (requestList != null)
-        {
-            for (RequestFuture requestHandle : requestList)
-            {
-                requestHandle.cancel(mayInterruptIfRunning);
-            }
-            this.requestMap.remove(context);
-        }
-    }
-
-    private static class InflatingEntity extends HttpEntityWrapper
-    {
-
-        public InflatingEntity(HttpEntity wrapped)
-        {
-            super(wrapped);
-        }
-
-        @Override
-        public InputStream getContent() throws IOException
-        {
-            return new GZIPInputStream(this.wrappedEntity.getContent());
-        }
-
-        @Override
-        public long getContentLength()
-        {
-            return -1;
-        }
-
     }
 
 }

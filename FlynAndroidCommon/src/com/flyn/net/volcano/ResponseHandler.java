@@ -190,6 +190,7 @@ public abstract class ResponseHandler implements IResponseHandler
             }
         }
     }
+
     protected byte[] entityToBytes(HttpEntity entity) throws IOException
     {
 

@@ -9,7 +9,7 @@ public abstract class StringResponseHandler extends ResponseHandler
     {
         super();
     }
-    
+
     @Override
     protected void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
     {
@@ -22,7 +22,6 @@ public abstract class StringResponseHandler extends ResponseHandler
             onFailure(statusCode, headers, responseBody, e);
         }
     }
-
 
     public abstract void onSuccess(int status, String content);
 

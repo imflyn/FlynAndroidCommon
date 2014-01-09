@@ -1,4 +1,3 @@
-
 package com.flyn.net.volcano;
 
 import java.util.Map;
@@ -12,7 +11,6 @@ import org.apache.http.protocol.HTTP;
  */
 public class HttpHeaderParser
 {
-
 
     /**
      * Parse date in RFC1123 format, and return its value as epoch

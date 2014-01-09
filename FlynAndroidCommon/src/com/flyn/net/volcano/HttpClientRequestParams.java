@@ -1,6 +1,5 @@
 package com.flyn.net.volcano;
 
-
 /**
  * HttpClient方法的请求参数容器
  * 
@@ -9,7 +8,6 @@ package com.flyn.net.volcano;
  */
 public class HttpClientRequestParams extends RequestParams
 {
-
 
     @Override
     protected byte[] createJsonStreamData()
@@ -20,7 +18,7 @@ public class HttpClientRequestParams extends RequestParams
     @Override
     protected byte[] createNormalData()
     {
-            return getParamString().getBytes();
+        return getParamString().getBytes();
     }
 
     @Override
