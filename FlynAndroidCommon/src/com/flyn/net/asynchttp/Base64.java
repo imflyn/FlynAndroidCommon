@@ -249,6 +249,7 @@ public class Base64
          * @return an overestimate for the number of bytes {@code len} bytes
          *         could decode to.
          */
+        @Override
         public int maxOutputSize(int len)
         {
             return len * 3 / 4 + 10;
@@ -260,6 +261,7 @@ public class Base64
          * @return true if the state machine is still healthy. false if bad
          *         base-64 data has been detected in the input stream.
          */
+        @Override
         public boolean process(byte[] input, int offset, int len, boolean finish)
         {
             if (this.state == 6)
@@ -634,11 +636,13 @@ public class Base64
          * @return an overestimate for the number of bytes {@code len} bytes
          *         could encode to.
          */
+        @Override
         public int maxOutputSize(int len)
         {
             return len * 8 / 5 + 10;
         }
 
+        @Override
         public boolean process(byte[] input, int offset, int len, boolean finish)
         {
             // Using local variables makes the encoder about 9% faster.

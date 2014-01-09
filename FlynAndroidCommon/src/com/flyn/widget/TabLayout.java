@@ -109,7 +109,7 @@ public class TabLayout extends ViewGroup
         {
             while (tabSize > contentSize)
             {
-                ((View) this.tabs.remove(tabSize - 1)).setOnClickListener(null);
+                this.tabs.remove(tabSize - 1).setOnClickListener(null);
                 tabSize = this.tabs.size();
             }
             this.items.clear();
@@ -157,6 +157,7 @@ public class TabLayout extends ViewGroup
             final int index = this.tabs.size() - 1;
             view.setOnClickListener(new View.OnClickListener()
             {
+                @Override
                 public void onClick(View v)
                 {
                     TabLayout.this.setSelectedTab(index);
@@ -176,8 +177,8 @@ public class TabLayout extends ViewGroup
     {
         for (int i = 0; i < this.tabs.size(); i++)
         {
-            View tabView = (View) this.tabs.get(i);
-            View contentView = (View) this.items.get(Integer.valueOf(i));
+            View tabView = this.tabs.get(i);
+            View contentView = this.items.get(Integer.valueOf(i));
             if (index == i)
             {
                 if ((tabView instanceof CompoundButton))
@@ -198,9 +199,10 @@ public class TabLayout extends ViewGroup
             {
                 new Handler().post(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
-                        TabLayout.this.mOnTabChangedListener.onTabChanged((View) TabLayout.this.tabs.get(index), (View) TabLayout.this.items.get(Integer.valueOf(index)), index);
+                        TabLayout.this.mOnTabChangedListener.onTabChanged(TabLayout.this.tabs.get(index), TabLayout.this.items.get(Integer.valueOf(index)), index);
                     }
                 });
             }
@@ -237,6 +239,7 @@ public class TabLayout extends ViewGroup
         return this.tabs.size();
     }
 
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         View child1 = getChildAt(0);
@@ -274,6 +277,7 @@ public class TabLayout extends ViewGroup
         }
     }
 
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
@@ -293,7 +297,7 @@ public class TabLayout extends ViewGroup
         {
             if (tabSize > 0)
             {
-                View view = (View) this.items.get(Integer.valueOf(0));
+                View view = this.items.get(Integer.valueOf(0));
                 if (view == null)
                 {
                     if (!this.items.containsKey(Integer.valueOf(0)))
@@ -316,7 +320,7 @@ public class TabLayout extends ViewGroup
                 throw new IllegalStateException("tab index is out of range:" + tempSelectedTabIndexCopy + "!");
             }
 
-            View view = (View) this.items.get(Integer.valueOf(this.tempSelectedTabIndex));
+            View view = this.items.get(Integer.valueOf(this.tempSelectedTabIndex));
             if (view == null)
             {
                 if (!this.items.containsKey(Integer.valueOf(this.tempSelectedTabIndex)))

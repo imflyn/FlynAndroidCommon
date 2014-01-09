@@ -177,6 +177,7 @@ public class User
         final SelectionKey ownerKeyPoint = ownerKey;
         new Thread(new Runnable()
         {
+            @Override
             public void run()
             {
                 while (true)
@@ -246,12 +247,14 @@ public class User
             }
             wifiUtils.setWifiApEnabled(createDirectApConfig(context), true, new WifiCallback(context)
             {
+                @Override
                 public void onWifiApEnabled()
                 {
                     super.onWifiApEnabled();
                     callback.onOpen();
                 }
 
+                @Override
                 public void onTimeout()
                 {
                     super.onTimeout();
@@ -264,6 +267,7 @@ public class User
                     callback.onError(new RuntimeException("open ap failed by 'WifiCallback.onTimeout()'."));
                 }
 
+                @Override
                 public void onWifiApFailed()
                 {
                     super.onWifiApFailed();
@@ -367,6 +371,7 @@ public class User
         {
             wifiUtils.setWifiApEnabled(null, false, new WifiCallback(context)
             {
+                @Override
                 public void onWifiApDisabled()
                 {
                     super.onWifiApDisabled();
@@ -399,12 +404,14 @@ public class User
                     callback.onClosed();
                 }
 
+                @Override
                 public void onTimeout()
                 {
                     super.onTimeout();
                     callback.onError(new RuntimeException("close ap failed by 'WifiCallback.onTimeout()'."));
                 }
 
+                @Override
                 public void onWifiApFailed()
                 {
                     super.onWifiApFailed();
@@ -422,11 +429,13 @@ public class User
         final WifiUtils wifiUtils = new WifiUtils(context);
         wifiUtils.setWifiEnabled(true, new WifiCallback(context)
         {
+            @Override
             public void onWifiEnabled()
             {
                 super.onWifiEnabled();
                 wifiUtils.startScan(new WifiCallback(context)
                 {
+                    @Override
                     public void onScanResults(List<ScanResult> scanResults)
                     {
                         super.onScanResults(scanResults);
@@ -456,12 +465,14 @@ public class User
                         callback.onScanned(callbackVal);
                     }
 
+                    @Override
                     public void onTimeout()
                     {
                         super.onTimeout();
                         callback.onError();
                     }
 
+                    @Override
                     public void onScanFailed()
                     {
                         super.onScanFailed();
@@ -470,12 +481,14 @@ public class User
                 }, 20000);
             }
 
+            @Override
             public void onWifiFailed()
             {
                 super.onWifiFailed();
                 callback.onError();
             }
 
+            @Override
             public void onTimeout()
             {
                 super.onTimeout();
@@ -489,11 +502,13 @@ public class User
         final WifiUtils wifiUtils = new WifiUtils(context);
         wifiUtils.setWifiEnabled(true, new WifiCallback(context)
         {
+            @Override
             public void onWifiEnabled()
             {
                 super.onWifiEnabled();
                 wifiUtils.connect(ap.getScanResult(), null, new WifiCallback(context)
                 {
+                    @Override
                     public void onNetworkConnected(WifiInfo wifiInfo)
                     {
                         super.onNetworkConnected(wifiInfo);
@@ -506,18 +521,21 @@ public class User
                         callback.onConnected(ap, user);
                     }
 
+                    @Override
                     public void onNetworkDisconnected(WifiInfo wifiInfo)
                     {
                         super.onNetworkDisconnected(wifiInfo);
                         callback.onError(ap);
                     }
 
+                    @Override
                     public void onTimeout()
                     {
                         super.onTimeout();
                         callback.onError(ap);
                     }
 
+                    @Override
                     public void onNetworkFailed(WifiInfo wifiInfo)
                     {
                         super.onNetworkFailed(wifiInfo);
@@ -526,12 +544,14 @@ public class User
                 }, 20000);
             }
 
+            @Override
             public void onWifiFailed()
             {
                 super.onWifiFailed();
                 callback.onError(ap);
             }
 
+            @Override
             public void onTimeout()
             {
                 super.onTimeout();
@@ -565,6 +585,7 @@ public class User
     {
         this.handler.postDelayed(new Runnable()
         {
+            @Override
             public void run()
             {
                 LinkedList users = null;
@@ -581,6 +602,7 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 if (user.state != 1)
@@ -598,10 +620,12 @@ public class User
                     final SocketChannel scPoint = sc;
                     User.this.handler.postDelayed(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.post(new Runnable()
                             {
+                                @Override
                                 public void run()
                                 {
                                     if (user.state == 0)
@@ -617,6 +641,7 @@ public class User
                                         user.state = 1;
                                         User.this.handler.post(new Runnable()
                                         {
+                                            @Override
                                             public void run()
                                             {
                                                 User.this.callback.onConnectedFailed(user, new SocketTimeoutException("connect time out."));
@@ -640,6 +665,7 @@ public class User
                     user.state = 1;
                     User.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.onConnectedFailed(user, e);
@@ -654,6 +680,7 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 if (user.state != 2)
@@ -671,6 +698,7 @@ public class User
                         transfer.state = 1;
                         User.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 User.this.callback.onTransferFailed(transfer, new RuntimeException("transfer is cancelled."));
@@ -690,6 +718,7 @@ public class User
                     User.this.connUsers.remove(user);
                     User.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.onDisconnected(user);
@@ -699,6 +728,7 @@ public class User
                 {
                     User.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.onDisconnectedFailed(user, e);
@@ -713,11 +743,13 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 final LinkedList users = (LinkedList) User.this.connUsers.clone();
                 User.this.handler.post(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         callback.onGet(users);
@@ -751,6 +783,7 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 final TransferEntity transfer = new TransferEntity();
@@ -775,6 +808,7 @@ public class User
                     transfer.setSelectionKey(key);
                     User.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.onTransferProgress(transfer, 0);
@@ -785,11 +819,13 @@ public class User
                     final SocketChannel scPoint = sc;
                     User.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             User.this.callback.onTransferProgress(transfer, 0);
                             User.this.callback.post(new Runnable()
                             {
+                                @Override
                                 public void run()
                                 {
                                     try
@@ -804,6 +840,7 @@ public class User
                                     }
                                     User.this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             User.this.callback.onTransferFailed(transfer, e);
@@ -822,6 +859,7 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 SelectionKey key = transfer.getSelectionKey();
@@ -841,6 +879,7 @@ public class User
                 }
                 User.this.handler.post(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         User.this.callback.onTransferFailed(transfer, new RuntimeException("transfer is cancelled."));
@@ -854,6 +893,7 @@ public class User
     {
         this.callback.post(new Runnable()
         {
+            @Override
             public void run()
             {
                 Exception firstExcep = null;
@@ -888,6 +928,7 @@ public class User
                 final Exception firstExcepPoint = firstExcep;
                 User.this.handler.postDelayed(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         if (User.this.wakeLock.isHeld())
@@ -909,6 +950,7 @@ public class User
                         }
                         User.this.closeDirectAp(context, new CloseDirectApCallback()
                         {
+                            @Override
                             public void onClosed()
                             {
                                 if (firstExcepPoint == null)
@@ -917,6 +959,7 @@ public class User
                                     callback.onError(firstExcepPoint);
                             }
 
+                            @Override
                             public void onError(Exception e)
                             {
                                 if (firstExcepPoint == null)

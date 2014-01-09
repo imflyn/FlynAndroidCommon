@@ -47,6 +47,7 @@ public abstract class ToastManager
         toastForEver = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         taskForEver = new TimerTask()
         {
+            @Override
             public void run()
             {
                 ToastManager.toastForEver.show();

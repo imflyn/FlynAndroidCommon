@@ -60,6 +60,7 @@ public class FlipLayout extends ViewGroup
         this.mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         int childLeft = 0;
@@ -68,7 +69,7 @@ public class FlipLayout extends ViewGroup
         int noGoneChildCount = this.mNoGoneChildren.size();
         for (int i = 0; i < noGoneChildCount; i++)
         {
-            View noGonechildView = (View) this.mNoGoneChildren.get(i);
+            View noGonechildView = this.mNoGoneChildren.get(i);
             noGonechildView.layout(childLeft, 0, childLeft + childWidth, childHeight);
             childLeft += childWidth;
         }
@@ -84,9 +85,10 @@ public class FlipLayout extends ViewGroup
             {
                 new Handler().post(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
-                        FlipLayout.this.listener.onFlingChanged((View) FlipLayout.this.mNoGoneChildren.get(FlipLayout.this.mTempCurScreen), FlipLayout.this.mTempCurScreen);
+                        FlipLayout.this.listener.onFlingChanged(FlipLayout.this.mNoGoneChildren.get(FlipLayout.this.mTempCurScreen), FlipLayout.this.mTempCurScreen);
                     }
                 });
             }
@@ -130,9 +132,10 @@ public class FlipLayout extends ViewGroup
                 {
                     new Handler().post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
-                            FlipLayout.this.listener.onFlingChanged((View) FlipLayout.this.mNoGoneChildren.get(FlipLayout.this.mTempCurScreen), FlipLayout.this.mTempCurScreen);
+                            FlipLayout.this.listener.onFlingChanged(FlipLayout.this.mNoGoneChildren.get(FlipLayout.this.mTempCurScreen), FlipLayout.this.mTempCurScreen);
                         }
                     });
                 }
@@ -140,6 +143,7 @@ public class FlipLayout extends ViewGroup
         }
     }
 
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
@@ -168,6 +172,7 @@ public class FlipLayout extends ViewGroup
         {
             Comparator com = new Comparator()
             {
+                @Override
                 public int compare(Object view, Object view2)
                 {
                     if ((!(view instanceof ViewGroup)) || (!(view2 instanceof ViewGroup)))
@@ -247,12 +252,13 @@ public class FlipLayout extends ViewGroup
         {
             this.mCurScreen = (this.mTempCurScreen = destScreen);
             if (this.listener != null)
-                this.listener.onFlingChanged((View) this.mNoGoneChildren.get(destScreen), destScreen);
+                this.listener.onFlingChanged(this.mNoGoneChildren.get(destScreen), destScreen);
             return true;
         }
         return false;
     }
 
+    @Override
     public void computeScroll()
     {
         if (this.mScroller.computeScrollOffset())
@@ -263,6 +269,7 @@ public class FlipLayout extends ViewGroup
         }
     }
 
+    @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         if (!this.mIsIntercepted)
@@ -336,6 +343,7 @@ public class FlipLayout extends ViewGroup
         return true;
     }
 
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev)
     {
         return onInterceptTouchEventImpl(ev);

@@ -72,6 +72,7 @@ public class ToastWindow
         show(mainWindow, distanceToBottom);
         new Handler().postDelayed(new Runnable()
         {
+            @Override
             public void run()
             {
                 ToastWindow.this.dismiss();
@@ -89,6 +90,7 @@ public class ToastWindow
         showCenter(mainWindow);
         new Handler().postDelayed(new Runnable()
         {
+            @Override
             public void run()
             {
                 ToastWindow.this.dismiss();

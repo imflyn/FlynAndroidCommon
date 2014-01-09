@@ -50,17 +50,20 @@ public abstract class BaseLoadAdapter extends GenericAdapter
         this.mIsLoading = true;
         new WeakAsyncTask(new Object[] { this })
         {
+            @Override
             protected void onPreExecute(Object[] objs)
             {
                 BaseLoadAdapter adapter = (BaseLoadAdapter) objs[0];
                 adapter.onBeginLoad(adapter.mContext, BaseLoadAdapter.this.mParam);
             }
 
+            @Override
             protected Object doInBackgroundImpl(Object[] params) throws Exception
             {
                 return BaseLoadAdapter.this.mCallback.onLoad(BaseLoadAdapter.this.mParam);
             }
 
+            @Override
             protected void onPostExecute(Object[] objs, Object result)
             {
                 BaseLoadAdapter adapter = (BaseLoadAdapter) objs[0];
@@ -73,6 +76,7 @@ public abstract class BaseLoadAdapter extends GenericAdapter
                 adapter.onAfterLoad(adapter.mContext, BaseLoadAdapter.this.mParam, null);
             }
 
+            @Override
             protected void onException(Object[] objs, Exception e)
             {
                 Log.i(BaseLoadAdapter.class.getName(), "Execute loading failed.", e);

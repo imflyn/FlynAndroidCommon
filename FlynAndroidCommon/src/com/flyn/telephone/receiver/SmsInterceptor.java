@@ -33,6 +33,7 @@ public abstract class SmsInterceptor
         if (interceptFilter == null)
             interceptFilter = new SmsFilter()
             {
+                @Override
                 public boolean accept(SmsMessage msg)
                 {
                     return true;
@@ -41,6 +42,7 @@ public abstract class SmsInterceptor
         final SmsFilter interceptFilterPoint = interceptFilter;
         this.receiver = new BroadcastReceiver()
         {
+            @Override
             public void onReceive(Context context, final Intent intent)
             {
                 if (SmsInterceptor.this.isUnregistered)
@@ -62,6 +64,7 @@ public abstract class SmsInterceptor
                 {
                     SmsInterceptor.this.handler.post(new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             SmsInterceptor.this.dealInterceptDelay(intent, smsMessages);
@@ -128,6 +131,7 @@ public abstract class SmsInterceptor
             {
                 protected long timeCount = 0L;
 
+                @Override
                 public void run()
                 {
                     this.timeCount += 100L;
@@ -136,6 +140,7 @@ public abstract class SmsInterceptor
                         cancel();
                         SmsInterceptor.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 SmsInterceptor.this.isUnregisteredCompletely = true;
@@ -146,6 +151,7 @@ public abstract class SmsInterceptor
                         cancel();
                         SmsInterceptor.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 if (SmsInterceptor.this.unregisterMe())

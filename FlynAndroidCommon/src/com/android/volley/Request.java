@@ -127,6 +127,7 @@ public abstract class Request<T> implements Comparable<Request<T>>
      *             {@link #Request(int, String, com.android.volley.Response.ErrorListener)}
      *             .
      */
+    @Deprecated
     public Request(String url, Response.ErrorListener listener)
     {
         this(Method.DEPRECATED_GET_OR_POST, url, listener);
@@ -359,6 +360,7 @@ public abstract class Request<T> implements Comparable<Request<T>>
      * 
      * @deprecated Use {@link #getParams()} instead.
      */
+    @Deprecated
     protected Map<String, String> getPostParams() throws AuthFailureError
     {
         return getParams();
@@ -379,6 +381,7 @@ public abstract class Request<T> implements Comparable<Request<T>>
      * 
      * @deprecated Use {@link #getParamsEncoding()} instead.
      */
+    @Deprecated
     protected String getPostParamsEncoding()
     {
         return getParamsEncoding();
@@ -387,6 +390,7 @@ public abstract class Request<T> implements Comparable<Request<T>>
     /**
      * @deprecated Use {@link #getBodyContentType()} instead.
      */
+    @Deprecated
     public String getPostBodyContentType()
     {
         return getBodyContentType();
@@ -400,6 +404,7 @@ public abstract class Request<T> implements Comparable<Request<T>>
      * 
      * @deprecated Use {@link #getBody()} instead.
      */
+    @Deprecated
     public byte[] getPostBody() throws AuthFailureError
     {
         // Note: For compatibility with legacy clients of volley, this

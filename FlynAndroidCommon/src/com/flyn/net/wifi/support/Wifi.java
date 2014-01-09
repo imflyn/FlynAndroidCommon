@@ -70,7 +70,7 @@ public class Wifi
         {
             return false;
         }
-        config = (WifiConfiguration) configList.get(0);
+        config = configList.get(0);
 
         return connectToConfiguredNetwork(ctx, wifiMgr, config, true);
     }
@@ -97,7 +97,7 @@ public class Wifi
             {
                 return false;
             }
-            config = (WifiConfiguration) configList.get(0);
+            config = configList.get(0);
         }
 
         config.priority = newPri;
@@ -124,7 +124,7 @@ public class Wifi
         {
             return false;
         }
-        config = (WifiConfiguration) configList.get(0);
+        config = configList.get(0);
 
         ReenableAllApsWhenNetworkStateChanged.schedule(ctx);
 
@@ -142,6 +142,7 @@ public class Wifi
     {
         Collections.sort(configurations, new Comparator<WifiConfiguration>()
         {
+            @Override
             public int compare(WifiConfiguration object1, WifiConfiguration object2)
             {
                 return object1.priority - object2.priority;
@@ -160,7 +161,7 @@ public class Wifi
         int tempCount = 0;
         for (int i = configurations.size() - 1; i >= 0; i--)
         {
-            WifiConfiguration config = (WifiConfiguration) configurations.get(i);
+            WifiConfiguration config = configurations.get(i);
             if (!getWifiConfigurationSecurity(config).equals("Open"))
                 continue;
             tempCount++;
@@ -187,7 +188,7 @@ public class Wifi
         int size = configurations.size();
         for (int i = 0; i < size; i++)
         {
-            WifiConfiguration config = (WifiConfiguration) configurations.get(i);
+            WifiConfiguration config = configurations.get(i);
             config.priority = i;
             wifiMgr.updateNetwork(config);
         }

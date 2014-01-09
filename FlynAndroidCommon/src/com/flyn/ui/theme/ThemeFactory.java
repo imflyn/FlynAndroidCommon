@@ -113,11 +113,12 @@ public class ThemeFactory implements LayoutInflater.Factory
             }
             if (this.generalThemeName != null)
             {
-                this.generalThemeMap = ((HashMap) this.stylesMap.get(this.generalThemeName));
+                this.generalThemeMap = (this.stylesMap.get(this.generalThemeName));
             }
         }
     }
 
+    @Override
     public View onCreateView(String name, Context context, AttributeSet attrs)
     {
         if (this.shouldApplyTheme)
@@ -186,7 +187,7 @@ public class ThemeFactory implements LayoutInflater.Factory
             char firstChar = className.charAt(0);
             className = className.replace(firstChar, Character.toLowerCase(firstChar));
             String itemName = "android:".concat(className).concat("Style");
-            String itemValue = (String) this.generalThemeMap.get(itemName);
+            String itemValue = this.generalThemeMap.get(itemName);
             if (itemValue != null)
             {
                 if (itemValue.startsWith("@style/"))
@@ -214,7 +215,7 @@ public class ThemeFactory implements LayoutInflater.Factory
                     key = value.substring("?attr/".length());
                 else
                     key = value.substring(1);
-                value = (String) this.generalThemeMap.get(key);
+                value = this.generalThemeMap.get(key);
                 if (value == null)
                     continue;
             }
@@ -357,7 +358,7 @@ public class ThemeFactory implements LayoutInflater.Factory
 
     private void applyStyle(Context context, View view, String styleName)
     {
-        HashMap style = (HashMap) this.stylesMap.get(styleName);
+        HashMap style = this.stylesMap.get(styleName);
         if (style != null)
         {
             String value = (String) style.get("android:background");

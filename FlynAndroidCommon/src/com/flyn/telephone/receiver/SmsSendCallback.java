@@ -34,6 +34,7 @@ public abstract class SmsSendCallback
         this.context = ctx;
         this.receiver = new BroadcastReceiver()
         {
+            @Override
             public void onReceive(Context context, Intent intent)
             {
                 if (SmsSendCallback.this.isUnregistered)
@@ -111,7 +112,7 @@ public abstract class SmsSendCallback
             throw new NullPointerException();
         if (!this.isUnregisteredCompletely)
             throw new IllegalStateException("please call this method after it has been unregistered completely.");
-        this.autoUnregisterActions = ((int[]) actions.clone());
+        this.autoUnregisterActions = (actions.clone());
         Arrays.sort(this.autoUnregisterActions);
     }
 
@@ -135,6 +136,7 @@ public abstract class SmsSendCallback
             {
                 protected long timeCount = 0L;
 
+                @Override
                 public void run()
                 {
                     this.timeCount += 100L;
@@ -143,6 +145,7 @@ public abstract class SmsSendCallback
                         cancel();
                         SmsSendCallback.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 SmsSendCallback.this.isUnregisteredCompletely = true;
@@ -153,6 +156,7 @@ public abstract class SmsSendCallback
                         cancel();
                         SmsSendCallback.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 if (SmsSendCallback.this.unregisterMe())

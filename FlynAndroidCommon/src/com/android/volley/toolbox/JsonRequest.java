@@ -52,6 +52,7 @@ public abstract class JsonRequest<T> extends Request<T>
      *             {@link #JsonRequest(int, String, String, Listener, ErrorListener)}
      *             .
      */
+    @Deprecated
     public JsonRequest(String url, String requestBody, Listener<T> listener, ErrorListener errorListener)
     {
         this(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);
@@ -76,6 +77,7 @@ public abstract class JsonRequest<T> extends Request<T>
     /**
      * @deprecated Use {@link #getBodyContentType()}.
      */
+    @Deprecated
     @Override
     public String getPostBodyContentType()
     {
@@ -85,6 +87,7 @@ public abstract class JsonRequest<T> extends Request<T>
     /**
      * @deprecated Use {@link #getBody()}.
      */
+    @Deprecated
     @Override
     public byte[] getPostBody()
     {

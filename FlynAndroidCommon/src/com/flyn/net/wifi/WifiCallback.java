@@ -64,6 +64,7 @@ public abstract class WifiCallback
         this.context = ctx;
         this.receiver = new BroadcastReceiver()
         {
+            @Override
             public void onReceive(Context context, Intent intent)
             {
                 if (WifiCallback.this.isUnregistered)
@@ -151,10 +152,10 @@ public abstract class WifiCallback
                     {
                         for (int i = 0; i < results.size(); i++)
                         {
-                            ScanResult curr = (ScanResult) results.get(i);
+                            ScanResult curr = results.get(i);
                             for (int j = i - 1; j >= 0; j--)
                             {
-                                ScanResult pre = (ScanResult) results.get(j);
+                                ScanResult pre = results.get(j);
                                 if (curr.level <= pre.level)
                                 {
                                     if (i == j + 1)
@@ -176,10 +177,10 @@ public abstract class WifiCallback
 
                         for (int i = 0; i < results.size(); i++)
                         {
-                            ScanResult curr = (ScanResult) results.get(i);
+                            ScanResult curr = results.get(i);
                             for (int j = 0; j < i; j++)
                             {
-                                ScanResult pre = (ScanResult) results.get(j);
+                                ScanResult pre = results.get(j);
                                 if ((!curr.SSID.equals(pre.SSID)) || (!wifiUtils.getScanResultSecurity(curr).equals(wifiUtils.getScanResultSecurity(pre))))
                                     continue;
                                 results.remove(i);
@@ -486,7 +487,7 @@ public abstract class WifiCallback
             throw new NullPointerException();
         if (!this.isUnregisteredCompletely)
             throw new IllegalStateException("please call this method after it has been unregistered completely.");
-        this.autoUnregisterActions = ((int[]) actions.clone());
+        this.autoUnregisterActions = (actions.clone());
         Arrays.sort(this.autoUnregisterActions);
     }
 
@@ -520,6 +521,7 @@ public abstract class WifiCallback
             {
                 protected long timeCount = 0L;
 
+                @Override
                 public void run()
                 {
                     this.timeCount += 100L;
@@ -528,6 +530,7 @@ public abstract class WifiCallback
                         cancel();
                         WifiCallback.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 WifiCallback.this.isUnregisteredCompletely = true;
@@ -538,6 +541,7 @@ public abstract class WifiCallback
                         cancel();
                         WifiCallback.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 if (WifiCallback.this.unregisterMe())

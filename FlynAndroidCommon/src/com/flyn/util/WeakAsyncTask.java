@@ -54,6 +54,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     {
     }
 
+    @Override
     protected final void onPreExecute()
     {
         Object[] objs = getObjects();
@@ -63,6 +64,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
             onPreExecute(objs);
     }
 
+    @Override
     protected final Result doInBackground(Params[] params)
     {
         try
@@ -72,6 +74,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
         {
             this.mHandler.post(new Runnable()
             {
+                @Override
                 public void run()
                 {
                     if (WeakAsyncTask.this.isCancelled())
@@ -86,6 +89,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
         return null;
     }
 
+    @Override
     protected final void onProgressUpdate(Progress[] values)
     {
         Object[] objs = getObjects();
@@ -95,6 +99,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
             onProgressUpdate(objs, values);
     }
 
+    @Override
     protected final void onCancelled()
     {
         Object[] objs = getObjects();
@@ -102,6 +107,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
             onCancelled(objs);
     }
 
+    @Override
     protected final void onPostExecute(Result result)
     {
         if (this.mIsWithoutOnPostExecute)

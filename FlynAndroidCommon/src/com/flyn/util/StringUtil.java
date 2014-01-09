@@ -209,7 +209,7 @@ public abstract class StringUtil
     public static String concatByCSV(List<String> strList)
     {
         String[] strArr = new String[strList.size()];
-        return concatByCSV((String[]) strList.toArray(strArr));
+        return concatByCSV(strList.toArray(strArr));
     }
 
     public static String[] parseFromCSV(String str)

@@ -37,6 +37,7 @@ public class ReenableAllApsWhenNetworkStateChanged
         private boolean           mReenabled;
         private BroadcastReceiver mReceiver = new BroadcastReceiver()
                                             {
+                                                @Override
                                                 public void onReceive(Context context, Intent intent)
                                                 {
                                                     String action = intent.getAction();
@@ -65,11 +66,13 @@ public class ReenableAllApsWhenNetworkStateChanged
                                             };
         private IntentFilter      mIntentFilter;
 
+        @Override
         public IBinder onBind(Intent intent)
         {
             return null;
         }
 
+        @Override
         public void onCreate()
         {
             super.onCreate();
@@ -78,6 +81,7 @@ public class ReenableAllApsWhenNetworkStateChanged
             registerReceiver(this.mReceiver, this.mIntentFilter);
         }
 
+        @Override
         public void onDestroy()
         {
             super.onDestroy();

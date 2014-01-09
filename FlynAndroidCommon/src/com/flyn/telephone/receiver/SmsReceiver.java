@@ -33,6 +33,7 @@ public abstract class SmsReceiver
         if (receiveFilter == null)
             receiveFilter = new SmsFilter()
             {
+                @Override
                 public boolean accept(SmsMessage msg)
                 {
                     return true;
@@ -41,6 +42,7 @@ public abstract class SmsReceiver
         final SmsFilter receiveFilterPoint = receiveFilter;
         this.receiver = new BroadcastReceiver()
         {
+            @Override
             public void onReceive(Context context, Intent intent)
             {
                 if (SmsReceiver.this.isUnregistered)
@@ -114,6 +116,7 @@ public abstract class SmsReceiver
             {
                 protected long timeCount = 0L;
 
+                @Override
                 public void run()
                 {
                     this.timeCount += 100L;
@@ -122,6 +125,7 @@ public abstract class SmsReceiver
                         cancel();
                         SmsReceiver.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 SmsReceiver.this.isUnregisteredCompletely = true;
@@ -132,6 +136,7 @@ public abstract class SmsReceiver
                         cancel();
                         SmsReceiver.this.handler.post(new Runnable()
                         {
+                            @Override
                             public void run()
                             {
                                 if (SmsReceiver.this.unregisterMe())

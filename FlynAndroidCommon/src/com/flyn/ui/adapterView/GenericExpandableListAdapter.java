@@ -80,7 +80,7 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
 
     public GroupDataHolder queryDataHolder(int location)
     {
-        return (GroupDataHolder) this.mHolders.get(location);
+        return this.mHolders.get(location);
     }
 
     public int queryDataHolder(GroupDataHolder holder)
@@ -94,41 +94,49 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
         notifyDataSetChanged();
     }
 
+    @Override
     public final int getGroupCount()
     {
         return this.mHolders.size();
     }
 
+    @Override
     public final int getChildrenCount(int i)
     {
         return queryDataHolder(i).getChildrenCount();
     }
 
+    @Override
     public final Object getGroup(int i)
     {
         return queryDataHolder(i);
     }
 
+    @Override
     public final Object getChild(int i, int i2)
     {
         return queryDataHolder(i).queryChild(i2);
     }
 
+    @Override
     public final long getGroupId(int i)
     {
         return i;
     }
 
+    @Override
     public final long getChildId(int i, int i2)
     {
         return i2;
     }
 
+    @Override
     public final boolean hasStableIds()
     {
         return true;
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public final View getGroupView(int i, boolean b, View view, final ViewGroup viewGroup)
     {
@@ -155,6 +163,7 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
                 final AsyncDataExecutor curExecutor = this.mExecutor;
                 this.mHandler.postDelayed(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         AsyncDataManager.computeAsyncData((AdapterView) viewGroup, curExecutor);
@@ -167,6 +176,7 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
         return returnVal;
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public final View getChildView(int i, int i2, boolean b, View view, final ViewGroup viewGroup)
     {
@@ -192,6 +202,7 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
                 final AsyncDataExecutor curExecutor = this.mExecutor;
                 this.mHandler.postDelayed(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         AsyncDataManager.computeAsyncData((AdapterView) viewGroup, curExecutor);
@@ -204,6 +215,7 @@ public class GenericExpandableListAdapter extends BaseExpandableListAdapter
         return returnVal;
     }
 
+    @Override
     public final boolean isChildSelectable(int i, int i2)
     {
         return true;

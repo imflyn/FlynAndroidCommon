@@ -113,7 +113,7 @@ public final class AsyncDataManager
 
         public AdapterView<? extends Adapter> getAdapterView()
         {
-            return (AdapterView) this.viewRef.get();
+            return this.viewRef.get();
         }
 
         public void setExecuteRunnable(AsyncDataManager.ExecuteRunnable runnable)
@@ -145,13 +145,14 @@ public final class AsyncDataManager
             this.executor = executor;
         }
 
+        @Override
         public void run()
         {
             for (DataHolder holder : this.holders)
             {
                 if (this.isCancelled)
                     return;
-                AdapterView view = (AdapterView) this.viewRef.get();
+                AdapterView view = this.viewRef.get();
                 Object adapter = this.adapterRef.get();
                 if ((view == null) || (adapter == null))
                     return;
@@ -191,6 +192,7 @@ public final class AsyncDataManager
             this.executor = executor;
         }
 
+        @Override
         protected Object doInBackground(Object[] params)
         {
             for (int i = 0; i < this.holder.getAsyncDataCount(); i++)
@@ -216,6 +218,7 @@ public final class AsyncDataManager
             return null;
         }
 
+        @Override
         protected void onProgressUpdate(Object[] values)
         {
             super.onProgressUpdate(values);
@@ -230,7 +233,7 @@ public final class AsyncDataManager
                     ((GenericExpandableListAdapter) adapterObj).notifyDataSetChanged();
             } else
             {
-                AdapterView adapterView = (AdapterView) this.viewRef.get();
+                AdapterView adapterView = this.viewRef.get();
                 if (adapterView == null)
                     return;
                 int position = this.holder.mExecuteConfig.mPosition;
@@ -282,6 +285,7 @@ public final class AsyncDataManager
     {
         private LinkedList<AsyncDataManager.ExecuteRunnable> runnables = new LinkedList();
 
+        @Override
         protected Object doInBackground(Object[] params)
         {
             while (true)
@@ -290,7 +294,7 @@ public final class AsyncDataManager
                 synchronized (this.runnables)
                 {
                     if (this.runnables.size() > 0)
-                        curRunnable = (AsyncDataManager.ExecuteRunnable) this.runnables.removeFirst();
+                        curRunnable = this.runnables.removeFirst();
                 }
                 if (curRunnable == null)
                 {

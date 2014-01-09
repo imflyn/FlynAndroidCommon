@@ -34,6 +34,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
         this.mCallback = callback;
     }
 
+    @Override
     public LazyLoadCallback getLoadCallback()
     {
         return this.mCallback;
@@ -66,6 +67,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
             throw new UnsupportedOperationException("Only supports lazy loading for the AdapterView which is AbsListView.");
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public boolean load()
     {
@@ -76,17 +78,20 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
         final int page = this.mPage;
         new WeakAsyncTask(new Object[] { this })
         {
+            @Override
             protected void onPreExecute(Object[] objs)
             {
                 BaseLazyLoadAdapter adapter = (BaseLazyLoadAdapter) objs[0];
                 adapter.onBeginLoad(adapter.mContext, BaseLazyLoadAdapter.this.mParam);
             }
 
+            @Override
             protected Object doInBackgroundImpl(Object[] params) throws Exception
             {
                 return BaseLazyLoadAdapter.this.mCallback.onLoad(BaseLazyLoadAdapter.this.mParam, start, page + 1);
             }
 
+            @Override
             protected void onPostExecute(Object[] objs, Object result)
             {
                 BaseLazyLoadAdapter adapter = (BaseLazyLoadAdapter) objs[0];
@@ -107,6 +112,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
                 adapter.onAfterLoad(adapter.mContext, BaseLazyLoadAdapter.this.mParam, null);
             }
 
+            @Override
             protected void onException(Object[] objs, Exception e)
             {
                 Log.i(BaseLazyLoadAdapter.class.getName(), "Execute lazy loading failed.", e);
@@ -146,6 +152,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
         return this.mPage >= this.mPages;
     }
 
+    @Override
     public void clearDataHolders()
     {
         super.clearDataHolders();
@@ -155,6 +162,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
 
     public static abstract class LazyLoadCallback extends BaseLoadAdapter.LoadCallback
     {
+        @Override
         protected final List<DataHolder> onLoad(Object param) throws Exception
         {
             throw new UnsupportedOperationException("Unsupported,use onLoad(param,start,page) instead");
@@ -176,6 +184,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
             this.mRemainingCount = remainingCount;
         }
 
+        @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
         {
             if (this.mOriginalListener != null)
@@ -192,6 +201,7 @@ public abstract class BaseLazyLoadAdapter extends BaseLoadAdapter
             }
         }
 
+        @Override
         public void onScrollStateChanged(AbsListView view, int scrollState)
         {
             if (this.mOriginalListener != null)

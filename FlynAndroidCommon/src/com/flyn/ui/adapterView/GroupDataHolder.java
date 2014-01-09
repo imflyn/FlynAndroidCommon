@@ -66,7 +66,7 @@ public abstract class GroupDataHolder extends DataHolder
 
     public DataHolder queryChild(int location)
     {
-        return (DataHolder) this.mChildren.get(location);
+        return this.mChildren.get(location);
     }
 
     public int queryChild(DataHolder holder)

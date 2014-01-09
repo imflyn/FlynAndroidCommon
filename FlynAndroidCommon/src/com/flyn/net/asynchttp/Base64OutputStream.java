@@ -54,6 +54,7 @@ public class Base64OutputStream extends FilterOutputStream
         }
     }
 
+    @Override
     public void write(int b) throws IOException
     {
         // To avoid invoking the encoder/decoder routines for single
@@ -87,6 +88,7 @@ public class Base64OutputStream extends FilterOutputStream
         }
     }
 
+    @Override
     public void write(byte[] b, int off, int len) throws IOException
     {
         if (len <= 0)
@@ -95,6 +97,7 @@ public class Base64OutputStream extends FilterOutputStream
         internalWrite(b, off, len, false);
     }
 
+    @Override
     public void close() throws IOException
     {
         IOException thrown = null;

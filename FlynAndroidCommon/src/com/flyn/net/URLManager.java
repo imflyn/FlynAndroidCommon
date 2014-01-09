@@ -14,8 +14,8 @@ public final class URLManager
         StringBuffer paramsBuff = new StringBuffer();
         for (Map.Entry<String, String> entry : entrySet)
         {
-            String key = (String) entry.getKey();
-            String value = (String) entry.getValue();
+            String key = entry.getKey();
+            String value = entry.getValue();
             if (enc != null)
             {
                 try

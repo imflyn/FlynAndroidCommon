@@ -53,6 +53,7 @@ public abstract class OptionalExecutorTask<Params, Progress, Result>
     {
         this.mWorker = new WorkerRunnable()
         {
+            @Override
             public Result call() throws Exception
             {
                 OptionalExecutorTask.this.mTaskInvoked.set(true);
@@ -63,6 +64,7 @@ public abstract class OptionalExecutorTask<Params, Progress, Result>
         };
         this.mFuture = new FutureTask(this.mWorker)
         {
+            @Override
             protected void done()
             {
                 try
@@ -220,6 +222,7 @@ public abstract class OptionalExecutorTask<Params, Progress, Result>
     private static class InternalHandler extends Handler
     {
 
+        @Override
         public void handleMessage(Message msg)
         {
 

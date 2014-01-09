@@ -126,23 +126,27 @@ public final class WifiUtils
         }
         setWifiEnabled(true, new WifiCallback(context)
         {
+            @Override
             public void onWifiEnabled()
             {
                 Logger.logD(WifiUtils.class, "revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
+                    @Override
                     public void onWifiDisabled()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state successfully.");
                         callback.onCheckWifiExist();
                     }
 
+                    @Override
                     public void onWifiFailed()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
                         callback.onCheckWifiExist();
                     }
 
+                    @Override
                     public void onTimeout()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state time out.");
@@ -151,28 +155,33 @@ public final class WifiUtils
                 }, timeout);
             }
 
+            @Override
             public void onWifiFailed()
             {
                 callback.onCheckWifiNotExist();
             }
 
+            @Override
             public void onTimeout()
             {
                 Logger.logD(WifiUtils.class, "revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
+                    @Override
                     public void onWifiDisabled()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state successfully.");
                         callback.onTimeout();
                     }
 
+                    @Override
                     public void onWifiFailed()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
                         callback.onTimeout();
                     }
 
+                    @Override
                     public void onTimeout()
                     {
                         Logger.logD(WifiUtils.class, "revert to previous wifi state time out.");
@@ -205,18 +214,21 @@ public final class WifiUtils
                     thisTimeout = 20000;
                 setWifiApEnabled(null, false, new WifiCallback(this.context)
                 {
+                    @Override
                     public void onWifiApDisabled()
                     {
                         super.onWifiApDisabled();
                         WifiUtils.this.setWifiEnabledImpl(enabled, callback, timeout);
                     }
 
+                    @Override
                     public void onWifiApFailed()
                     {
                         super.onWifiApFailed();
                         WifiUtils.this.setWifiEnabledImpl(enabled, callback, timeout);
                     }
 
+                    @Override
                     public void onTimeout()
                     {
                         super.onTimeout();
@@ -455,6 +467,7 @@ public final class WifiUtils
                 thisTimeout = 20000;
             setWifiEnabled(false, new WifiCallback(this.context)
             {
+                @Override
                 public void onWifiDisabled()
                 {
                     super.onWifiDisabled();
@@ -469,6 +482,7 @@ public final class WifiUtils
                     }
                 }
 
+                @Override
                 public void onWifiFailed()
                 {
                     super.onWifiFailed();
@@ -476,6 +490,7 @@ public final class WifiUtils
                         callback.onWifiApFailed();
                 }
 
+                @Override
                 public void onTimeout()
                 {
                     super.onTimeout();
@@ -498,6 +513,7 @@ public final class WifiUtils
                 thisTimeout = 20000;
             setWifiApEnabledImpl(null, false, new WifiCallback(this.context)
             {
+                @Override
                 public void onWifiApDisabled()
                 {
                     super.onWifiApDisabled();
@@ -512,6 +528,7 @@ public final class WifiUtils
                     }
                 }
 
+                @Override
                 public void onWifiApFailed()
                 {
                     super.onWifiApFailed();
@@ -519,6 +536,7 @@ public final class WifiUtils
                         callback.onWifiApFailed();
                 }
 
+                @Override
                 public void onTimeout()
                 {
                     super.onTimeout();

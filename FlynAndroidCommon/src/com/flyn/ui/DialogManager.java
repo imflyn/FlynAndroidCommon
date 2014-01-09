@@ -26,6 +26,7 @@ public abstract class DialogManager
 
             field.set(obj, new Handler()
             {
+                @Override
                 public void handleMessage(Message msg)
                 {
                     switch (msg.what)

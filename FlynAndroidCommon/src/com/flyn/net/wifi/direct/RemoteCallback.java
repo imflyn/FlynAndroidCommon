@@ -64,6 +64,7 @@ public abstract class RemoteCallback implements Runnable
         }
     }
 
+    @Override
     public final void run()
     {
         while (true)
@@ -81,7 +82,7 @@ public abstract class RemoteCallback implements Runnable
                     iterator = this.runnables.iterator();
                     while (iterator.hasNext())
                     {
-                        curRunnables.add((Runnable) iterator.next());
+                        curRunnables.add(iterator.next());
                         iterator.remove();
                     }
                 }
@@ -168,6 +169,7 @@ public abstract class RemoteCallback implements Runnable
                                 user.state = 1;
                                 this.handler.post(new Runnable()
                                 {
+                                    @Override
                                     public void run()
                                     {
                                         RemoteCallback.this.onConnectedFailed(user, e);
@@ -204,6 +206,7 @@ public abstract class RemoteCallback implements Runnable
                                 transfer.state = 1;
                                 this.handler.post(new Runnable()
                                 {
+                                    @Override
                                     public void run()
                                     {
                                         RemoteCallback.this.onTransferFailed(transfer, e);
@@ -291,6 +294,7 @@ public abstract class RemoteCallback implements Runnable
                                 user.connUsers.remove(remoteUser);
                                 this.handler.post(new Runnable()
                                 {
+                                    @Override
                                     public void run()
                                     {
                                         RemoteCallback.this.onDisconnected(remoteUser);
@@ -328,12 +332,13 @@ public abstract class RemoteCallback implements Runnable
                                         int index = user.connUsers.indexOf(remote);
                                         if (index != -1)
                                         {
-                                            RemoteUser old = (RemoteUser) user.connUsers.get(index);
+                                            RemoteUser old = user.connUsers.get(index);
                                             user.disconnectUser(old);
                                         }
                                         user.connUsers.add(remote);
                                         this.handler.post(new Runnable()
                                         {
+                                            @Override
                                             public void run()
                                             {
                                                 RemoteCallback.this.onConnected(remote);
@@ -347,6 +352,7 @@ public abstract class RemoteCallback implements Runnable
                                             final String description = contentArr[1];
                                             this.handler.post(new Runnable()
                                             {
+                                                @Override
                                                 public void run()
                                                 {
                                                     RemoteCallback.this.onTransferRequest(remoteUser, description);
@@ -362,6 +368,7 @@ public abstract class RemoteCallback implements Runnable
                                             final String description = contentArr[2];
                                             this.handler.post(new Runnable()
                                             {
+                                                @Override
                                                 public void run()
                                                 {
                                                     RemoteCallback.this.onTransferReply(remoteUser, allow, description);
@@ -390,7 +397,7 @@ public abstract class RemoteCallback implements Runnable
                                             }
                                         } else
                                         {
-                                            queryUser = (RemoteUser) user.connUsers.get(index);
+                                            queryUser = user.connUsers.get(index);
                                             final TransferEntity transfer = new TransferEntity();
                                             transfer.setRemoteUser(queryUser);
                                             transfer.setSendPath(contentArr[1]);
@@ -406,6 +413,7 @@ public abstract class RemoteCallback implements Runnable
                                             queryUser.getTransfers().add(transfer);
                                             this.handler.post(new Runnable()
                                             {
+                                                @Override
                                                 public void run()
                                                 {
                                                     RemoteCallback.this.onTransferProgress(transfer, 0);
@@ -438,6 +446,7 @@ public abstract class RemoteCallback implements Runnable
                                                 transfer.state = 1;
                                                 this.handler.post(new Runnable()
                                                 {
+                                                    @Override
                                                     public void run()
                                                     {
                                                         RemoteCallback.this.onTransferFailed(transfer, e);
@@ -485,6 +494,7 @@ public abstract class RemoteCallback implements Runnable
                                     transfer.state = 1;
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onTransferProgress(transfer, 100);
@@ -513,6 +523,7 @@ public abstract class RemoteCallback implements Runnable
                                     transfer.state = 1;
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onTransferFailed(transfer, new RuntimeException("remote is closed."));
@@ -533,6 +544,7 @@ public abstract class RemoteCallback implements Runnable
                                         lastPublishProgress = curProgress;
                                         this.handler.post(new Runnable()
                                         {
+                                            @Override
                                             public void run()
                                             {
                                                 RemoteCallback.this.onTransferProgress(transfer, curProgress);
@@ -562,6 +574,7 @@ public abstract class RemoteCallback implements Runnable
                                 transfer.state = 1;
                                 this.handler.post(new Runnable()
                                 {
+                                    @Override
                                     public void run()
                                     {
                                         RemoteCallback.this.onTransferFailed(transfer, e);
@@ -630,6 +643,7 @@ public abstract class RemoteCallback implements Runnable
                                     user.connUsers.add(remoteUser);
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onConnected(remoteUser);
@@ -648,6 +662,7 @@ public abstract class RemoteCallback implements Runnable
                                     remoteUser.state = 1;
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onConnectedFailed(remoteUser, e);
@@ -764,6 +779,7 @@ public abstract class RemoteCallback implements Runnable
                                     transferPoint.state = 1;
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onTransferFailed(transferPoint, e);
@@ -818,6 +834,7 @@ public abstract class RemoteCallback implements Runnable
                                             transferPoint.state = 1;
                                             this.handler.post(new Runnable()
                                             {
+                                                @Override
                                                 public void run()
                                                 {
                                                     RemoteCallback.this.onTransferProgress(transferPoint, 100);
@@ -843,6 +860,7 @@ public abstract class RemoteCallback implements Runnable
                                                 final TransferEntity transferPoint = transfer;
                                                 this.handler.post(new Runnable()
                                                 {
+                                                    @Override
                                                     public void run()
                                                     {
                                                         RemoteCallback.this.onTransferProgress(transferPoint, curProgress);
@@ -874,6 +892,7 @@ public abstract class RemoteCallback implements Runnable
                                     transferPoint.state = 1;
                                     this.handler.post(new Runnable()
                                     {
+                                        @Override
                                         public void run()
                                         {
                                             RemoteCallback.this.onTransferFailed(transferPoint, e);
@@ -898,10 +917,10 @@ public abstract class RemoteCallback implements Runnable
         {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();)
             {
-                NetworkInterface intf = (NetworkInterface) en.nextElement();
+                NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
                 {
-                    InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
+                    InetAddress inetAddress = enumIpAddr.nextElement();
                     if (inetAddress.isSiteLocalAddress())
                         returnVal.add(inetAddress.getHostAddress());
                 }

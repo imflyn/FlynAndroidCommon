@@ -327,7 +327,7 @@ public final class HttpConnectionManager
                 while (keys.hasNext())
                 {
                     String key = (String) keys.next();
-                    List<String> values = (List<String>) requestHeaders.get(key);
+                    List<String> values = requestHeaders.get(key);
                     for (String value : values)
                     {
                         httpConn.addRequestProperty(key, value);
@@ -548,7 +548,7 @@ public final class HttpConnectionManager
 
     private static void addCookies(String url, Map<String, List<String>> responseHeaders)
     {
-        List<String> cookies = (List<String>) responseHeaders.get("Set-Cookie".toLowerCase());
+        List<String> cookies = responseHeaders.get("Set-Cookie".toLowerCase());
         if (cookies != null)
         {
             CookieManager cookieManager = CookieManager.getInstance();
@@ -576,6 +576,7 @@ public final class HttpConnectionManager
             this.hostname = hostname;
         }
 
+        @Override
         public boolean verify(String hostname, SSLSession session)
         {
             return this.hostname.equals(hostname);
@@ -584,14 +585,17 @@ public final class HttpConnectionManager
 
     private static class MyX509TrustManager implements X509TrustManager
     {
+        @Override
         public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException
         {
         }
 
+        @Override
         public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException
         {
         }
 
+        @Override
         public X509Certificate[] getAcceptedIssuers()
         {
             return null;

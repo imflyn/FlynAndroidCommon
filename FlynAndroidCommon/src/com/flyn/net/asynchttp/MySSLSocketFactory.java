@@ -62,14 +62,17 @@ public class MySSLSocketFactory extends SSLSocketFactory
 
         X509TrustManager tm = new X509TrustManager()
         {
+            @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException
             {
             }
 
+            @Override
             public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException
             {
             }
 
+            @Override
             public X509Certificate[] getAcceptedIssuers()
             {
                 return null;
@@ -79,6 +82,7 @@ public class MySSLSocketFactory extends SSLSocketFactory
         sslContext.init(null, new TrustManager[] { tm }, null);
     }
 
+    @Override
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException, UnknownHostException
     {
         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
@@ -116,7 +120,7 @@ public class MySSLSocketFactory extends SSLSocketFactory
         {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             caInput = new BufferedInputStream(cert);
-            ca = (Certificate) cf.generateCertificate(caInput);
+            ca = cf.generateCertificate(caInput);
         } catch (CertificateException e1)
         {
             e1.printStackTrace();
@@ -138,7 +142,7 @@ public class MySSLSocketFactory extends SSLSocketFactory
         {
             keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
-            keyStore.setCertificateEntry("ca", (java.security.cert.Certificate) ca);
+            keyStore.setCertificateEntry("ca", ca);
         } catch (Exception e)
         {
             e.printStackTrace();

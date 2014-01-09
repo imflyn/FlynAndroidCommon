@@ -114,7 +114,7 @@ public class GenericAdapter extends BaseAdapter
     {
         if (this.mIsLoopView)
             location = getRealPosition(location);
-        return (DataHolder) this.mHolders.get(location);
+        return this.mHolders.get(location);
     }
 
     public int queryDataHolder(DataHolder holder)
@@ -139,6 +139,7 @@ public class GenericAdapter extends BaseAdapter
         return this.mIsLoopView;
     }
 
+    @Override
     public final int getCount()
     {
         int size = this.mHolders.size();
@@ -174,26 +175,31 @@ public class GenericAdapter extends BaseAdapter
         return middlePosition;
     }
 
+    @Override
     public final Object getItem(int position)
     {
         return queryDataHolder(position);
     }
 
+    @Override
     public final long getItemId(int position)
     {
         return position;
     }
 
+    @Override
     public final int getItemViewType(int position)
     {
         return queryDataHolder(position).getType();
     }
 
+    @Override
     public final int getViewTypeCount()
     {
         return this.mViewTypeCount;
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public final View getView(int position, View convertView, final ViewGroup parent)
     {
@@ -218,6 +224,7 @@ public class GenericAdapter extends BaseAdapter
                 final AsyncDataExecutor curExecutor = this.mExecutor;
                 this.mHandler.postDelayed(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         AsyncDataManager.computeAsyncData((AdapterView) parent, curExecutor);
