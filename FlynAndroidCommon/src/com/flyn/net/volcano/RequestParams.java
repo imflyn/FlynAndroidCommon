@@ -170,7 +170,7 @@ public abstract class RequestParams
 
     protected abstract byte[] createNormalData();
 
-    protected abstract byte[] createMultipartData(IResponseHandler progressHandler);
+    protected abstract byte[] createMultipartData(IResponseHandler progressHandler) throws IOException;
 
     /**
      * 通过集合获取URL
