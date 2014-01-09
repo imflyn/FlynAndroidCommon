@@ -1,0 +1,29 @@
+package com.flyn.net.volcano;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+
+public abstract class StringResponseHandler extends ResponseHandler
+{
+    public StringResponseHandler()
+    {
+        super();
+    }
+    
+    @Override
+    protected void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
+    {
+        String contentType = HttpHeaderParser.parseCharset(headers);
+        try
+        {
+            onSuccess(statusCode, new String(responseBody, contentType));
+        } catch (UnsupportedEncodingException e)
+        {
+            onFailure(statusCode, headers, responseBody, e);
+        }
+    }
+
+
+    public abstract void onSuccess(int status, String content);
+
+}
