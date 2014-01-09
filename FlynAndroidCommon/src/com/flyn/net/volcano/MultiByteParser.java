@@ -148,9 +148,10 @@ public class MultiByteParser
             {
                 e.printStackTrace();
             }
+            if(null!=result)
+            this.mPool.returnBuf(result);
         }
         updateProgress(this.boundaryEnd.length);
-
         return result;
     }
 
