@@ -18,6 +18,7 @@ public class PoolingByteArrayOutputStream extends ByteArrayOutputStream
     {
         this.mPool = pool;
         this.buf = this.mPool.getBuf(Math.max(size, DEFAULT_SIZE));
+        
     }
 
     @Override

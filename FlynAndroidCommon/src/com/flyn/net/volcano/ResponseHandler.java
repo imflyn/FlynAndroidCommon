@@ -22,7 +22,7 @@ import android.util.Log;
 
 public abstract class ResponseHandler implements IResponseHandler
 {
-    private static final String TAG            = "ResponseHandler";
+    private static final String TAG                = ResponseHandler.class.getName();
 
     protected static final int  SUCCESS_MESSAGE    = 0;
     protected static final int  FAILURE_MESSAGE    = 1;
@@ -48,7 +48,9 @@ public abstract class ResponseHandler implements IResponseHandler
 
     protected void postRunnable(Runnable runnable)
     {
-        boolean missingLopper = null == Looper.myLooper();
+        // 无法在子线程中创建ResponseHandler会导致Looper.Loop()阻塞
+        // boolean missingLopper = null == Looper.myLooper();
+        boolean missingLopper = null == Looper.getMainLooper();
         if (missingLopper)
         {
             Looper.prepare();
@@ -104,10 +106,6 @@ public abstract class ResponseHandler implements IResponseHandler
 
     }
 
-    public abstract void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody);
-
-    public abstract void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error);
-
     public void onRetry(int retryNo)
     {
     }
@@ -116,6 +114,10 @@ public abstract class ResponseHandler implements IResponseHandler
     {
 
     }
+
+    protected abstract void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody);
+
+    protected abstract void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error);
 
     @Override
     public void sendStartMessage()
@@ -188,71 +190,13 @@ public abstract class ResponseHandler implements IResponseHandler
             }
         }
     }
-
-    private Map<String, String> convertHeaders(Header[] headers)
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        for (Header header : headers)
-        {
-            map.put(header.getName(), header.getValue());
-        }
-        return map;
-    }
-
-    // protected byte[] entityToBytes(HttpEntity entity) throws IOException
-    // {
-    //
-    // byte[] responseData = null;
-    //
-    // InputStream inStream = entity.getContent();
-    // if (inStream != null)
-    // {
-    // long contentLength = entity.getContentLength();
-    // if (contentLength > Integer.MAX_VALUE)
-    // {
-    // throw new
-    // IllegalArgumentException("HttpEntity is too large to be buffered.");
-    // }
-    // int buffersize = (contentLength < 0) ? BUFFER_SIZE : (int) contentLength;
-    //
-    // try
-    // {
-    // ByteArrayBuffer buffer = new ByteArrayBuffer(buffersize);
-    //
-    // byte[] temp = new byte[BUFFER_SIZE];
-    // int l, count = 0;
-    // try
-    // {
-    // while ((l = inStream.read(temp)) != -1 &&
-    // !Thread.currentThread().isInterrupted())
-    // {
-    // count += l;
-    // buffer.append(temp, 0, l);
-    //
-    // if (contentLength>=0&&((count / (contentLength / 100)) % 10 == 0))
-    // sendProgress(count, (int) contentLength);
-    // }
-    // } finally
-    // {
-    // inStream.close();
-    // }
-    // responseData = buffer.toByteArray();
-    // } catch (OutOfMemoryError e)
-    // {
-    // System.gc();
-    // throw new IOException("Data too large to get in memory.");
-    // }
-    // }
-    //
-    // return responseData;
-    // }
-
     protected byte[] entityToBytes(HttpEntity entity) throws IOException
     {
 
         byte[] responseData = null;
 
         InputStream inStream = entity.getContent();
+
         if (inStream != null)
         {
             long contentLength = entity.getContentLength();
@@ -274,7 +218,6 @@ public abstract class ResponseHandler implements IResponseHandler
                     if (contentLength >= 0 && ((count / (contentLength / 100)) % 10 == 0))
                         sendProgress(count, (int) contentLength);
                 }
-
                 responseData = bytes.toByteArray();
             } catch (OutOfMemoryError e)
             {
@@ -284,7 +227,7 @@ public abstract class ResponseHandler implements IResponseHandler
             {
                 try
                 {
-                    //释放http连接所占用的资源
+                    // 释放http连接所占用的资源
                     entity.consumeContent();
                 } catch (IOException e)
                 {
@@ -378,6 +321,16 @@ public abstract class ResponseHandler implements IResponseHandler
         }
     }
 
+    private Map<String, String> convertHeaders(Header[] headers)
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Header header : headers)
+        {
+            map.put(header.getName(), header.getValue());
+        }
+        return map;
+    }
+
     @Override
     public URI getRequestURI()
     {
@@ -414,14 +367,14 @@ public abstract class ResponseHandler implements IResponseHandler
         this.useSynchronousMode = value;
     }
 
-    public final String getReponseCharse()
+    public final String getResponseCharse()
     {
         return this.responseCharset == null ? DEFAULT_CHARSET : this.responseCharset;
     }
 
-    public final void setReponseCharse(String reponseCharse)
+    public final void setResponseCharse(String responseCharse)
     {
-        this.responseCharset = reponseCharse;
+        this.responseCharset = responseCharse;
     }
 
 }

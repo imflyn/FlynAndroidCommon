@@ -48,12 +48,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
@@ -91,29 +89,28 @@ public class HttpClientStack extends NetStack
     public HttpClientStack()
     {
         BasicHttpParams httpParams = new BasicHttpParams();
-        httpParams.setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, HTTP.UTF_8);
-        httpParams.setParameter(CoreProtocolPNames.HTTP_ELEMENT_CHARSET, HTTP.UTF_8);
         ConnManagerParams.setTimeout(httpParams, this.timeout);
         ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
         ConnManagerParams.setMaxTotalConnections(httpParams, DEFAULT_MAX_CONNETIONS);
-
+     
         HttpConnectionParams.setSoTimeout(httpParams, this.timeout);
         HttpConnectionParams.setConnectionTimeout(httpParams, this.timeout);
         HttpConnectionParams.setTcpNoDelay(httpParams, true);// 禁用nagle算法,排除对小封包的处理(降低延迟)
         HttpConnectionParams.setSocketBufferSize(httpParams, DEFAULT_SOCKET_BUFFER_SIZE);
-
+ 
         HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setUserAgent(httpParams, "Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) " + "AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1");
-        HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
-        HttpProtocolParams.setHttpElementCharset(httpParams, HTTP.UTF_8);
-        
+//        HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
+//        HttpProtocolParams.setHttpElementCharset(httpParams, HTTP.UTF_8);
+   
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, getDefaultSchemeRegistry());
-
+       
         this.threadPool = Executors.newCachedThreadPool();
         this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
         this.httpHeaderMap = new HashMap<String, String>();
         this.httpContext = new SyncBasicHttpContext(new BasicHttpContext());
         this.httpClient = new DefaultHttpClient(cm, httpParams);
+    
         this.httpClient.addRequestInterceptor(new HttpRequestInterceptor()
         {
             @Override
@@ -121,7 +118,7 @@ public class HttpClientStack extends NetStack
             {
                 if (!request.containsHeader(HEADER_ACCEPT_ENCODING))
                 {
-                    request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
+                    request.addHeader(HEADER_ACCEPT_ENCODING,ENCODING_GZIP);
                 }
                 for (String header : HttpClientStack.this.httpHeaderMap.keySet())
                 {
@@ -154,7 +151,6 @@ public class HttpClientStack extends NetStack
                     }
 
                 }
-
             }
         });
         this.httpClient.setHttpRequestRetryHandler(new RetryHandler(DEFAULT_MAX_RETRIES, DEFAULT_RETRY_SLEEP_TIME_MILLIS));
@@ -162,6 +158,8 @@ public class HttpClientStack extends NetStack
 
     private SchemeRegistry getDefaultSchemeRegistry()
     {
+        
+        
         if (fixNoHttpResponseException)
         {
             Log.d(TAG, "Using the fix is insecure, as it doesn't verify SSL certificates.");
@@ -194,6 +192,7 @@ public class HttpClientStack extends NetStack
     @Override
     public RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
+       
         RequestFuture requestHandle = null;
 
         switch (method)

@@ -68,10 +68,8 @@ public class HttpClientRequest extends Request
                 {
                     if (isCancelled())
                         return;
-
                     cause = e;
                     retry = retryHandler.retryRequest(cause, ++this.executionCount, this.context);
-
                 }
                 if (retry && retryHandler != null)
                 {
