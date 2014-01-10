@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.protocol.HTTP;
 
 /**
@@ -69,7 +70,6 @@ public abstract class RequestParams
     {
         this.isRepeatable = isRepeatable;
     }
-
 
     public void init()
     {
@@ -147,21 +147,20 @@ public abstract class RequestParams
         }
     }
 
-    public byte[] getBody(IResponseHandler progressHandler) throws IOException
+    protected HttpEntity getEntity(IResponseHandler progressHandler) throws IOException
     {
         if (this.streamParams.isEmpty() && this.fileParams.isEmpty())
         {
-            return createNormalData();
+            return createNormalEitity();
         } else
         {
-            return createMultipartData(progressHandler);
+            return createMultipartEntity(progressHandler);
         }
     }
 
+    protected abstract HttpEntity createNormalEitity();
 
-    protected abstract byte[] createNormalData();
-
-    protected abstract byte[] createMultipartData(IResponseHandler progressHandler) throws IOException;
+    protected abstract HttpEntity createMultipartEntity(IResponseHandler progressHandler) throws IOException;
 
     /**
      * 通过集合获取URL

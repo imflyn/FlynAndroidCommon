@@ -40,7 +40,6 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -209,8 +208,12 @@ public class HttpClientStack extends NetStack
     private RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPost request = new HttpPost(url);
-        if (params != null)
-            request.setEntity(paramsToEntity(params, responseHandler));
+        if (null != params)
+        {
+            HttpEntity entity = paramsToEntity(params, responseHandler);
+            if (null != entity)
+                request.setEntity(entity);
+        }
         addHeaders(request, headers);
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
@@ -226,7 +229,11 @@ public class HttpClientStack extends NetStack
     {
         HttpPut request = new HttpPut(url);
         if (null != params)
-            request.setEntity(paramsToEntity(params, responseHandler));
+        {
+            HttpEntity entity = paramsToEntity(params, responseHandler);
+            if (null != entity)
+                request.setEntity(entity);
+        }
         addHeaders(request, headers);
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
@@ -417,7 +424,9 @@ public class HttpClientStack extends NetStack
         {
             if (params != null)
             {
-                entity = new ByteArrayEntity(params.getBody(responseHandler));
+
+                if (params instanceof HttpClientRequestParams)
+                    entity = ((HttpClientRequestParams) params).getEntity(responseHandler);
             }
         } catch (Throwable t)
         {

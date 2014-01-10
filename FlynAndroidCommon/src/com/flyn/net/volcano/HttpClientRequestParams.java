@@ -1,8 +1,14 @@
 package com.flyn.net.volcano;
 
 import java.io.IOException;
-import java.util.Map.Entry;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  * HttpClient方法的请求参数容器
@@ -14,35 +20,50 @@ public class HttpClientRequestParams extends RequestParams
 {
 
     @Override
-    protected byte[] createNormalData()
+    protected HttpEntity createNormalEitity()
     {
-        return getParamString().getBytes();
-    }
-
-    @Override
-    protected byte[] createMultipartData(IResponseHandler progressHandler) throws IOException
-    {
-        MultiByteParser parser = new MultiByteParser(progressHandler);
+        List<BasicNameValuePair> lparams = new LinkedList<BasicNameValuePair>();
 
         for (ConcurrentHashMap.Entry<String, String> entry : this.urlParams.entrySet())
         {
-            parser.addPart(entry.getKey(), entry.getValue());
+            lparams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        }
+
+        try
+        {
+            return new UrlEncodedFormEntity(lparams, this.contentEncoding);
+        } catch (UnsupportedEncodingException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    protected HttpEntity createMultipartEntity(IResponseHandler progressHandler) throws IOException
+    {
+        MultipartEntity entity = new MultipartEntity(progressHandler);
+        entity.setIsRepeatable(this.isRepeatable);
+
+        for (ConcurrentHashMap.Entry<String, String> entry : this.urlParams.entrySet())
+        {
+            entity.addPart(entry.getKey(), entry.getValue());
+        }
+
+        for (ConcurrentHashMap.Entry<String, StreamWrapper> entry : this.streamParams.entrySet())
+        {
+            StreamWrapper stream = entry.getValue();
+            if (stream.inputStream != null)
+            {
+                entity.addPart(entry.getKey(), stream.name, stream.inputStream, stream.contentType);
+            }
         }
 
         for (ConcurrentHashMap.Entry<String, FileWrapper> entry : this.fileParams.entrySet())
         {
             FileWrapper fileWrapper = entry.getValue();
-            parser.addPart(entry.getKey(), fileWrapper.file, fileWrapper.contentType);
+            entity.addPart(entry.getKey(), fileWrapper.file, fileWrapper.contentType);
         }
-
-        for (Entry<String, StreamWrapper> entry : this.streamParams.entrySet())
-        {
-            StreamWrapper streamWrapper = entry.getValue();
-            if (null != streamWrapper.inputStream)
-                parser.addPart(entry.getKey(), streamWrapper.name, streamWrapper.inputStream, streamWrapper.contentType);
-        }
-
-        return parser.getData();
+        return entity;
     }
 
 }

@@ -230,8 +230,8 @@ public abstract class ResponseHandler implements IResponseHandler
                 {
                     // 释放http连接所占用的资源
                     entity.consumeContent();
-                    if(null!=buffer)
-                    mPool.returnBuf(buffer);
+                    if (null != buffer)
+                        mPool.returnBuf(buffer);
                 } catch (IOException e)
                 {
                     Log.e(ResponseHandler.class.getName(), "Error occured when calling consumingContent", e);
