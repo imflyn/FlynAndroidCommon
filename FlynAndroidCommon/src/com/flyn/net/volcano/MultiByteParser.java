@@ -130,6 +130,8 @@ public class MultiByteParser
         byte [] result=null;
         try
         {
+            this.out.write(("Connection: Keep-Alive"+"\r\n").getBytes());
+            this.out.write(("Content-Length: "+  this.totalSize + "\r\n").getBytes());
             for (FilePart filePart : this.fileParts)
             {
                 filePart.writeTo(this.out);
