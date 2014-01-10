@@ -101,7 +101,7 @@ public abstract class ResponseHandler implements IResponseHandler
 
     }
 
-    public void onProgress(int bytesWritten, int bvtesTotal)
+    public void onProgress(int bytesWritten, int bvtesTotal, int speed)
     {
 
     }
@@ -144,9 +144,9 @@ public abstract class ResponseHandler implements IResponseHandler
     }
 
     @Override
-    public void sendProgress(int bytesWritten, int bytesTotal)
+    public void sendProgressMessage(int bytesWritten, int bytesTotal, int speed)
     {
-        sendMessage(obtainMessage(PROGRESS_MESSAGE, new Object[] { bytesWritten, bytesTotal }));
+        sendMessage(obtainMessage(PROGRESS_MESSAGE, new Object[] { bytesWritten, bytesTotal, speed }));
     }
 
     @Override
@@ -217,7 +217,7 @@ public abstract class ResponseHandler implements IResponseHandler
                 {
                     bytes.write(buffer, 0, count);
                     if (contentLength >= 0 && ((count / (contentLength / 100)) % 10 == 0))
-                        sendProgress(count, (int) contentLength);
+                        sendProgressMessage(count, (int) contentLength, 0);// 下载速度暂时设置为0
                 }
                 responseData = bytes.toByteArray();
             } catch (OutOfMemoryError e)
@@ -301,7 +301,7 @@ public abstract class ResponseHandler implements IResponseHandler
                 {
                     try
                     {
-                        onProgress((Integer) response[0], (Integer) response[1]);
+                        onProgress((Integer) response[0], (Integer) response[1], (Integer) response[2]);
                     } catch (Throwable t)
                     {
                         Log.e(TAG, "custom onProgress contains an error", t);

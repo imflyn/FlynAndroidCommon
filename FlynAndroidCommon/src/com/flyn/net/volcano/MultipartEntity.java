@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -44,10 +46,14 @@ class MultipartEntity implements HttpEntity
     private ByteArrayPool                mPool;
 
     private IResponseHandler             progressHandler;
-
-    private int                          bytesWritten;
-
-    private int                          totalSize;
+    private int                          bytesWritten=0;
+    private int                          totalSize=0;
+    private Timer                        timer;
+    
+    private boolean                      isScheduleing            = true;
+    private long                         timeStamp           = System.currentTimeMillis();
+    private int                          currentSpeed                  = 0;
+    private int sizeStamp=0;
 
     public MultipartEntity(IResponseHandler progressHandler)
     {
@@ -156,7 +162,52 @@ class MultipartEntity implements HttpEntity
     private void updateProgress(int count)
     {
         this.bytesWritten += count;
-        this.progressHandler.sendProgress(this.bytesWritten, this.totalSize);
+    }
+
+    private void startTimer()
+    {
+        if (null == this.timer)
+            this.timer = new Timer();
+        this.timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                while (isScheduleing)
+                {
+                    long nowTime=System.currentTimeMillis();
+                    long spendTime=nowTime-timeStamp;
+                    timeStamp=nowTime;
+                    
+                    long getSize=bytesWritten-sizeStamp;
+                    sizeStamp=bytesWritten;
+                    if (spendTime > 0)
+                    {
+                        currentSpeed= (int) ((getSize / spendTime) / 1.024);
+                    }
+                    Log.i("aaaaaa", "该次写入:"+getSize+"字节"+"==="+"花费"+spendTime+"秒");
+                    progressHandler.sendProgressMessage(bytesWritten, totalSize, currentSpeed);
+                    try
+                    {  
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, 0, 1000);
+    }
+
+    private void stopTimer()
+    {
+        this.isScheduleing = false;
+        if (this.timer != null)
+        {
+            this.timer.cancel();
+            this.timer = null;
+        }
     }
 
     private class FilePart
@@ -207,6 +258,7 @@ class MultipartEntity implements HttpEntity
             {
                 out.write(tmp, 0, l);
                 updateProgress(l);
+
             }
             out.write(CR_LF);
             updateProgress(CR_LF.length);
@@ -270,7 +322,7 @@ class MultipartEntity implements HttpEntity
     @Override
     public void writeTo(final OutputStream outstream) throws IOException
     {
-        this.bytesWritten = 0;
+        startTimer();
         this.totalSize = (int) getContentLength();
         this.out.writeTo(outstream);
         updateProgress(this.out.size());
@@ -281,6 +333,7 @@ class MultipartEntity implements HttpEntity
         }
         outstream.write(this.boundaryEnd);
         updateProgress(this.boundaryEnd.length);
+        stopTimer();
     }
 
     @Override

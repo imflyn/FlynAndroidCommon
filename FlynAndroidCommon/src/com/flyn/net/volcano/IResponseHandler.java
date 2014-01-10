@@ -14,7 +14,7 @@ public interface IResponseHandler
 
     void sendFinishMessage();
 
-    void sendProgress(int bytesWritten, int bytesTotal);
+    void sendProgressMessage(int bytesWritten, int bytesTotal,int currentSpeed);
 
     void sendCancleMessage();
 
