@@ -182,10 +182,8 @@ class MultipartEntity implements HttpEntity
                     long getSize=bytesWritten-sizeStamp;
                     sizeStamp=bytesWritten;
                     if (spendTime > 0)
-                    {
                         currentSpeed= (int) ((getSize / spendTime) / 1.024);
-                    }
-                    Log.i("aaaaaa", "该次写入:"+getSize+"字节"+"==="+"花费"+spendTime+"秒");
+                    
                     progressHandler.sendProgressMessage(bytesWritten, totalSize, currentSpeed);
                     try
                     {  
