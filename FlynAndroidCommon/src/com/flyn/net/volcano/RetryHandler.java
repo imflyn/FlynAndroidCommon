@@ -60,7 +60,6 @@ public class RetryHandler implements HttpRequestRetryHandler
             retry = true;
         }
         if (retry)
-
         {
             HttpUriRequest currentRequest = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
 
