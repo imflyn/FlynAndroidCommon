@@ -33,7 +33,7 @@ class MultipartEntity implements HttpEntity
     private static final byte[]          TRANSFER_ENCODING_BINARY = "Content-Transfer-Encoding: binary\r\n".getBytes();
     private static final char[]          MULTIPART_CHARS          = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final int             DEFAULT_BUFFER_SIZE      = 8192;
-    
+
     private String                       boundary;
     private byte[]                       boundaryLine;
     private byte[]                       boundaryEnd;
@@ -45,7 +45,7 @@ class MultipartEntity implements HttpEntity
     private ByteArrayPool                mPool;
 
     private IResponseHandler             progressHandler;
-    
+
     private int                          bytesWritten             = 0;
     private int                          totalSize                = 0;
     private Timer                        timer;
@@ -72,7 +72,7 @@ class MultipartEntity implements HttpEntity
 
         this.mPool = new ByteArrayPool(DEFAULT_BUFFER_SIZE);
         this.out = new PoolingByteArrayOutputStream(this.mPool);
-        
+
     }
 
     public void addPart(final String key, final String value, final String contentType)
@@ -169,8 +169,8 @@ class MultipartEntity implements HttpEntity
     {
         if (null == this.timer)
             this.timer = new Timer();
-        
-        final TimerTask task=new TimerTask()
+
+        final TimerTask task = new TimerTask()
         {
             @Override
             public void run()
@@ -190,7 +190,7 @@ class MultipartEntity implements HttpEntity
                 }
             }
         };
-        this.timer.schedule(task, 500,2000);
+        this.timer.schedule(task, 500, 2000);
     }
 
     private void stopTimer()
@@ -244,7 +244,7 @@ class MultipartEntity implements HttpEntity
             out.write(this.header);
             updateProgress(this.header.length);
 
-            BufferedInputStream inputStream=new BufferedInputStream(new FileInputStream(this.file));
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(this.file));
             final byte[] tmp = new byte[DEFAULT_BUFFER_SIZE];
             int l;
             while ((l = inputStream.read(tmp)) != -1)
@@ -259,7 +259,7 @@ class MultipartEntity implements HttpEntity
             try
             {
                 inputStream.close();
-                inputStream=null;
+                inputStream = null;
             } catch (final IOException e)
             {
                 Log.w(TAG, "Cannot close input stream", e);
@@ -329,12 +329,11 @@ class MultipartEntity implements HttpEntity
             }
             outstream.write(this.boundaryEnd);
             updateProgress(this.boundaryEnd.length);
-         
+
         } catch (Exception e)
         {
-           throw new IOException("HttpEntity WriteTo Exception :"+e.getMessage());
-        }
-        finally
+            throw new IOException("HttpEntity WriteTo Exception :" + e.getMessage());
+        } finally
         {
             stopTimer();
         }
