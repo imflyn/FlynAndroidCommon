@@ -32,7 +32,7 @@ class MultipartEntity implements HttpEntity
     private static final byte[]          CR_LF                    = ("\r\n").getBytes();
     private static final byte[]          TRANSFER_ENCODING_BINARY = "Content-Transfer-Encoding: binary\r\n".getBytes();
     private static final char[]          MULTIPART_CHARS          = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-    private static final int             DEFAULT_BUFFER_SIZE      = 4096;
+    private static final int             DEFAULT_BUFFER_SIZE      = 8192;
     
     private String                       boundary;
     private byte[]                       boundaryLine;
@@ -190,7 +190,7 @@ class MultipartEntity implements HttpEntity
                 }
             }
         };
-        this.timer.schedule(task, 200,2000);
+        this.timer.schedule(task, 500,2000);
     }
 
     private void stopTimer()
@@ -316,18 +316,28 @@ class MultipartEntity implements HttpEntity
     @Override
     public void writeTo(final OutputStream outstream) throws IOException
     {
-        startTimer();
-        this.totalSize = (int) getContentLength();
-        this.out.writeTo(outstream);
-        updateProgress(this.out.size());
-
-        for (FilePart filePart : this.fileParts)
+        try
         {
-            filePart.writeTo(outstream);
+            startTimer();
+            this.totalSize = (int) getContentLength();
+            this.out.writeTo(outstream);
+            updateProgress(this.out.size());
+
+            for (FilePart filePart : this.fileParts)
+            {
+                filePart.writeTo(outstream);
+            }
+            outstream.write(this.boundaryEnd);
+            updateProgress(this.boundaryEnd.length);
+         
+        } catch (Exception e)
+        {
+           throw new IOException("HttpEntity WriteTo Exception :"+e.getMessage());
         }
-        outstream.write(this.boundaryEnd);
-        updateProgress(this.boundaryEnd.length);
-        stopTimer();
+        finally
+        {
+            stopTimer();
+        }
     }
 
     @Override
