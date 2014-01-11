@@ -46,14 +46,14 @@ class MultipartEntity implements HttpEntity
     private ByteArrayPool                mPool;
 
     private IResponseHandler             progressHandler;
-    private int                          bytesWritten=0;
-    private int                          totalSize=0;
+    private int                          bytesWritten             = 0;
+    private int                          totalSize                = 0;
     private Timer                        timer;
-    
+
     private boolean                      isScheduleing            = true;
-    private long                         timeStamp           = System.currentTimeMillis();
-    private int                          currentSpeed                  = 0;
-    private int sizeStamp=0;
+    private long                         timeStamp                = System.currentTimeMillis();
+    private int                          currentSpeed             = 0;
+    private int                          sizeStamp                = 0;
 
     public MultipartEntity(IResponseHandler progressHandler)
     {
@@ -175,18 +175,18 @@ class MultipartEntity implements HttpEntity
             {
                 while (isScheduleing)
                 {
-                    long nowTime=System.currentTimeMillis();
-                    long spendTime=nowTime-timeStamp;
-                    timeStamp=nowTime;
-                    
-                    long getSize=bytesWritten-sizeStamp;
-                    sizeStamp=bytesWritten;
+                    long nowTime = System.currentTimeMillis();
+                    long spendTime = nowTime - timeStamp;
+                    timeStamp = nowTime;
+
+                    long getSize = bytesWritten - sizeStamp;
+                    sizeStamp = bytesWritten;
                     if (spendTime > 0)
-                        currentSpeed= (int) ((getSize / spendTime) / 1.024);
-                    
+                        currentSpeed = (int) ((getSize / spendTime) / 1.024);
+
                     progressHandler.sendProgressMessage(bytesWritten, totalSize, currentSpeed);
                     try
-                    {  
+                    {
                         Thread.sleep(2000);
                     } catch (InterruptedException e)
                     {
