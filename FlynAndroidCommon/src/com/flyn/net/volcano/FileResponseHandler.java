@@ -34,9 +34,18 @@ public abstract class FileResponseHandler extends ResponseHandler
     private long                timeStamp     = System.currentTimeMillis();
     private long                sizeStamp     = 0;
     private int                 currentSpeed  = 0;
-    private boolean             isContinue;
+    private boolean             isContinue    = false;
 
-    public FileResponseHandler(Context context, String savePath, String fileName, boolean isContinue)
+    /**
+     * 
+     * @param savePath
+     *            存储路径
+     * @param fileName
+     *            文件名
+     * @param isContinue
+     *            是否断点续传
+     */
+    public FileResponseHandler(String savePath, String fileName, boolean isContinue)
     {
         super();
         if (TextUtils.isEmpty(savePath) || TextUtils.isEmpty(fileName))
@@ -53,12 +62,6 @@ public abstract class FileResponseHandler extends ResponseHandler
 
     }
 
-    public FileResponseHandler(Context context)
-    {
-        super();
-        this.mFile = getTemporaryFile(context);
-    }
-
     private File getTargetFile()
     {
         return this.mFile;
@@ -67,19 +70,6 @@ public abstract class FileResponseHandler extends ResponseHandler
     public boolean deleteTargetFile()
     {
         return getTargetFile() != null && getTargetFile().delete();
-    }
-
-    private File getTemporaryFile(Context context)
-    {
-        assert (context != null);
-        try
-        {
-            return File.createTempFile("temp_", "_handled", context.getCacheDir());
-        } catch (Throwable t)
-        {
-            Log.e(TAG, "Cannot create temporary file", t);
-        }
-        return null;
     }
 
     @Override
@@ -103,7 +93,6 @@ public abstract class FileResponseHandler extends ResponseHandler
     {
         if (null != entity)
         {
-          
 
             long length = entity.getContentLength();
             this.bytesTotal = length != -1 ? length : entity.getContent().available();
@@ -129,7 +118,7 @@ public abstract class FileResponseHandler extends ResponseHandler
                     throw new IOException("This file is downloading.");
                 else
                     mFileList.add(this.mFile);
-                
+
                 inputStream = new BufferedInputStream(entity.getContent());
                 accessFile = new RandomAccessFile(this.tempFile, "rw");
 
@@ -137,7 +126,7 @@ public abstract class FileResponseHandler extends ResponseHandler
                 {
                     // 支持断点续传
                     accessFile.seek(this.bytesWritten);
-//                    inputStream.skip(this.bytesWritten);
+                    // inputStream.skip(this.bytesWritten);
                 } else
                 {
                     // accessFile.setLength(this.bytesTotal);

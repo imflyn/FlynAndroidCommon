@@ -2,7 +2,7 @@
  This code is taken from Rafael Sanches' blog.
  http://blog.rafaelsanches.com/2011/01/29/upload-using-multipart-post-using-httpclient-in-android/
  **/
-
+//
 package com.flyn.net.volcano;
 
 import java.io.BufferedInputStream;
@@ -24,6 +24,11 @@ import org.apache.http.message.BasicHeader;
 
 import android.util.Log;
 
+/**
+ * 简洁版apache-mine中的MultipartEntity,省去添加额外jar包的空间 
+ * @author V
+ *
+ */
 class MultipartEntity implements HttpEntity
 {
 
