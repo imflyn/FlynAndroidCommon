@@ -322,7 +322,7 @@ public abstract class ResponseHandler implements IResponseHandler
         }
     }
 
-    private Map<String, String> convertHeaders(Header[] headers)
+    protected Map<String, String> convertHeaders(Header[] headers)
     {
         Map<String, String> map = new HashMap<String, String>();
         for (Header header : headers)

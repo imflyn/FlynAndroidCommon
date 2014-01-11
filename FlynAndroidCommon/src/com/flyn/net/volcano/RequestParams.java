@@ -108,10 +108,10 @@ public abstract class RequestParams
             this.streamParams.put(key, new StreamWrapper(stream, name, contentType));
         }
     }
-    
-    public void putByteRange(String startPos,String endPos)
+
+    public void putByteRange(String startPos, String endPos)
     {
-        this.urlParams.put("Range", "bytes="+startPos+ "-" + endPos);
+        this.urlParams.put("Range", "bytes=" + startPos + "-" + endPos);
     }
 
     public void remove(String key)

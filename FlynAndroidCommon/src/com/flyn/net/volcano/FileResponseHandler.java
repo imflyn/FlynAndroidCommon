@@ -13,28 +13,25 @@ import java.util.TimerTask;
 
 import org.apache.http.HttpEntity;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 public abstract class FileResponseHandler extends ResponseHandler
 {
-    private static final String TAG           = FileResponseHandler.class.getName();
 
-    private static List<File>   mFileList     = Collections.synchronizedList(new ArrayList<File>(5));
+    private static List<File> mFileList     = Collections.synchronizedList(new ArrayList<File>(5));
 
-    private long                bytesTotal    = 0;
-    private long                bytesWritten  = 0;
+    private long              bytesTotal    = 0;
+    private long              bytesWritten  = 0;
 
-    private File                mFile;
-    private File                tempFile;
+    private File              mFile;
+    private File              tempFile;
 
-    private Timer               timer;
-    private boolean             isScheduleing = true;
-    private long                timeStamp     = System.currentTimeMillis();
-    private long                sizeStamp     = 0;
-    private int                 currentSpeed  = 0;
-    private boolean             isContinue    = false;
+    private Timer             timer;
+    private boolean           isScheduleing = true;
+    private long              timeStamp     = System.currentTimeMillis();
+    private long              sizeStamp     = 0;
+    private int               currentSpeed  = 0;
+    private boolean           isContinue    = false;
 
     /**
      * 
@@ -126,7 +123,6 @@ public abstract class FileResponseHandler extends ResponseHandler
                 {
                     // 支持断点续传
                     accessFile.seek(this.bytesWritten);
-                    // inputStream.skip(this.bytesWritten);
                 } else
                 {
                     // accessFile.setLength(this.bytesTotal);
@@ -183,7 +179,7 @@ public abstract class FileResponseHandler extends ResponseHandler
             @Override
             public void run()
             {
-                if (isScheduleing)
+                if (isScheduleing && !Thread.currentThread().isInterrupted())
                 {
                     long nowTime = System.currentTimeMillis();
                     long spendTime = nowTime - timeStamp;
@@ -195,6 +191,9 @@ public abstract class FileResponseHandler extends ResponseHandler
                         currentSpeed = (int) ((getSize / spendTime) / 1.024);
 
                     sendProgressMessage((int) bytesWritten, (int) bytesTotal, (int) currentSpeed);
+                } else
+                {
+                    stopTimer();
                 }
             }
         };
