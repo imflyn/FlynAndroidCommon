@@ -1,6 +1,7 @@
 package com.flyn.net.volcano;
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -13,16 +14,17 @@ import android.util.Log;
 
 public abstract class BitmapResponseHandler extends ResponseHandler
 {
-    private final static String TAG         = BitmapResponseHandler.class.getName();
-    private final int           mMaxWidth;
-    private final int           mMaxHeight;
-    private final Config        mDecodeConfig;
+    private final static String   TAG         = BitmapResponseHandler.class.getName();
+    private final int             mMaxWidth;
+    private final int             mMaxHeight;
+    private final Config          mDecodeConfig;
+    private SoftReference<Bitmap> bitmap;
 
     /**
      * Decoding lock so that we don't decode more than one image at a time (to
      * avoid OOM's)
      */
-    private static final Object sDecodeLock = new Object();
+    private static final Object   sDecodeLock = new Object();
 
     public BitmapResponseHandler(int maxWidth, int maxHeight, Config mDecodeConfig)
     {
@@ -35,11 +37,13 @@ public abstract class BitmapResponseHandler extends ResponseHandler
     @Override
     protected final void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
     {
+        onSuccess(statusCode, headers, this.bitmap.get() != null ? this.bitmap.get() : null);
     }
 
     @Override
     protected final void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error)
     {
+        onFailure(statusCode, headers, this.bitmap.get() != null ? this.bitmap.get() : null, error);
     }
 
     public abstract void onSuccess(int statusCode, Map<String, String> headers, Bitmap bitmap);
@@ -101,10 +105,11 @@ public abstract class BitmapResponseHandler extends ResponseHandler
 
         if (bitmap == null)
         {
-            onFailure(statusCode, super.convertHeaders(response.getAllHeaders()), bitmap, new IOException("Decode bitmap failure."));
+            sendFailureMessage(statusCode, super.convertHeaders(response.getAllHeaders()), responseData, new IOException("Decode bitmap failure."));
         } else
         {
-            onSuccess(statusCode, super.convertHeaders(response.getAllHeaders()), bitmap);
+            this.bitmap = new SoftReference<Bitmap>(bitmap);
+            sendSuccessMessage(statusCode, super.convertHeaders(response.getAllHeaders()), responseData);
         }
 
     }

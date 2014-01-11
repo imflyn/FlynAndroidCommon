@@ -55,7 +55,7 @@ public abstract class ResponseHandler implements IResponseHandler
         {
             Looper.prepare();
         }
-        if (null != this.handler)
+        if (null == this.handler)
         {
             this.handler = new ResponderHandler(this);
         }
