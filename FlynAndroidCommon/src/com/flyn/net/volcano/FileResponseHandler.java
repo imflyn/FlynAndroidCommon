@@ -78,12 +78,12 @@ public abstract class FileResponseHandler extends ResponseHandler
     @Override
     protected void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error)
     {
-        onFailure(statusCode, headers, getTargetFile(), error);
+        onFailure(statusCode, headers, error);
     }
 
     public abstract void onSuccess(int statusCode, Map<String, String> headers, File file);
 
-    public abstract void onFailure(int statusCode, Map<String, String> headers, File file, Throwable e);
+    public abstract void onFailure(int statusCode, Map<String, String> headers, Throwable e);
 
     @Override
     protected byte[] entityToData(HttpEntity entity) throws IOException

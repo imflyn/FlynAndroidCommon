@@ -43,16 +43,17 @@ public abstract class BitmapResponseHandler extends ResponseHandler
     @Override
     protected final void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error)
     {
-        onFailure(statusCode, headers, this.bitmap.get() != null ? this.bitmap.get() : null, error);
+        onFailure(statusCode, headers, error);
     }
 
     public abstract void onSuccess(int statusCode, Map<String, String> headers, Bitmap bitmap);
 
-    public abstract void onFailure(int statusCode, Map<String, String> headers, Bitmap bitmap, Throwable error);
+    public abstract void onFailure(int statusCode, Map<String, String> headers, Throwable error);
 
     @Override
     public void sendResponseMessage(HttpResponse response) throws IOException
     {
+
         HttpEntity entity = response.getEntity();
 
         int statusCode = response.getStatusLine().getStatusCode();
