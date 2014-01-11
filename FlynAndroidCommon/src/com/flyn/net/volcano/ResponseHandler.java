@@ -1,7 +1,7 @@
 package com.flyn.net.volcano;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.HashMap;
@@ -22,24 +22,24 @@ import android.util.Log;
 
 public abstract class ResponseHandler implements IResponseHandler
 {
-    private static final String TAG                = ResponseHandler.class.getName();
+    private static final String TAG                 = ResponseHandler.class.getName();
 
-    protected static final int  SUCCESS_MESSAGE    = 0;
-    protected static final int  FAILURE_MESSAGE    = 1;
-    protected static final int  START_MESSAGE      = 2;
-    protected static final int  FINISH_MESSAGE     = 3;
-    protected static final int  PROGRESS_MESSAGE   = 4;
-    protected static final int  RETRY_MESSAGE      = 5;
-    protected static final int  CANCEL_MESSAGE     = 6;
+    protected static final int  SUCCESS_MESSAGE     = 0;
+    protected static final int  FAILURE_MESSAGE     = 1;
+    protected static final int  START_MESSAGE       = 2;
+    protected static final int  FINISH_MESSAGE      = 3;
+    protected static final int  PROGRESS_MESSAGE    = 4;
+    protected static final int  RETRY_MESSAGE       = 5;
+    protected static final int  CANCEL_MESSAGE      = 6;
 
-    protected static final int  BUFFER_SIZE        = 4096;
+    protected static final int  DEFAULT_BUFFER_SIZE = 4096;
 
     private Handler             handler;
-    public static final String  DEFAULT_CHARSET    = HTTP.UTF_8;
-    private String              responseCharset    = DEFAULT_CHARSET;
-    private boolean             useSynchronousMode = false;
-    private URI                 requestURI         = null;
-    private Map<String, String> requestHeaders     = null;
+    public static final String  DEFAULT_CHARSET     = HTTP.UTF_8;
+    private String              responseCharset     = DEFAULT_CHARSET;
+    private boolean             useSynchronousMode  = false;
+    private URI                 requestURI          = null;
+    private Map<String, String> requestHeaders      = null;
 
     public ResponseHandler()
     {
@@ -177,7 +177,7 @@ public abstract class ResponseHandler implements IResponseHandler
             byte[] responseData;
 
             if (response.getEntity() != null)
-                responseData = entityToBytes(response.getEntity());
+                responseData = entityToData(response.getEntity());
             else
                 responseData = new byte[0];
 
@@ -191,13 +191,12 @@ public abstract class ResponseHandler implements IResponseHandler
         }
     }
 
-    protected byte[] entityToBytes(HttpEntity entity) throws IOException
+    protected byte[] entityToData(HttpEntity entity) throws IOException
     {
 
         byte[] responseData = null;
 
-        InputStream inStream = entity.getContent();
-
+        BufferedInputStream inStream = new BufferedInputStream(entity.getContent());
         if (inStream != null)
         {
             long contentLength = entity.getContentLength();
@@ -206,7 +205,7 @@ public abstract class ResponseHandler implements IResponseHandler
                 throw new IllegalArgumentException("HttpEntity is too large to be buffered.");
             }
 
-            ByteArrayPool mPool = new ByteArrayPool(BUFFER_SIZE);
+            ByteArrayPool mPool = new ByteArrayPool(DEFAULT_BUFFER_SIZE);
             PoolingByteArrayOutputStream bytes = new PoolingByteArrayOutputStream(mPool, (int) contentLength);
             byte[] buffer = null;
             try

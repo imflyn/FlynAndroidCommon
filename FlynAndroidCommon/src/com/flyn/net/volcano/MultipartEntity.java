@@ -251,7 +251,6 @@ class MultipartEntity implements HttpEntity
             {
                 out.write(tmp, 0, l);
                 updateProgress(l);
-
             }
             out.write(CR_LF);
             updateProgress(CR_LF.length);
