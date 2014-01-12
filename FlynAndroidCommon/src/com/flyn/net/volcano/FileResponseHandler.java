@@ -70,13 +70,13 @@ public abstract class FileResponseHandler extends ResponseHandler
     }
 
     @Override
-    protected void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
+    protected final void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
     {
         onSuccess(statusCode, headers, getTargetFile());
     }
 
     @Override
-    protected void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error)
+    protected final void onFailure(int statusCode, Map<String, String> headers, byte[] responseBody, Throwable error)
     {
         onFailure(statusCode, headers, error);
     }
@@ -144,6 +144,8 @@ public abstract class FileResponseHandler extends ResponseHandler
             } finally
             {
                 stopTimer();
+                if (null != this.mFile)
+                    mFileList.remove(this.mFile);
                 if (null != accessFile)
                 {
                     accessFile.close();
@@ -154,8 +156,6 @@ public abstract class FileResponseHandler extends ResponseHandler
                     inputStream.close();
                     inputStream = null;
                 }
-                if (null != this.mFile)
-                    mFileList.remove(this.mFile);
 
             }
 
