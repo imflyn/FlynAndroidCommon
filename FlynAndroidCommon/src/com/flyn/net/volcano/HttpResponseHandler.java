@@ -20,9 +20,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-public abstract class ResponseHandler implements IResponseHandler
+public abstract class HttpResponseHandler implements IResponseHandler
 {
-    private static final String TAG                 = ResponseHandler.class.getName();
+    private static final String TAG                 = HttpResponseHandler.class.getName();
 
     protected static final int  SUCCESS_MESSAGE     = 0;
     protected static final int  FAILURE_MESSAGE     = 1;
@@ -41,7 +41,7 @@ public abstract class ResponseHandler implements IResponseHandler
     private URI                 requestURI          = null;
     private Map<String, String> requestHeaders      = null;
 
-    public ResponseHandler()
+    public HttpResponseHandler()
     {
         postRunnable(null);
     }
@@ -72,17 +72,17 @@ public abstract class ResponseHandler implements IResponseHandler
 
     static class ResponderHandler extends Handler
     {
-        private final WeakReference<ResponseHandler> mResponder;
+        private final WeakReference<HttpResponseHandler> mResponder;
 
-        ResponderHandler(ResponseHandler handler)
+        ResponderHandler(HttpResponseHandler handler)
         {
-            this.mResponder = new WeakReference<ResponseHandler>(handler);
+            this.mResponder = new WeakReference<HttpResponseHandler>(handler);
         }
 
         @Override
         public void handleMessage(Message msg)
         {
-            ResponseHandler handler = this.mResponder.get();
+            HttpResponseHandler handler = this.mResponder.get();
             if (null != handler)
             {
                 handler.handleMessage(msg);
@@ -233,7 +233,7 @@ public abstract class ResponseHandler implements IResponseHandler
                         mPool.returnBuf(buffer);
                 } catch (IOException e)
                 {
-                    Log.e(ResponseHandler.class.getName(), "Error occured when calling consumingContent", e);
+                    Log.e(HttpResponseHandler.class.getName(), "Error occured when calling consumingContent", e);
                 }
                 bytes.close();
             }
@@ -254,6 +254,7 @@ public abstract class ResponseHandler implements IResponseHandler
             if (null != msg)
             {
                 msg.what = responseMessageId;
+                if(null!=responseMessage)
                 msg.obj = responseMessage;
             }
         }

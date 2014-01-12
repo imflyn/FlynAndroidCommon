@@ -12,7 +12,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-public abstract class BitmapResponseHandler extends ResponseHandler
+public abstract class BitmapResponseHandler extends HttpResponseHandler
 {
     private final static String   TAG         = BitmapResponseHandler.class.getName();
     private final int             mMaxWidth;

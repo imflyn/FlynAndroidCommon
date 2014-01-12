@@ -15,7 +15,7 @@ import org.apache.http.HttpEntity;
 
 import android.text.TextUtils;
 
-public abstract class FileResponseHandler extends ResponseHandler
+public abstract class FileResponseHandler extends HttpResponseHandler
 {
 
     private static List<File> mFileList     = Collections.synchronizedList(new ArrayList<File>(5));

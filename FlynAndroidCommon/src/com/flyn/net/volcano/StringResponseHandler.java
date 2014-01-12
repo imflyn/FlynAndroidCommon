@@ -3,7 +3,7 @@ package com.flyn.net.volcano;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public abstract class StringResponseHandler extends ResponseHandler
+public abstract class StringResponseHandler extends HttpResponseHandler
 {
     public StringResponseHandler()
     {
