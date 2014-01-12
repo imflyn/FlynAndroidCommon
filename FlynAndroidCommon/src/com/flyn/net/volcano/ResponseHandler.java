@@ -101,7 +101,7 @@ public abstract class ResponseHandler implements IResponseHandler
 
     }
 
-    public void onProgress(int bytesWritten, int bvtesTotal, int speed)
+    public void onProgress(int bytesWritten, int bytesTotal, int speed)
     {
 
     }
