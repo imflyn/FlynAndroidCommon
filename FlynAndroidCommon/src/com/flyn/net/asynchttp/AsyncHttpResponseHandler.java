@@ -355,7 +355,7 @@ public abstract class AsyncHttpResponseHandler implements ResponseHandlerInterfa
                 break;
             case PROGRESS_MESSAGE:
                 response = (Object[]) message.obj;
-                if (response != null && response.length >= 2)
+                if (response != null && response.length >= 3)
                 {
                     try
                     {
