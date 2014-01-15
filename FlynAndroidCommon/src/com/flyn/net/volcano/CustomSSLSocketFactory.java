@@ -101,13 +101,7 @@ public class CustomSSLSocketFactory extends SSLSocketFactory
             e1.printStackTrace();
         } finally
         {
-            try
-            {
-                caInput.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            Utils.quickClose(caInput);
         }
 
         // Create a KeyStore containing our trusted CAs

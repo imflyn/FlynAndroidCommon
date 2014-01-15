@@ -146,17 +146,9 @@ public abstract class FileResponseHandler extends HttpResponseHandler
                 stopTimer();
                 if (null != this.mFile)
                     mFileList.remove(this.mFile);
-                if (null != accessFile)
-                {
-                    accessFile.close();
-                    accessFile = null;
-                }
-                if (null != inputStream)
-                {
-                    inputStream.close();
-                    inputStream = null;
-                }
-
+                
+                Utils.quickClose(accessFile);
+                Utils.quickClose(inputStream);
             }
 
         }

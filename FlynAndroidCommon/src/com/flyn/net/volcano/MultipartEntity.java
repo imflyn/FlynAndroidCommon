@@ -140,14 +140,8 @@ class MultipartEntity implements HttpEntity
 
         this.out.write(CR_LF);
         this.out.flush();
-        try
-        {
-            inputStream.close();
-        } catch (final IOException e)
-        {
-            // Not important, just log it
-            Log.w(TAG, "Cannot close input stream", e);
-        }
+        
+        Utils.quickClose(inputStream);
     }
 
     private byte[] createContentType(String type)
@@ -261,14 +255,8 @@ class MultipartEntity implements HttpEntity
             out.write(CR_LF);
             updateProgress(CR_LF.length);
             out.flush();
-            try
-            {
-                inputStream.close();
-                inputStream = null;
-            } catch (final IOException e)
-            {
-                Log.w(TAG, "Cannot close input stream", e);
-            }
+            
+            Utils.quickClose(inputStream);
         }
     }
 

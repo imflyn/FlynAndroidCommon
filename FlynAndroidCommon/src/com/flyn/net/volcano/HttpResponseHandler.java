@@ -235,7 +235,7 @@ public abstract class HttpResponseHandler implements IResponseHandler
                 {
                     Log.e(HttpResponseHandler.class.getName(), "Error occured when calling consumingContent", e);
                 }
-                bytes.close();
+                Utils.quickClose(bytes);
             }
         }
 
