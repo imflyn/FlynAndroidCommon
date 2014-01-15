@@ -2,6 +2,12 @@ package com.flyn.net.volcano;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+
+import org.apache.http.auth.AuthScope;
+import org.apache.http.client.CookieStore;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import android.content.Context;
 
@@ -17,6 +23,7 @@ public abstract class NetStack
     protected static int                        httpPort                        = 80;
     protected static int                        httpsPort                       = 443;
 
+    protected ExecutorService                   threadPool;
     protected final boolean                     fixNoHttpResponseException      = false;
     protected int                               maxConnections                  = DEFAULT_MAX_CONNETIONS;
     protected int                               timeout                         = DEFAULT_SOCKET_TIMEOUT;
@@ -26,7 +33,17 @@ public abstract class NetStack
 
     protected abstract RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs);
 
-    abstract RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
+    protected abstract RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
+
+    protected abstract RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
+
+    protected abstract RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler);
+
+    protected abstract RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
+
+    protected abstract RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler);
+
+    protected abstract RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler);
 
     public int getMaxConnections()
     {
@@ -62,11 +79,44 @@ public abstract class NetStack
             this.requestMap.remove(context);
         }
     }
+
+    /**
+     * Set it before request started
+     * 
+     * @param threadPool
+     */
+    public void setThreadPool(ThreadPoolExecutor threadPool)
+    {
+        this.threadPool = threadPool;
+    }
+
     public int timeOut()
     {
         return this.timeout;
     }
 
-  
+    public abstract void setCookieStore(CookieStore cookieStore);
+
+    public abstract void setEnableRedirects(final boolean enableRedirects);
+
+    public abstract void setUserAgent(String userAgent);
+
+    public abstract void setMaxConnections(int maxConnections);
+
+    public abstract void setTimeOut(int timeout);
+
+    public abstract void setProxy(String hostname, int port);
+
+    public abstract void setProxy(String hostname, int port, String username, String password);
+
+    public abstract void setSSLSocketFactory(SSLSocketFactory sslSocketFactory);
+
+    public abstract void setMaxRetriesAndTimeout(int retries, int timeout);
+
+    public abstract void setBasicAuth(String username, String password, AuthScope authScope);
+
+    public abstract void setBasicAuth(String username, String password);
+
+    public abstract void clearBasicAuth();
 
 }
