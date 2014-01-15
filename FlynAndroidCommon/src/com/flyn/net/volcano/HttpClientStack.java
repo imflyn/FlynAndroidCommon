@@ -69,9 +69,12 @@ public class HttpClientStack extends NetStack
     private final DefaultHttpClient httpClient;
     private final HttpContext       httpContext;
     private ExecutorService         threadPool;
-
+    
+    private long time=1;
+    
     public HttpClientStack()
     {
+        time=System.currentTimeMillis();
         BasicHttpParams httpParams = new BasicHttpParams();
         ConnManagerParams.setTimeout(httpParams, this.timeout);
         ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
@@ -289,6 +292,9 @@ public class HttpClientStack extends NetStack
         responseHandler.setRequestURI(uriRequest.getURI());
 
         Request request = new HttpClientRequest(client, httpContext, uriRequest, responseHandler);
+        
+            System.out.println("耗时:"+(System.currentTimeMillis()-time));
+            
         this.threadPool.submit(request);
         RequestFuture requestHandle = new RequestFuture(request);
 
