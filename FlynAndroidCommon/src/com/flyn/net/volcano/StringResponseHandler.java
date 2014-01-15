@@ -13,7 +13,7 @@ public abstract class StringResponseHandler extends HttpResponseHandler
     @Override
     protected void onSuccess(int statusCode, Map<String, String> headers, byte[] responseBody)
     {
-        String contentType = HttpHeaderParser.parseCharset(headers);
+        String contentType = Utils.parseCharset(headers);
         try
         {
             onSuccess(statusCode, new String(responseBody, contentType));

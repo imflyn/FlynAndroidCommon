@@ -26,7 +26,6 @@ import android.util.Log;
 
 /**
  * 简洁版apache-mine中的MultipartEntity,省去添加额外jar包的空间
- * 
  * @author V
  * 
  */

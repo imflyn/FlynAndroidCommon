@@ -69,25 +69,6 @@ public abstract class NetStack
         }
     }
 
-    public static String getUrlWithParams(boolean shouldEncodeUrl, String url, RequestParams params)
-    {
-        if (shouldEncodeUrl)
-        {
-            url = url.replace(" ", "%20");
-        }
-        if (null != params)
-        {
-            String paramString = params.getParamString();
-            if (!url.contains("?"))
-            {
-                url += "?" + paramString;
-            } else
-            {
-                url += "&" + paramString;
-            }
-        }
-        return url;
-    }
 
     static class InflatingEntity extends HttpEntityWrapper
     {

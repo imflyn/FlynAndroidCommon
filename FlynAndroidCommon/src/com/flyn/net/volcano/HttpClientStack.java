@@ -199,7 +199,7 @@ public class HttpClientStack extends NetStack
 
     private RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-        HttpGet request = new HttpGet(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        HttpGet request = new HttpGet(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
 
@@ -220,7 +220,7 @@ public class HttpClientStack extends NetStack
 
     private RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
-        HttpDelete request = new HttpDelete(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        HttpDelete request = new HttpDelete(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
@@ -240,7 +240,7 @@ public class HttpClientStack extends NetStack
 
     private RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
-        HttpUriRequest request = new HttpHead(getUrlWithParams(this.isURLEncodingEnabled, url, params));
+        HttpUriRequest request = new HttpHead(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
         addHeaders(request, headers);
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
