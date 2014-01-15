@@ -1,6 +1,7 @@
 package com.flyn.net.volcano;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -40,6 +42,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -261,7 +264,6 @@ public class HttpClientStack extends NetStack
         }
     }
 
-    @SuppressWarnings("serial")
     @Override
     public RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
     {
@@ -276,6 +278,7 @@ public class HttpClientStack extends NetStack
 
         responseHandler.setRequestHeaders(new HashMap<String, String>()
         {
+            private static final long serialVersionUID = 1L;
             {
                 for (Header header : uriRequest.getAllHeaders())
                 {
@@ -359,11 +362,6 @@ public class HttpClientStack extends NetStack
 
     }
 
-    public int timeOut()
-    {
-        return this.timeout;
-    }
-
     public void setTimeOut(int timeout)
     {
         if (timeout < 1000)
@@ -444,4 +442,25 @@ public class HttpClientStack extends NetStack
         this.httpClient.getCredentialsProvider().clear();
     }
 
+    static class InflatingEntity extends HttpEntityWrapper
+    {
+
+        public InflatingEntity(HttpEntity wrapped)
+        {
+            super(wrapped);
+        }
+
+        @Override
+        public InputStream getContent() throws IOException
+        {
+            return new GZIPInputStream(this.wrappedEntity.getContent());
+        }
+
+        @Override
+        public long getContentLength()
+        {
+            return -1;
+        }
+
+    }
 }
