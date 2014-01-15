@@ -1,5 +1,8 @@
 package com.flyn.net.volcano;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 
 import org.apache.http.auth.AuthScope;
@@ -10,19 +13,53 @@ import android.content.Context;
 
 public class HttpUrlStack extends NetStack
 {
+    private static final String TAG = HttpUrlStack.class.getName();
+    private HttpURLConnection   connection;
+
     public HttpUrlStack()
     {
-        
     }
 
     @Override
-    protected RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
+    protected RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    {
+        try
+        {
+            URL requestURL = new URL(url);
+            this.connection=(HttpURLConnection) requestURL.openConnection();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         return null;
     }
 
     @Override
-    protected RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    protected RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    {
+        return null;
+    }
+
+    @Override
+    protected RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    {
+        return null;
+    }
+
+    @Override
+    protected RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    {
+        return null;
+    }
+
+    @Override
+    protected RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
     {
         return null;
     }
@@ -97,36 +134,6 @@ public class HttpUrlStack extends NetStack
     public void clearBasicAuth()
     {
 
-    }
-
-    @Override
-    protected RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
-    {
-        return null;
-    }
-
-    @Override
-    protected RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
-    {
-        return null;
-    }
-
-    @Override
-    protected RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
-    {
-        return null;
-    }
-
-    @Override
-    protected RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
-    {
-        return null;
-    }
-
-    @Override
-    protected RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
-    {
-        return null;
     }
 
 }

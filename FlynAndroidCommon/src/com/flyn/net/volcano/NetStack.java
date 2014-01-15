@@ -1,13 +1,18 @@
 package com.flyn.net.volcano;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.client.CookieStore;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+
+import com.flyn.net.volcano.Request.Method;
 
 import android.content.Context;
 
@@ -19,6 +24,7 @@ public abstract class NetStack
     protected static final int                  DEFAULT_RETRY_SLEEP_TIME_MILLIS = 1500;
     protected static final int                  DEFAULT_SOCKET_BUFFER_SIZE      = 8192;
     protected static final String               HEADER_ACCEPT_ENCODING          = "Accept-Encoding";
+    protected static final String               HEADER_CONTENT_TYPE             = "Content-Type";
     protected static final String               ENCODING_GZIP                   = "gzip";
     protected static int                        httpPort                        = 80;
     protected static int                        httpsPort                       = 443;
@@ -30,10 +36,20 @@ public abstract class NetStack
     protected Map<Context, List<RequestFuture>> requestMap;
     protected Map<String, String>               httpHeaderMap;
     protected boolean                           isURLEncodingEnabled            = true;
+    
+    public NetStack()
+    {
+        this.threadPool = Executors.newCachedThreadPool();
+        this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
+        this.httpHeaderMap = new HashMap<String, String>();
+    }
+    
+    public NetStack(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
+    {
+        
+    }
 
     protected abstract RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs);
-
-    protected abstract RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
 
     protected abstract RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
 
@@ -44,6 +60,33 @@ public abstract class NetStack
     protected abstract RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler);
 
     protected abstract RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler);
+
+    public RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
+    {
+
+        RequestFuture requestHandle = null;
+        switch (method)
+        {
+            case Method.GET:
+                requestHandle = get(context, url, headers, params, responseHandler);
+                break;
+            case Method.POST:
+                requestHandle = post(context, url, headers, params, contentType, responseHandler);
+                break;
+            case Method.PUT:
+                requestHandle = put(context, url, headers, params, contentType, responseHandler);
+                break;
+            case Method.DELETE:
+                requestHandle = delete(context, url, headers, params, responseHandler);
+                break;
+            case Method.HEAD:
+                requestHandle = head(context, url, headers, params, contentType, responseHandler);
+                break;
+            default:
+                throw new IllegalStateException("Unknown request method.");
+        }
+        return requestHandle;
+    }
 
     public int getMaxConnections()
     {

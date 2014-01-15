@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.WeakHashMap;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.zip.GZIPInputStream;
 
@@ -58,8 +56,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.flyn.net.volcano.Request.Method;
-
 public class HttpClientStack extends NetStack
 {
 
@@ -70,6 +66,7 @@ public class HttpClientStack extends NetStack
 
     public HttpClientStack()
     {
+        super();
         BasicHttpParams httpParams = new BasicHttpParams();
         ConnManagerParams.setTimeout(httpParams, this.timeout);
         ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
@@ -87,9 +84,6 @@ public class HttpClientStack extends NetStack
 
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(httpParams, getDefaultSchemeRegistry());
 
-        this.threadPool = Executors.newCachedThreadPool();
-        this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
-        this.httpHeaderMap = new HashMap<String, String>();
         this.httpContext = new SyncBasicHttpContext(new BasicHttpContext());
         this.httpClient = new DefaultHttpClient(cm, httpParams);
 
@@ -170,34 +164,6 @@ public class HttpClientStack extends NetStack
         return schemeRegistry;
     }
 
-    @Override
-    public RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
-    {
-
-        RequestFuture requestHandle = null;
-        switch (method)
-        {
-            case Method.GET:
-                requestHandle = get(context, url, headers, params, responseHandler);
-                break;
-            case Method.POST:
-                requestHandle = post(context, url, headers, params, contentType, responseHandler);
-                break;
-            case Method.PUT:
-                requestHandle = put(context, url, headers, params, contentType, responseHandler);
-                break;
-            case Method.DELETE:
-                requestHandle = delete(context, url, headers, params, responseHandler);
-                break;
-            case Method.HEAD:
-                requestHandle = head(context, url, headers, params, contentType, responseHandler);
-                break;
-            default:
-                throw new IllegalStateException("Unknown request method.");
-        }
-        return requestHandle;
-    }
-
     protected RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpGet request = new HttpGet(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
@@ -271,7 +237,7 @@ public class HttpClientStack extends NetStack
 
         if (!TextUtils.isEmpty(contentType))
         {
-            uriRequest.setHeader("ContentType", contentType);
+            uriRequest.setHeader(HEADER_CONTENT_TYPE, contentType);
         }
 
         responseHandler.setRequestHeaders(new HashMap<String, String>()
@@ -330,7 +296,6 @@ public class HttpClientStack extends NetStack
 
     /**
      * Set it befor request started
-     * 
      * @param threadPool
      */
     public void setThreadPool(ThreadPoolExecutor threadPool)
