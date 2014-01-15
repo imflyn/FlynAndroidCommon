@@ -33,11 +33,11 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-public class HttpClientSSLSocketFactory extends SSLSocketFactory
+public class HttpclientSSLSocketFactory extends SSLSocketFactory
 {
     private SSLContext sslContext = SSLContext.getInstance("TLS");
 
-    public HttpClientSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException
+    public HttpclientSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException
     {
         super(truststore);
         this.sslContext.init(null, new TrustManager[] { new X509TrustManager()
@@ -133,7 +133,7 @@ public class HttpClientSSLSocketFactory extends SSLSocketFactory
         SSLSocketFactory socketFactory;
         try
         {
-            socketFactory = new HttpClientSSLSocketFactory(getKeystore());
+            socketFactory = new HttpclientSSLSocketFactory(getKeystore());
             socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         } catch (Throwable t)
         {
@@ -148,7 +148,7 @@ public class HttpClientSSLSocketFactory extends SSLSocketFactory
 
         try
         {
-            SSLSocketFactory sf = new HttpClientSSLSocketFactory(keyStore);
+            SSLSocketFactory sf = new HttpclientSSLSocketFactory(keyStore);
             SchemeRegistry registry = new SchemeRegistry();
             registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
             registry.register(new Scheme("https", sf, 443));

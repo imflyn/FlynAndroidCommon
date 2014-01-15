@@ -160,7 +160,7 @@ public class HttpClientStack extends NetStack
 
         SSLSocketFactory sslSocketFactory;
         if (this.fixNoHttpResponseException)
-            sslSocketFactory = HttpClientSSLSocketFactory.getFixedSocketFactory();
+            sslSocketFactory = HttpclientSSLSocketFactory.getFixedSocketFactory();
         else
             sslSocketFactory = SSLSocketFactory.getSocketFactory();
 
