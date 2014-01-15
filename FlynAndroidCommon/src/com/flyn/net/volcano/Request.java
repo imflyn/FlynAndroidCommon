@@ -90,7 +90,7 @@ public abstract class Request implements Runnable
 
     public interface Method
     {
-        int DEPRECATED_GET_OR_POST = -1;
+        int DEPRECATED_GET_OR_POST = -1; // haven't be used
         int GET                    = 0;
         int POST                   = 1;
         int PUT                    = 2;

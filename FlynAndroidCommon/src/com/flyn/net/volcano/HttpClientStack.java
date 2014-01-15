@@ -265,7 +265,7 @@ public class HttpClientStack extends NetStack
     }
 
     @Override
-    public RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
+    protected RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs)
     {
         final DefaultHttpClient client = (DefaultHttpClient) objs[0];
         final HttpContext httpContext = (HttpContext) objs[1];
@@ -329,6 +329,10 @@ public class HttpClientStack extends NetStack
         this.httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
     }
 
+    /**
+     * Set it befor request started
+     * @param threadPool
+     */
     public void setThreadPool(ThreadPoolExecutor threadPool)
     {
         this.threadPool = threadPool;

@@ -24,7 +24,7 @@ public abstract class NetStack
     protected Map<String, String>               httpHeaderMap;
     protected boolean                           isURLEncodingEnabled            = true;
 
-    abstract RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs);
+    protected abstract RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs);
 
     abstract RequestFuture makeRequest(int method, Context context, String contentType, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler);
 
