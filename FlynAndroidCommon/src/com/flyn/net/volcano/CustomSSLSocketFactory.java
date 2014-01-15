@@ -34,7 +34,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 /**
- * 
+ * Maybe useful
  * @author V
  * 
  */

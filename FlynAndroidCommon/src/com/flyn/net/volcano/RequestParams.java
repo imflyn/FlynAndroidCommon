@@ -15,7 +15,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.protocol.HTTP;
 
 /**
- * 装载http请求参数(可以是字符串或文件)的容器
+ * The container for  request parameters   
  * 
  * @author V
  * 

@@ -1,3 +1,6 @@
+/**
+ * This Code is taken from google's volley
+ */
 package com.flyn.net.volcano;
 
 import java.io.ByteArrayOutputStream;

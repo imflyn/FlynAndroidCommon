@@ -11,8 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 
 /**
- * HttpClient方法的请求参数容器
- * 
+ * The container for HttpClient request parameters   
  * @author V
  * 
  */

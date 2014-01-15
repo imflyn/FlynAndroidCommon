@@ -18,6 +18,12 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+
+/**
+ * Useing SharedPreferences to save Cookies
+ * @author V
+ *
+ */
 public class PersistentCookieStore implements CookieStore
 {
     private static final String                     TAG                = PersistentCookieStore.class.getName();

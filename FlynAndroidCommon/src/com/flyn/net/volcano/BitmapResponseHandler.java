@@ -114,7 +114,14 @@ public abstract class BitmapResponseHandler extends HttpResponseHandler
         }
 
     }
-
+    /**
+     * Get a resized dimension of bitmap
+     * @param maxPrimary
+     * @param maxSecondary
+     * @param actualPrimary
+     * @param actualSecondary
+     * @return
+     */
     private int getResizedDimension(int maxPrimary, int maxSecondary, int actualPrimary, int actualSecondary)
     {
         // If no dominant value at all, just return the actual.
