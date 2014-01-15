@@ -52,8 +52,8 @@ public class User
     private int                   preWifiStaticIp          = -1;
     private boolean               preWifiEnabled           = false;
 
-    LinkedList<RemoteUser>        connUsers                = new LinkedList();
-    LinkedList<RemoteUser>        scanUsers                = new LinkedList();
+    LinkedList<RemoteUser>        connUsers                = new LinkedList<RemoteUser>();
+    LinkedList<RemoteUser>        scanUsers                = new LinkedList<RemoteUser>();
 
     private Handler               handler                  = new Handler();
 

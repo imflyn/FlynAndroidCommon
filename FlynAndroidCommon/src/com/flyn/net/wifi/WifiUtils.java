@@ -349,7 +349,7 @@ public final class WifiUtils
             }
             return;
         }
-        List oldList = getConfiguration(sr, false);
+        List<WifiConfiguration>  oldList = getConfiguration(sr, false);
         if ((oldList != null) && (oldList.size() != 0))
         {
             WifiConfiguration old = (WifiConfiguration) oldList.get(0);

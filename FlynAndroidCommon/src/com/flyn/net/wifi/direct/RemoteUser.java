@@ -9,7 +9,7 @@ public class RemoteUser
     private String               name      = null;
     private String               ip        = null;
     private SelectionKey         key       = null;
-    private List<TransferEntity> transfers = new LinkedList();
+    private List<TransferEntity> transfers = new LinkedList<TransferEntity>();
     private long                 refreshTime;
     int                          state     = 1;
 

@@ -54,6 +54,8 @@ public class ReenableAllApsWhenNetworkStateChanged
                                                             case FAILED:
                                                             case IDLE:
                                                             case OBTAINING_IPADDR:
+                                                            default:
+                                                                break;
                                                         }
                                                         if (!ReenableAllApsWhenNetworkStateChanged.BackgroundService.this.mReenabled)
                                                         {

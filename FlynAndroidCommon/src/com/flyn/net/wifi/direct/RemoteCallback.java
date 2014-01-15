@@ -38,7 +38,7 @@ public abstract class RemoteCallback implements Runnable
 {
     Context                appContext  = null;
     private Selector       selector    = null;
-    private List<Runnable> runnables   = new LinkedList();
+    private List<Runnable> runnables   = new LinkedList<Runnable>();
     private long           lastRunTime = 0L;
     private Handler        handler     = new Handler();
 
@@ -106,7 +106,7 @@ public abstract class RemoteCallback implements Runnable
             }
             if (readyCount <= 0)
                 continue;
-            Set keys = null;
+            Set<SelectionKey> keys = null;
             try
             {
                 keys = this.selector.selectedKeys();
@@ -115,7 +115,7 @@ public abstract class RemoteCallback implements Runnable
                 Logger.logW(RemoteCallback.class, "running has been stopped.", e);
                 return;
             }
-            Iterator iter = keys.iterator();
+            Iterator<SelectionKey> iter = keys.iterator();
             while (iter.hasNext())
             {
                 try
@@ -238,7 +238,7 @@ public abstract class RemoteCallback implements Runnable
                             if (dc.socket().getLocalPort() != 7002)
                                 continue;
                             String ip = ((InetSocketAddress) addr).getAddress().getHostAddress();
-                            List localIps = getLocalIpAddress();
+                            List<String> localIps = getLocalIpAddress();
                             if (localIps.contains(ip))
                                 continue;
                             buff.flip();
@@ -255,7 +255,7 @@ public abstract class RemoteCallback implements Runnable
                             curUser.setIp(ip);
                             curUser.setRefreshTime(System.currentTimeMillis());
                             curUser.state = 1;
-                            List users = ((User) objs[0]).scanUsers;
+                            List<RemoteUser> users = ((User) objs[0]).scanUsers;
                             synchronized (users)
                             {
                                 users.remove(curUser);
@@ -419,10 +419,12 @@ public abstract class RemoteCallback implements Runnable
                                                     RemoteCallback.this.onTransferProgress(transfer, 0);
                                                 }
                                             });
+                                            FileOutputStream outputStream = null;
                                             try
                                             {
                                                 File file = new File(transfer.getSavingPath());
                                                 File parentPath = file.getParentFile();
+                                                outputStream = new FileOutputStream(file);
                                                 if (parentPath != null)
                                                 {
                                                     if ((!parentPath.exists()) && (!parentPath.mkdirs()))
@@ -430,8 +432,8 @@ public abstract class RemoteCallback implements Runnable
                                                     if (TelephoneMgr.getFileStorageAvailableSize(parentPath) < transfer.getSize())
                                                         throw new SpaceNotEnoughException();
                                                 }
-                                                key.attach(new Object[] { queryUser, "transfer_progress", transfer, ByteBuffer.allocate(2048), new FileOutputStream(file).getChannel(),
-                                                        Integer.valueOf(0), Integer.valueOf(0) });
+                                                key.attach(new Object[] { queryUser, "transfer_progress", transfer, ByteBuffer.allocate(2048), outputStream.getChannel(), Integer.valueOf(0),
+                                                        Integer.valueOf(0) });
                                             } catch (final IOException e)
                                             {
                                                 try
@@ -452,6 +454,16 @@ public abstract class RemoteCallback implements Runnable
                                                         RemoteCallback.this.onTransferFailed(transfer, e);
                                                     }
                                                 });
+                                            } finally
+                                            {
+                                                if (null != outputStream)
+                                                    try
+                                                    {
+                                                        outputStream.close();
+                                                    } catch (IOException e)
+                                                    {
+                                                        e.printStackTrace();
+                                                    }
                                             }
                                         }
                                     }
@@ -735,6 +747,7 @@ public abstract class RemoteCallback implements Runnable
                             } else if (objs[1].equals("transfer_send"))
                             {
                                 TransferEntity transfer = null;
+                                FileInputStream inputStream = null;
                                 try
                                 {
                                     ByteBuffer sendBuff = null;
@@ -763,7 +776,8 @@ public abstract class RemoteCallback implements Runnable
                                         key.attach(new Object[] { objs[0], "transfer_send", sendBuff, transfer });
                                         continue;
                                     }
-                                    key.attach(new Object[] { objs[0], "transfer_progress", transfer, new FileInputStream(transfer.getSendPath()).getChannel(), Integer.valueOf(0), Integer.valueOf(0) });
+                                    inputStream = new FileInputStream(transfer.getSendPath());
+                                    key.attach(new Object[] { objs[0], "transfer_progress", transfer, inputStream.getChannel(), Integer.valueOf(0), Integer.valueOf(0) });
                                 } catch (final IOException e)
                                 {
                                     try
@@ -785,6 +799,16 @@ public abstract class RemoteCallback implements Runnable
                                             RemoteCallback.this.onTransferFailed(transferPoint, e);
                                         }
                                     });
+                                } finally
+                                {
+                                    if (null != inputStream)
+                                        try
+                                        {
+                                            inputStream.close();
+                                        } catch (IOException e)
+                                        {
+                                            e.printStackTrace();
+                                        }
                                 }
                             } else
                             {
