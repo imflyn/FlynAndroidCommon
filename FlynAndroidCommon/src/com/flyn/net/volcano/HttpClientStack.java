@@ -67,8 +67,7 @@ public class HttpClientStack extends NetStack
 
     private final DefaultHttpClient httpClient;
     private final HttpContext       httpContext;
-    
-    
+
     public HttpClientStack()
     {
         BasicHttpParams httpParams = new BasicHttpParams();
@@ -288,7 +287,7 @@ public class HttpClientStack extends NetStack
         responseHandler.setRequestURI(uriRequest.getURI());
 
         Request request = new HttpClientRequest(client, httpContext, uriRequest, responseHandler);
-        
+
         this.threadPool.submit(request);
         RequestFuture requestHandle = new RequestFuture(request);
 
@@ -331,6 +330,7 @@ public class HttpClientStack extends NetStack
 
     /**
      * Set it befor request started
+     * 
      * @param threadPool
      */
     public void setThreadPool(ThreadPoolExecutor threadPool)
