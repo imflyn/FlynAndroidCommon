@@ -23,15 +23,18 @@ public abstract class BaseActivity extends Activity implements UpdataInterface
         setContentView(layoutId());
         initView();
         setListener();
-        this.asynctask.execute(getPreData());
     }
 
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
+        
+        if(this.asynctask!=null&&!this.asynctask.isCancelled())
         this.asynctask.cancel(true);
+        
         ViewUtils.recycleViewGroupAndChildViews(this.viewList, true);
+        this.viewList.clear();
     }
 
     protected abstract int layoutId();
@@ -40,13 +43,21 @@ public abstract class BaseActivity extends Activity implements UpdataInterface
 
     protected abstract void setListener();
 
-    protected abstract Object[] getPreData();
-
-    protected View getViewById(int id)
+    protected final View getViewById(int id)
     {
         View view = findViewById(id);
         this.viewList.add((ViewGroup) view);
         return view;
+    }
+
+    protected final void doLoad(Object... objs)
+    {
+        this.asynctask.execute(objs);
+    }
+
+    protected final void doLoad()
+    {
+        this.asynctask.execute();
     }
 
     protected Object onLoad(Object... objs)
@@ -59,9 +70,15 @@ public abstract class BaseActivity extends Activity implements UpdataInterface
         return null;
     }
 
-    protected void onLoadFinish(Object[] objs)
+    protected void onLoadFinish(Object curResult)
     {
     };
+    
+    protected void onLoadFail(Exception e)
+    {
+        
+    }
+    
 
     private final WeakAsyncTask<Object, Object, Object> asynctask = new WeakAsyncTask<Object, Object, Object>(this)
                                                                   {
@@ -69,7 +86,6 @@ public abstract class BaseActivity extends Activity implements UpdataInterface
                                                                       protected Object doInBackgroundImpl(Object... objs) throws Exception
                                                                       {
                                                                           if (null != objs && objs.length > 1)
-
                                                                               return onLoad(objs);
                                                                           else
                                                                               return onLoad();
@@ -79,7 +95,7 @@ public abstract class BaseActivity extends Activity implements UpdataInterface
                                                                       protected void onPostExecute(Object[] objs, Object curResult)
                                                                       {
                                                                           super.onPostExecute(objs, curResult);
-                                                                          onLoadFinish(objs);
+                                                                          onLoadFinish(curResult);
                                                                       }
 
                                                                       @Override
