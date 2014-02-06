@@ -1,12 +1,21 @@
 package com.greatwall.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.greatwall.ui.interfaces.UpdataInterface;
+import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
-public abstract class BaseActivity extends Activity
+public abstract class BaseActivity extends Activity implements UpdataInterface
 {
+    private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -17,6 +26,14 @@ public abstract class BaseActivity extends Activity
         this.asynctask.execute(getPreData());
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        this.asynctask.cancel(true);
+        ViewUtils.recycleViewGroupAndChildViews(this.viewList, true);
+    }
+
     protected abstract int layoutId();
 
     protected abstract void initView();
@@ -24,6 +41,13 @@ public abstract class BaseActivity extends Activity
     protected abstract void setListener();
 
     protected abstract Object[] getPreData();
+
+    protected View getViewById(int id)
+    {
+        View view = findViewById(id);
+        this.viewList.add((ViewGroup) view);
+        return view;
+    }
 
     protected Object onLoad(Object... objs)
     {
