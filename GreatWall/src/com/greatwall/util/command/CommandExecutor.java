@@ -52,13 +52,13 @@ public class CommandExecutor
      *            响应监听器
      * @throws RuntimeException
      */
-    public void enqueueCommand(String commandKey, Request request, abstractResponseListener listener) throws RuntimeException
+    public void enqueueCommand(String commandKey, Request request, AbstractResponseListener listener) throws RuntimeException
     {
         final ICommand cmd = getCommand(commandKey);
         enqueueCommand(cmd, request, listener);
     }
 
-    public void enqueueCommand(ICommand command, Request request, abstractResponseListener listener) throws RuntimeException
+    public void enqueueCommand(ICommand command, Request request, AbstractResponseListener listener) throws RuntimeException
     {
         if (command != null)
         {

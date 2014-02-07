@@ -4,7 +4,7 @@ package com.greatwall.util.command;
  * @Title IResponseListener
  * @Description IResponseListener是数据返回的一个监听器
  */
-public abstract class abstractResponseListener
+public abstract class AbstractResponseListener
 {
 
     abstract void onSuccess(Response response);

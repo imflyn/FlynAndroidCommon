@@ -17,9 +17,9 @@ public interface ICommand
 
     void execute();
 
-    abstractResponseListener getResponseListener();
+    AbstractResponseListener getResponseListener();
 
-    void setResponseListener(abstractResponseListener listener);
+    void setResponseListener(AbstractResponseListener listener);
 
     void setTerminated(boolean terminated);
 

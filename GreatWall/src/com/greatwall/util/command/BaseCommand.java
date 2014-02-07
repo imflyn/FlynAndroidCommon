@@ -5,7 +5,7 @@ public abstract class BaseCommand implements ICommand
 {
     private Request           mRequest;
     private Response          mResponse;
-    private abstractResponseListener mResponseListener;
+    private AbstractResponseListener mResponseListener;
     private boolean           mTerminated;
 
     @Override
@@ -33,13 +33,13 @@ public abstract class BaseCommand implements ICommand
     }
 
     @Override
-    public abstractResponseListener getResponseListener()
+    public AbstractResponseListener getResponseListener()
     {
         return mResponseListener;
     }
 
     @Override
-    public void setResponseListener(abstractResponseListener responseListener)
+    public void setResponseListener(AbstractResponseListener responseListener)
     {
         this.mResponseListener = responseListener;
     }

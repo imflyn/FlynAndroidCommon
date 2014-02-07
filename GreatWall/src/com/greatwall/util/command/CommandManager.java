@@ -3,7 +3,7 @@ package com.greatwall.util.command;
 import android.content.Context;
 
 
-public class CommandManager extends abstractResponseListener
+public class CommandManager extends AbstractResponseListener
 {
     private CommandExecutor mCommandExecutor;
 
@@ -35,7 +35,7 @@ public class CommandManager extends abstractResponseListener
         mCommandExecutor.unregisterCommand(commandKey);
     }
 
-    public void doCommand(String commandKey, Request request, abstractResponseListener listener, boolean record, boolean resetStack)
+    public void doCommand(String commandKey, Request request, AbstractResponseListener listener, boolean record, boolean resetStack)
     {
         if (listener != null)
         {
