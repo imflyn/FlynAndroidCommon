@@ -16,7 +16,7 @@ public abstract class Command extends BaseCommand
     protected final static int command_failure = 3;
     protected final static int command_success = 4;
     protected final static int command_finish  = 5;
-    private IResponseListener  listener;
+    private abstractResponseListener  listener;
     private final Handler      handler         = new Handler(Looper.getMainLooper())
                                                {
                                                    @Override
