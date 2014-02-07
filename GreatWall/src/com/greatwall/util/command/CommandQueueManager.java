@@ -55,7 +55,7 @@ public final class CommandQueueManager
             }
         });
     }
-    
+
     public void dequeue(ICommand cmd)
     {
         this.mQueue.enqueue(cmd);

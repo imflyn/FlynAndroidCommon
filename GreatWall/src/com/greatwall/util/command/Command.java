@@ -106,7 +106,7 @@ public abstract class Command extends BaseCommand
     protected void sendMessage(int state)
     {
         this.mListener = getResponseListener();
-        if (this.mListener != null&&!getRequest().isCanceled())
+        if (this.mListener != null && !getRequest().isCanceled())
             this.mHandler.sendEmptyMessage(state);
     }
 

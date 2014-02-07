@@ -6,9 +6,9 @@ import java.lang.ref.WeakReference;
 public class Response implements Serializable
 {
 
-    private static final long     serialVersionUID = 1L;
-    private Object                tag;
-    private WeakReference<Object> data;
+    private static final long serialVersionUID = 1L;
+    private Object            tag;
+    private Object            data;
 
     public Response()
     {
@@ -17,13 +17,13 @@ public class Response implements Serializable
 
     public Response(Object data)
     {
-        this.data = new WeakReference<Object>(data);
+        this.data = data;
     }
 
     public Response(Object tag, Object data)
     {
         this.tag = tag;
-        this.data = new WeakReference<Object>(data);
+        this.data = data;
     }
 
     public Object getTag()
@@ -38,7 +38,7 @@ public class Response implements Serializable
 
     public Object getData()
     {
-        return this.data.get();
+        return this.data;
     }
 
     public void setData(Object data)

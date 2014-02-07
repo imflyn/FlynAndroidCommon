@@ -42,7 +42,6 @@ public class CommandExecutor
             CommandQueueManager.getInstance().enqueue(command);
         }
     }
-  
 
     public void enqueueCommand(ICommand command, Request request)
     {
@@ -53,12 +52,11 @@ public class CommandExecutor
     {
         enqueueCommand(command, null);
     }
-    
+
     public void cancelCommand(Class<? extends ICommand> cmdClass, Request request)
     {
-        
+
     }
-    
 
     private ICommand getCommand(Class<? extends ICommand> cmdClass) throws CommandException
     {

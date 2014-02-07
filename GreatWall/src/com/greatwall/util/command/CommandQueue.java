@@ -10,7 +10,7 @@ public class CommandQueue
     {
         this.mQueue.add(cmd);
     }
-    
+
     public ICommand getNextCommand()
     {
         ICommand cmd = null;

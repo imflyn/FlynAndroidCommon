@@ -5,10 +5,10 @@ import java.lang.ref.WeakReference;
 
 public class Request implements Serializable
 {
-    private static final long     serialVersionUID = 1L;
-    private Object                tag;
-    private WeakReference<Object> data;
-    private  boolean mIsCancel;
+    private static final long serialVersionUID = 1L;
+    private Object            tag;
+    private Object            data;
+    private boolean           mIsCancel;
 
     public Request()
     {
@@ -38,17 +38,17 @@ public class Request implements Serializable
 
     public Object getData()
     {
-        return this.data.get();
+        return this.data;
     }
 
     public void setData(Object data)
     {
-        this.data = new WeakReference<Object>(data);
+        this.data = data;
     }
-    
+
     public void cancel()
     {
-        this.mIsCancel=true;
+        this.mIsCancel = true;
     }
 
     public final boolean isCanceled()
@@ -56,6 +56,4 @@ public class Request implements Serializable
         return mIsCancel;
     }
 
-    
-    
 }

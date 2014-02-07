@@ -1,46 +1,48 @@
 package com.greatwall.util.command;
 
+import java.lang.ref.WeakReference;
+
 public abstract class BaseCommand implements ICommand
 {
-    private Request                  mRequest;
-    private Response                 mResponse;
-    private AbstractResponseListener mResponseListener;
-    private boolean                  mTerminated;
+    private WeakReference<Request>                  mRequest;
+    private WeakReference<Response>                 mResponse;
+    private WeakReference<AbstractResponseListener> mResponseListener;
+    private boolean                                 mTerminated;
 
     @Override
     public Request getRequest()
     {
-        return this.mRequest;
+        return this.mRequest.get();
     }
 
     @Override
     public void setRequest(Request request)
     {
-        this.mRequest = request;
+        this.mRequest = new WeakReference<Request>(request);
     }
 
     @Override
     public Response getResponse()
     {
-        return this.mResponse;
+        return this.mResponse.get();
     }
 
     @Override
     public void setResponse(Response response)
     {
-        this.mResponse = response;
+        this.mResponse = new WeakReference<Response>(response);
     }
 
     @Override
     public AbstractResponseListener getResponseListener()
     {
-        return this.mResponseListener;
+        return this.mResponseListener.get();
     }
 
     @Override
     public void setResponseListener(AbstractResponseListener responseListener)
     {
-        this.mResponseListener = responseListener;
+        this.mResponseListener = new WeakReference<AbstractResponseListener>(responseListener);
     }
 
     @Override
