@@ -1,46 +1,87 @@
 package com.greatwall.util.command;
 
+import java.lang.ref.WeakReference;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-
 public abstract class Command extends BaseCommand
 {
-    protected final static int command_start   = 1;
-    protected final static int command_runting = 2;
-    protected final static int command_failure = 3;
-    protected final static int command_success = 4;
-    protected final static int command_finish  = 5;
-    private AbstractResponseListener  listener;
-    private final Handler      handler         = new Handler(Looper.getMainLooper())
-                                               {
-                                                   @Override
-                                                   public void handleMessage(Message msg)
-                                                   {
-                                                       switch (msg.what)
-                                                       {
-                                                           case command_start:
-                                                               listener.onStart();
-                                                               break;
-                                                           case command_runting:
-                                                               listener.onRuning(getResponse());
-                                                               break;
-                                                           case command_success:
-                                                               listener.onSuccess(getResponse());
-                                                               break;
-                                                           case command_failure:
-                                                               listener.onFailure(getResponse());
-                                                               break;
-                                                           case command_finish:
-                                                               listener.onFinish();
-                                                               break;
-                                                           default:
-                                                               break;
-                                                       }
-                                                   };
+    private final static int         COMMAND_START    = 1;
+    private final static int         COMMAND_RUNNTING = 2;
+    private final static int         COMMAND_FAILURE  = 3;
+    private final static int         COMMAND_SUCCESS  = 4;
+    private final static int         COMMAND_FINISH   = 5;
 
-                                               };
+    private AbstractResponseListener mListener;
+    private Handler                  mHandler;
+
+    public Command()
+    {
+        postRunnable();
+    }
+
+    protected void postRunnable()
+    {
+        boolean missingLooper = null == Looper.getMainLooper();
+        if (missingLooper)
+        {
+            Looper.prepare();
+        }
+        if (null == this.mHandler)
+        {
+            this.mHandler = new ResponderHandler(this);
+        }
+        if (missingLooper)
+        {
+            Looper.loop();
+        }
+    }
+
+    private static class ResponderHandler extends Handler
+    {
+        private final WeakReference<Command> mResponder;
+
+        ResponderHandler(Command service)
+        {
+            this.mResponder = new WeakReference<Command>(service);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            Command service = this.mResponder.get();
+            if (null != service)
+            {
+                service.handleMessage(msg);
+            }
+        }
+    }
+
+    private void handleMessage(Message msg)
+    {
+        switch (msg.what)
+        {
+            case COMMAND_START:
+                this.mListener.onStart();
+                break;
+            case COMMAND_RUNNTING:
+                this.mListener.onRuning(getResponse());
+                break;
+            case COMMAND_SUCCESS:
+                this.mListener.onSuccess(getResponse());
+                break;
+            case COMMAND_FAILURE:
+                this.mListener.onFailure(getResponse());
+                break;
+            case COMMAND_FINISH:
+                this.mListener.onFinish();
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public final void execute()
@@ -64,16 +105,16 @@ public abstract class Command extends BaseCommand
 
     protected void sendMessage(int state)
     {
-        listener = getResponseListener();
-        if (listener != null)
+        this.mListener = getResponseListener();
+        if (this.mListener != null)
         {
-            handler.sendEmptyMessage(state);
+            this.mHandler.sendEmptyMessage(state);
         }
     }
 
     public void sendStartMessage()
     {
-        sendMessage(command_start);
+        sendMessage(COMMAND_START);
     }
 
     public void sendSuccessMessage(Object object)
@@ -81,7 +122,7 @@ public abstract class Command extends BaseCommand
         Response response = new Response();
         response.setData(object);
         setResponse(response);
-        sendMessage(command_success);
+        sendMessage(COMMAND_SUCCESS);
     }
 
     public void sendFailureMessage(Object object)
@@ -89,7 +130,7 @@ public abstract class Command extends BaseCommand
         Response response = new Response();
         response.setData(object);
         setResponse(response);
-        sendMessage(command_failure);
+        sendMessage(COMMAND_FAILURE);
     }
 
     public void sendRuntingMessage(Object object)
@@ -97,11 +138,11 @@ public abstract class Command extends BaseCommand
         Response response = new Response();
         response.setData(object);
         setResponse(response);
-        sendMessage(command_runting);
+        sendMessage(COMMAND_RUNNTING);
     }
 
     public void sendFinishMessage()
     {
-        sendMessage(command_finish);
+        sendMessage(COMMAND_FINISH);
     }
 }
