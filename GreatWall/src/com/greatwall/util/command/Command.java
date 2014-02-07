@@ -19,7 +19,7 @@ public abstract class Command extends BaseCommand
 
     public Command()
     {
-        postRunnable();
+        postRunnable( );
     }
 
     protected void postRunnable()
