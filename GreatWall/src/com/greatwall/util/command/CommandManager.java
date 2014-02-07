@@ -19,7 +19,7 @@ public class CommandManager extends AbstractResponseListener
     {
         if (command != null)
         {
-            mCommandExecutor.registerCommand(commandKey, command);
+            this.mCommandExecutor.registerCommand(commandKey, command);
         }
     }
 
@@ -32,7 +32,7 @@ public class CommandManager extends AbstractResponseListener
     public void unregisterCommand(String commandKey)
     {
 
-        mCommandExecutor.unregisterCommand(commandKey);
+        this.  mCommandExecutor.unregisterCommand(commandKey);
     }
 
     public void doCommand(String commandKey, Request request, AbstractResponseListener listener, boolean record, boolean resetStack)

@@ -1,16 +1,12 @@
 package com.greatwall.util.command;
 
-/**
- * @Title TACommandQueueManager
- * @Description TACommandQueueManager是command队列的管理者
- */
 public final class CommandQueueManager
 {
     private static CommandQueueManager instance;
     private boolean                    initialized = false;
     private ThreadPool                 pool;
     private CommandQueue               queue;
-    private static final String        TAG         = "CommandQueueManager";
+    private static final String        TAG         = CommandQueueManager.class.getName();
 
     private CommandQueueManager()
     {
