@@ -8,8 +8,6 @@ public class Response implements Serializable
     private static final long serialVersionUID = 1L;
     private Object            tag;
     private Object            data;
-    private String            activityKey;
-    private int               activityKeyResID;
 
     public Response()
     {
@@ -42,24 +40,5 @@ public class Response implements Serializable
         this.data = data;
     }
 
-    public int getActivityKeyResID()
-    {
-        return activityKeyResID;
-    }
-
-    public void setActivityKeyResID(int activityKeyResID)
-    {
-        this.activityKeyResID = activityKeyResID;
-    }
-
-    public String getActivityKey()
-    {
-        return activityKey;
-    }
-
-    public void setActivityKey(String activityKey)
-    {
-        this.activityKey = activityKey;
-    }
 
 }
