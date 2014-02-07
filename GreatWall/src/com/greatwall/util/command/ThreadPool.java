@@ -7,9 +7,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThreadPool
 {
-    private ExecutorService   executor;
-    private volatile boolean  started = false;
-    private static ThreadPool instance;
+    private ExecutorService     mExecutor;
+    private volatile boolean    mStarted = false;
+    private static ThreadPool   instance;
+
+    private static final Object LOCK     = new Object();
 
     private ThreadPool()
     {
@@ -18,19 +20,25 @@ public class ThreadPool
 
     public static ThreadPool getInstance()
     {
-        if (instance == null)
+        synchronized (LOCK)
         {
-            instance = new ThreadPool();
-
+            if (instance == null)
+            {
+                synchronized (LOCK)
+                {
+                    instance = new ThreadPool();
+                }
+            }
         }
+
         return instance;
     }
 
     public void start()
     {
-        if (!started)
+        if (!this.mStarted)
         {
-            executor = Executors.newCachedThreadPool(new ThreadFactory()
+            this.mExecutor = Executors.newCachedThreadPool(new ThreadFactory()
             {
                 private final AtomicInteger mCount = new AtomicInteger(1);
 
@@ -41,22 +49,22 @@ public class ThreadPool
                 }
             });
 
-            started = true;
+            this.mStarted = true;
         }
     }
 
     public void execute(Runnable runnable)
     {
-        executor.execute(runnable);
+        this.mExecutor.execute(runnable);
     }
 
     public void shutdown()
     {
-        if (started)
+        if (this.mStarted)
         {
-            executor.shutdown();
-            executor = null;
-            started = false;
+            this.mExecutor.shutdown();
+            this.mExecutor = null;
+            this.mStarted = false;
         }
     }
 }

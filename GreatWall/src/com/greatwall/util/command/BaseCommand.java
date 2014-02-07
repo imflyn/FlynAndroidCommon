@@ -1,12 +1,11 @@
 package com.greatwall.util.command;
 
-
 public abstract class BaseCommand implements ICommand
 {
-    private Request           mRequest;
-    private Response          mResponse;
+    private Request                  mRequest;
+    private Response                 mResponse;
     private AbstractResponseListener mResponseListener;
-    private boolean           mTerminated;
+    private boolean                  mTerminated;
 
     @Override
     public Request getRequest()
@@ -35,7 +34,7 @@ public abstract class BaseCommand implements ICommand
     @Override
     public AbstractResponseListener getResponseListener()
     {
-        return mResponseListener;
+        return this.mResponseListener;
     }
 
     @Override

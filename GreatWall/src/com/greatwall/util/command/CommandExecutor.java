@@ -3,14 +3,15 @@ package com.greatwall.util.command;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
-
 public class CommandExecutor
 {
-    private final HashMap<String, Class<? extends ICommand>> commands    = new HashMap<String, Class<? extends ICommand>>();
 
-    private static final CommandExecutor                     instance    = new CommandExecutor();
-    private static final String                              TAG         = CommandExecutor.class.getName();
-    private boolean                                          initialized = false;
+    private static final String                              TAG          = CommandExecutor.class.getName();
+
+    private static final CommandExecutor                     instance     = new CommandExecutor();
+
+    private final HashMap<String, Class<? extends ICommand>> mCommandMap  = new HashMap<String, Class<? extends ICommand>>();
+    private boolean                                          mInitialized = false;
 
     public CommandExecutor()
     {
@@ -24,30 +25,18 @@ public class CommandExecutor
 
     public void ensureInitialized()
     {
-        if (!initialized)
+        if (!this.mInitialized)
         {
-            initialized = true;
+            this.mInitialized = true;
             CommandQueueManager.getInstance().initialize();
         }
     }
 
-    /** 所有命令终止或标记为结束 */
     public void terminateAll()
     {
 
     }
 
-    /**
-     * 命令入列
-     * 
-     * @param commandKey
-     *            命令ID
-     * @param request
-     *            提交的参数
-     * @param listener
-     *            响应监听器
-     * @throws RuntimeException
-     */
     public void enqueueCommand(String commandKey, Request request, AbstractResponseListener listener) throws RuntimeException
     {
         final ICommand cmd = getCommand(commandKey);
@@ -78,9 +67,9 @@ public class CommandExecutor
     {
         ICommand rv = null;
 
-        if (commands.containsKey(commandKey))
+        if (this.mCommandMap.containsKey(commandKey))
         {
-            Class<? extends ICommand> cmd = commands.get(commandKey);
+            Class<? extends ICommand> cmd = this.mCommandMap.get(commandKey);
             if (cmd != null)
             {
                 int modifiers = cmd.getModifiers();
@@ -107,12 +96,12 @@ public class CommandExecutor
     {
         if (command != null)
         {
-            commands.put(commandKey, command);
+            this.mCommandMap.put(commandKey, command);
         }
     }
 
     public void unregisterCommand(String commandKey)
     {
-        commands.remove(commandKey);
+        this.mCommandMap.remove(commandKey);
     }
 }

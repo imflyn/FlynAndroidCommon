@@ -1,6 +1,5 @@
 package com.greatwall.util.command;
 
-
 public interface ICommand
 {
     Request getRequest();

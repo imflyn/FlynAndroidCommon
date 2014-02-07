@@ -107,9 +107,7 @@ public abstract class Command extends BaseCommand
     {
         this.mListener = getResponseListener();
         if (this.mListener != null)
-        {
             this.mHandler.sendEmptyMessage(state);
-        }
     }
 
     public void sendStartMessage()
