@@ -1,19 +1,17 @@
 package com.greatwall.util.command;
 
 import java.lang.reflect.Modifier;
-import java.util.concurrent.ConcurrentHashMap;
 
 import android.util.Log;
 
 public class CommandExecutor
 {
 
-    private static final String                                        TAG          = CommandExecutor.class.getName();
+    private static final String          TAG          = CommandExecutor.class.getName();
 
-    private static final CommandExecutor                               instance     = new CommandExecutor();
+    private static final CommandExecutor instance     = new CommandExecutor();
 
-    private final ConcurrentHashMap<String, Class<? extends ICommand>> mCommandMap  = new ConcurrentHashMap<String, Class<? extends ICommand>>();
-    private boolean                                                    mInitialized = false;
+    private boolean                      mInitialized = false;
 
     public CommandExecutor()
     {
@@ -40,71 +38,55 @@ public class CommandExecutor
 
     }
 
-    public void enqueueCommand(String commandKey, Request request, AbstractResponseListener listener) throws IllegalStateException
+    public void enqueueCommand(Class<? extends ICommand> cmdClass, Request request, AbstractResponseListener listener) throws CommandException
     {
-        final ICommand cmd = getCommand(commandKey);
+        ICommand cmd = getCommand(cmdClass);
         enqueueCommand(cmd, request, listener);
     }
 
-    public void enqueueCommand(ICommand command, Request request, AbstractResponseListener listener) throws IllegalStateException
+    public void enqueueCommand(ICommand command, Request request, AbstractResponseListener listener)
     {
         if (command != null)
         {
             command.setRequest(request);
             command.setResponseListener(listener);
-            CommandQueueManager.getInstance().addQueue(command);
+            CommandQueueManager.getInstance().enqueue(command);
         }
     }
 
-    public void enqueueCommand(ICommand command, Request request) throws IllegalStateException
+    public void enqueueCommand(ICommand command, Request request)
     {
         enqueueCommand(command, null, null);
     }
 
-    public void enqueueCommand(ICommand command) throws IllegalStateException
+    public void enqueueCommand(ICommand command)
     {
         enqueueCommand(command, null);
     }
 
-    private ICommand getCommand(String commandKey) throws IllegalStateException
+    private ICommand getCommand(Class<? extends ICommand> cmdClass) throws CommandException
     {
         ICommand commond = null;
 
-        if (this.mCommandMap.containsKey(commandKey))
+        if (cmdClass != null)
         {
-            Class<? extends ICommand> cmdClass = this.mCommandMap.get(commandKey);
-            if (cmdClass != null)
+            int modifiers = cmdClass.getModifiers();
+            if ((modifiers & Modifier.ABSTRACT) == 0 && (modifiers & Modifier.INTERFACE) == 0)
             {
-                int modifiers = cmdClass.getModifiers();
-                if ((modifiers & Modifier.ABSTRACT) == 0 && (modifiers & Modifier.INTERFACE) == 0)
+                try
                 {
-                    try
-                    {
-                        commond = CommondFactory.getInstance().createCommond(cmdClass);
-                    } catch (Exception e)
-                    {
-                        throw new IllegalStateException("No such command " + commandKey);
-                    }
-                } else
+                    commond = CommandFactory.getInstance().createCommand(cmdClass);
+                } catch (Exception e)
                 {
-                    throw new IllegalStateException("No such command " + commandKey);
+                    throw new CommandException("No such command " + cmdClass.getName());
                 }
+            } else
+            {
+                throw new CommandException("No such command " + cmdClass.getName());
             }
         }
 
         return commond;
     }
 
-    public void registerCommand(Class<? extends ICommand> command)
-    {
-        if (command != null)
-        {
-            this.mCommandMap.put(command.getName(), command);
-        }
-    }
-
-    public void unregisterCommand(Class<? extends ICommand> command)
-    {
-        this.mCommandMap.remove(command.getName());
-    }
 }

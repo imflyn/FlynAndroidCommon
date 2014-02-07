@@ -2,11 +2,9 @@ package com.greatwall.util.command;
 
 public class AppCommands
 {
-        
-    
-       public static void registerCommonds()
-       {
-           
-           
-       }
+
+    public static void registerCommonds()
+    {
+
+    }
 }

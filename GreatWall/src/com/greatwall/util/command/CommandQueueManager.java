@@ -39,7 +39,7 @@ public final class CommandQueueManager
         return cmd;
     }
 
-    public void addQueue(ICommand cmd)
+    public void enqueue(ICommand cmd)
     {
         queue.enqueue(cmd);
         pool.execute(new Runnable()

@@ -6,7 +6,6 @@ public class CommandQueue
 {
     private LinkedBlockingQueue<ICommand> mQueue = new LinkedBlockingQueue<ICommand>();
 
-
     public void enqueue(ICommand cmd)
     {
         this.mQueue.add(cmd);
