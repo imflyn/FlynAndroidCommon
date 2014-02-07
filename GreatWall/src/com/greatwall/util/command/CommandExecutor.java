@@ -8,12 +8,12 @@ import android.util.Log;
 public class CommandExecutor
 {
 
-    private static final String                              TAG          = CommandExecutor.class.getName();
+    private static final String                                        TAG          = CommandExecutor.class.getName();
 
-    private static final CommandExecutor                     instance     = new CommandExecutor();
+    private static final CommandExecutor                               instance     = new CommandExecutor();
 
     private final ConcurrentHashMap<String, Class<? extends ICommand>> mCommandMap  = new ConcurrentHashMap<String, Class<? extends ICommand>>();
-    private boolean                                          mInitialized = false;
+    private boolean                                                    mInitialized = false;
 
     public CommandExecutor()
     {
@@ -66,7 +66,7 @@ public class CommandExecutor
         enqueueCommand(command, null);
     }
 
-    private ICommand getCommand(String commandKey)  throws IllegalStateException
+    private ICommand getCommand(String commandKey) throws IllegalStateException
     {
         ICommand commond = null;
 
@@ -95,7 +95,7 @@ public class CommandExecutor
         return commond;
     }
 
-    public void registerCommand( Class<? extends ICommand> command)
+    public void registerCommand(Class<? extends ICommand> command)
     {
         if (command != null)
         {

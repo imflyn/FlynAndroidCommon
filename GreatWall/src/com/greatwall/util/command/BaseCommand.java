@@ -10,7 +10,7 @@ public abstract class BaseCommand implements ICommand
     @Override
     public Request getRequest()
     {
-        return  this.mRequest;
+        return this.mRequest;
     }
 
     @Override
@@ -22,7 +22,7 @@ public abstract class BaseCommand implements ICommand
     @Override
     public Response getResponse()
     {
-        return  this.mResponse;
+        return this.mResponse;
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class BaseCommand implements ICommand
     @Override
     public boolean isTerminated()
     {
-        return  this.mTerminated;
+        return this.mTerminated;
     }
 
 }

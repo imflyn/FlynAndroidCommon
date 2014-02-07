@@ -3,21 +3,21 @@ package com.greatwall.util.command;
 public abstract class AbstractResponseListener
 {
 
-    abstract void onSuccess(Response response);
+    public abstract void onSuccess(Response response);
 
-    abstract void onFailure(Response response);
+    public abstract void onFailure(Response response);
 
-    void onStart()
+    public void onStart()
     {
 
     }
 
-    void onRuning(Response response)
+    public void onRuning(Response response)
     {
 
     }
 
-    void onFinish()
+    public void onFinish()
     {
 
     }

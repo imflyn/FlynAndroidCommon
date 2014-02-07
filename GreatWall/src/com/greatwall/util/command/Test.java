@@ -27,13 +27,13 @@ public class Test
                 {
 
                     @Override
-                    void onSuccess(Response response)
+                    public void onSuccess(Response response)
                     {
 
                     }
 
                     @Override
-                    void onFailure(Response response)
+                    public void onFailure(Response response)
                     {
 
                     }
@@ -47,15 +47,13 @@ public class Test
 
     }
 
-
-    public void registerCommand( Class<? extends ICommand> command)
+    public void registerCommand(Class<? extends ICommand> command)
     {
         if (command != null)
         {
-            mCommandExecutor.registerCommand( command);
+            mCommandExecutor.registerCommand(command);
         }
     }
-
 
     public void unregisterCommand(Class<? extends ICommand> command)
     {

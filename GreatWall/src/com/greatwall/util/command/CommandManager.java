@@ -1,81 +1,66 @@
 package com.greatwall.util.command;
 
-
-public class CommandManager extends AbstractResponseListener
+public class CommandManager 
 {
+    private  static  CommandManager instance;
     private CommandExecutor mCommandExecutor;
-
-    public void registerCommand( Class<? extends ICommand> command)
+    
+    public static CommandManager getInstance()
+    {
+        if(null==instance)
+        {
+            synchronized (CommandManager.class)
+            {
+                if(null==instance)
+                    instance=new CommandManager();
+            }
+        }
+        return instance;
+    }
+    
+    public void registerCommand(Class<? extends ICommand> command)
     {
         if (command != null)
         {
-            this.mCommandExecutor.registerCommand( command);
+            this.mCommandExecutor.registerCommand(command);
         }
     }
 
-
-    public void unregisterCommand( Class<? extends ICommand> command)
+    public void unregisterCommand(Class<? extends ICommand> command)
     {
 
         this.mCommandExecutor.unregisterCommand(command);
     }
 
-    public void doCommand(String commandKey, Request request, AbstractResponseListener listener, boolean record, boolean resetStack)
+    public  void doCommand(String commandKey, Request request, AbstractResponseListener listener)
     {
         if (listener != null)
         {
-            try
-            {
                 CommandExecutor.getInstance().enqueueCommand(commandKey, request, listener);
-            } catch (RuntimeException e)
-            {
-                e.printStackTrace();
-            }
         } else
         {
 
             Object[] newTag = { request.getTag(), listener };
             request.setTag(newTag);
 
-            try
-            {
-                CommandExecutor.getInstance().enqueueCommand(commandKey, request, this);
-            } catch (RuntimeException e)
-            {
-                e.printStackTrace();
-            }
+                CommandExecutor.getInstance().enqueueCommand(commandKey, request, new AbstractResponseListener()
+                {
+                    
+                    @Override
+                    public void onSuccess(Response response)
+                    {
+                        
+                    }
+                    
+                    @Override
+                    public void onFailure(Response response)
+                    {
+                        
+                    }
+                });
 
         }
 
     }
 
-    @Override
-    public void onStart()
-    {
-
-    }
-
-    @Override
-    public void onSuccess(Response response)
-    {
-
-    }
-
-    @Override
-    public void onRuning(Response response)
-    {
-
-    }
-
-    @Override
-    public void onFailure(Response response)
-    {
-
-    }
-
-    @Override
-    public void onFinish()
-    {
-
-    }
 }

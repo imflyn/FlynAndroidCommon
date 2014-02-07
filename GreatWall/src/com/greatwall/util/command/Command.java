@@ -17,9 +17,9 @@ public abstract class Command extends BaseCommand
     private AbstractResponseListener mListener;
     private Handler                  mHandler;
 
-    public Command()
+    protected Command()
     {
-        postRunnable( );
+        postRunnable();
     }
 
     protected void postRunnable()

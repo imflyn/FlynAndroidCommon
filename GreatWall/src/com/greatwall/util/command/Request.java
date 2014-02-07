@@ -38,5 +38,4 @@ public class Request implements Serializable
         this.data = data;
     }
 
-
 }

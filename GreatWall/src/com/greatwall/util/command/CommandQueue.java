@@ -4,16 +4,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class CommandQueue
 {
-    private LinkedBlockingQueue<ICommand> theQueue = new LinkedBlockingQueue<ICommand>();
-    private static final String           TAG      = CommandQueue.class.getName();
+    private LinkedBlockingQueue<ICommand> mQueue = new LinkedBlockingQueue<ICommand>();
 
-    public CommandQueue()
-    {
-    }
 
     public void enqueue(ICommand cmd)
     {
-        theQueue.add(cmd);
+        this.mQueue.add(cmd);
     }
 
     public ICommand getNextCommand()
@@ -21,7 +17,7 @@ public class CommandQueue
         ICommand cmd = null;
         try
         {
-            cmd = theQueue.take();
+            cmd = this.mQueue.take();
         } catch (InterruptedException e)
         {
             e.printStackTrace();
@@ -31,6 +27,6 @@ public class CommandQueue
 
     public void clear()
     {
-        theQueue.clear();
+        this.mQueue.clear();
     }
 }

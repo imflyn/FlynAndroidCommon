@@ -3,10 +3,10 @@ package com.greatwall.util.command;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.ConcurrentHashMap;
 
-class CommondFactory extends AbstractCommondFactory
+class CommondFactory extends AbstractCommandFactory
 {
-    private static CommondFactory mCommondFactory;
-    private static ConcurrentHashMap<String, ICommand> mCommondMap  = new ConcurrentHashMap<String, ICommand>();
+    private static CommondFactory                      mCommondFactory;
+    private static ConcurrentHashMap<String, ICommand> mCommondMap = new ConcurrentHashMap<String, ICommand>();
 
     public static CommondFactory getInstance()
     {
@@ -49,6 +49,5 @@ class CommondFactory extends AbstractCommondFactory
 
         return (T) commond;
     }
-  
 
 }
