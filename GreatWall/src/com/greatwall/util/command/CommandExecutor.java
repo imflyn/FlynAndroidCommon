@@ -2,18 +2,13 @@ package com.greatwall.util.command;
 
 import java.lang.reflect.Modifier;
 
-import android.util.Log;
-
 public class CommandExecutor
 {
 
-    private static final String          TAG          = CommandExecutor.class.getName();
-
     private static final CommandExecutor instance     = new CommandExecutor();
-
     private boolean                      mInitialized = false;
 
-    public CommandExecutor()
+    private CommandExecutor()
     {
         initialize();
     }
@@ -29,13 +24,7 @@ public class CommandExecutor
         {
             this.mInitialized = true;
             CommandQueueManager.getInstance().initialize();
-            Log.i(TAG, "CommandExecutor initialize.");
         }
-    }
-
-    public void terminateAll()
-    {
-
     }
 
     public void enqueueCommand(Class<? extends ICommand> cmdClass, Request request, AbstractResponseListener listener) throws CommandException
@@ -53,6 +42,7 @@ public class CommandExecutor
             CommandQueueManager.getInstance().enqueue(command);
         }
     }
+  
 
     public void enqueueCommand(ICommand command, Request request)
     {
@@ -63,10 +53,16 @@ public class CommandExecutor
     {
         enqueueCommand(command, null);
     }
+    
+    public void cancelCommand(Class<? extends ICommand> cmdClass, Request request)
+    {
+        
+    }
+    
 
     private ICommand getCommand(Class<? extends ICommand> cmdClass) throws CommandException
     {
-        ICommand commond = null;
+        ICommand command = null;
 
         if (cmdClass != null)
         {
@@ -75,7 +71,7 @@ public class CommandExecutor
             {
                 try
                 {
-                    commond = CommandFactory.getInstance().createCommand(cmdClass);
+                    command = CommandFactory.getInstance().createCommand(cmdClass);
                 } catch (Exception e)
                 {
                     throw new CommandException("No such command " + cmdClass.getName());
@@ -86,7 +82,7 @@ public class CommandExecutor
             }
         }
 
-        return commond;
+        return command;
     }
 
 }

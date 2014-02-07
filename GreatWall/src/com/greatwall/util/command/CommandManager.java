@@ -3,7 +3,11 @@ package com.greatwall.util.command;
 public class CommandManager
 {
     private static CommandManager instance;
-    private CommandExecutor       mCommandExecutor;
+
+    private CommandManager()
+    {
+
+    }
 
     public static CommandManager getInstance()
     {
@@ -20,22 +24,9 @@ public class CommandManager
 
     public void doCommand(Class<? extends ICommand> cmdClass, Request request, AbstractResponseListener listener)
     {
-        if (listener != null)
+        if (listener == null)
         {
-            try
-            {
-                CommandExecutor.getInstance().enqueueCommand(cmdClass, request, listener);
-            } catch (CommandException e)
-            {
-                listener.onFailure(response);
-            }
-        } else
-        {
-
-            Object[] newTag = { request.getTag(), listener };
-            request.setTag(newTag);
-
-            CommandExecutor.getInstance().enqueueCommand(cmdClass, request, new AbstractResponseListener()
+            listener = new AbstractResponseListener()
             {
 
                 @Override
@@ -49,10 +40,31 @@ public class CommandManager
                 {
 
                 }
-            });
-
+            };
+        }
+        try
+        {
+            CommandExecutor.getInstance().enqueueCommand(cmdClass, request, listener);
+        } catch (CommandException e)
+        {
+            Response response = new Response();
+            response.setTag(request.getTag());
+            response.setData(response.getData());
+            listener.onFailure(response);
         }
 
     }
 
+    public void cancelCommand(Request request)
+    {
+        request.cancel();
+    }
+
+    public void cancelCommand(Request... requests)
+    {
+        for (int i = 0; i < requests.length; i++)
+        {
+            requests[i].cancel();
+        }
+    }
 }

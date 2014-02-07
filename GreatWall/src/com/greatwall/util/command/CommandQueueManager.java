@@ -3,10 +3,9 @@ package com.greatwall.util.command;
 public final class CommandQueueManager
 {
     private static CommandQueueManager instance;
-    private boolean                    initialized = false;
-    private ThreadPool                 pool;
-    private CommandQueue               queue;
-    private static final String        TAG         = CommandQueueManager.class.getName();
+    private boolean                    mInitialized = false;
+    private ThreadPool                 mPool;
+    private CommandQueue               mQueue;
 
     private CommandQueueManager()
     {
@@ -16,33 +15,38 @@ public final class CommandQueueManager
     {
         if (instance == null)
         {
-            instance = new CommandQueueManager();
+            synchronized (CommandQueueManager.class)
+            {
+                if (instance == null)
+                    instance = new CommandQueueManager();
+            }
+
         }
         return instance;
     }
 
     public void initialize()
     {
-        if (!initialized)
+        if (!this.mInitialized)
         {
-            queue = new CommandQueue();
-            pool = ThreadPool.getInstance();
+            this.mQueue = new CommandQueue();
+            this.mPool = ThreadPool.getInstance();
 
-            pool.start();
-            initialized = true;
+            this.mPool.start();
+            this.mInitialized = true;
         }
     }
 
     public ICommand getNextCommand()
     {
-        ICommand cmd = queue.getNextCommand();
+        ICommand cmd = this.mQueue.getNextCommand();
         return cmd;
     }
 
     public void enqueue(ICommand cmd)
     {
-        queue.enqueue(cmd);
-        pool.execute(new Runnable()
+        this.mQueue.enqueue(cmd);
+        this.mPool.execute(new Runnable()
         {
             @Override
             public void run()
@@ -51,19 +55,24 @@ public final class CommandQueueManager
             }
         });
     }
+    
+    public void dequeue(ICommand cmd)
+    {
+        this.mQueue.enqueue(cmd);
+    }
 
     public void clear()
     {
-        queue.clear();
+        this.mQueue.clear();
     }
 
     public void shutdown()
     {
-        if (initialized)
+        if (this.mInitialized)
         {
-            queue.clear();
-            pool.shutdown();
-            initialized = false;
+            this.mQueue.clear();
+            this.mPool.shutdown();
+            this.mInitialized = false;
         }
     }
 }

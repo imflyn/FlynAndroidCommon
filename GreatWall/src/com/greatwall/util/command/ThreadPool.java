@@ -45,7 +45,7 @@ public class ThreadPool
                 @Override
                 public Thread newThread(Runnable r)
                 {
-                    return new Thread(r, "CommondTask #" + mCount.getAndIncrement());
+                    return new Thread(r, "CommandTask #" + this.mCount.getAndIncrement());
                 }
             });
 
