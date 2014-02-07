@@ -1,10 +1,9 @@
 package com.greatwall.util.command;
 
-
-
 public class Test
 {
-    private CommandExecutor                                                                        mCommandExecutor;
+    private CommandExecutor mCommandExecutor;
+
     public void doCommand(String commandKey, Request request, AbstractResponseListener listener, boolean record, boolean resetStack)
     {
         if (listener != null)
@@ -26,17 +25,17 @@ public class Test
             {
                 CommandExecutor.getInstance().enqueueCommand(commandKey, request, new AbstractResponseListener()
                 {
-                    
+
                     @Override
                     void onSuccess(Response response)
                     {
-                        
+
                     }
-                    
+
                     @Override
                     void onFailure(Response response)
                     {
-                        
+
                     }
                 });
             } catch (RuntimeException e)
@@ -51,7 +50,7 @@ public class Test
     public void registerCommand(int resID, Class<? extends ICommand> command)
     {
 
-//        String commandKey = getString(resID);
+        // String commandKey = getString(resID);
         String commandKey = "";
         registerCommand(commandKey, command);
 
@@ -67,7 +66,7 @@ public class Test
 
     public void unregisterCommand(int resID)
     {
-//        String commandKey = getString(resID);
+        // String commandKey = getString(resID);
         String commandKey = "";
         unregisterCommand(commandKey);
     }
