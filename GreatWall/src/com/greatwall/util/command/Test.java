@@ -47,34 +47,20 @@ public class Test
 
     }
 
-    public void registerCommand(int resID, Class<? extends ICommand> command)
-    {
 
-        // String commandKey = getString(resID);
-        String commandKey = "";
-        registerCommand(commandKey, command);
-
-    }
-
-    public void registerCommand(String commandKey, Class<? extends ICommand> command)
+    public void registerCommand( Class<? extends ICommand> command)
     {
         if (command != null)
         {
-            mCommandExecutor.registerCommand(commandKey, command);
+            mCommandExecutor.registerCommand( command);
         }
     }
 
-    public void unregisterCommand(int resID)
-    {
-        // String commandKey = getString(resID);
-        String commandKey = "";
-        unregisterCommand(commandKey);
-    }
 
-    public void unregisterCommand(String commandKey)
+    public void unregisterCommand(Class<? extends ICommand> command)
     {
 
-        mCommandExecutor.unregisterCommand(commandKey);
+        mCommandExecutor.unregisterCommand(command);
     }
 
 }

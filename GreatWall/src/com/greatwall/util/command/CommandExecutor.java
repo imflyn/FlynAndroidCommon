@@ -1,7 +1,9 @@
 package com.greatwall.util.command;
 
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+import android.util.Log;
 
 public class CommandExecutor
 {
@@ -10,12 +12,12 @@ public class CommandExecutor
 
     private static final CommandExecutor                     instance     = new CommandExecutor();
 
-    private final HashMap<String, Class<? extends ICommand>> mCommandMap  = new HashMap<String, Class<? extends ICommand>>();
+    private final ConcurrentHashMap<String, Class<? extends ICommand>> mCommandMap  = new ConcurrentHashMap<String, Class<? extends ICommand>>();
     private boolean                                          mInitialized = false;
 
     public CommandExecutor()
     {
-        ensureInitialized();
+        initialize();
     }
 
     public static CommandExecutor getInstance()
@@ -23,12 +25,13 @@ public class CommandExecutor
         return instance;
     }
 
-    public void ensureInitialized()
+    private void initialize()
     {
         if (!this.mInitialized)
         {
             this.mInitialized = true;
             CommandQueueManager.getInstance().initialize();
+            Log.i(TAG, "CommandExecutor initialize.");
         }
     }
 
@@ -37,71 +40,71 @@ public class CommandExecutor
 
     }
 
-    public void enqueueCommand(String commandKey, Request request, AbstractResponseListener listener) throws RuntimeException
+    public void enqueueCommand(String commandKey, Request request, AbstractResponseListener listener) throws IllegalStateException
     {
         final ICommand cmd = getCommand(commandKey);
         enqueueCommand(cmd, request, listener);
     }
 
-    public void enqueueCommand(ICommand command, Request request, AbstractResponseListener listener) throws RuntimeException
+    public void enqueueCommand(ICommand command, Request request, AbstractResponseListener listener) throws IllegalStateException
     {
         if (command != null)
         {
             command.setRequest(request);
             command.setResponseListener(listener);
-            CommandQueueManager.getInstance().enqueue(command);
+            CommandQueueManager.getInstance().addQueue(command);
         }
     }
 
-    public void enqueueCommand(ICommand command, Request request) throws RuntimeException
+    public void enqueueCommand(ICommand command, Request request) throws IllegalStateException
     {
         enqueueCommand(command, null, null);
     }
 
-    public void enqueueCommand(ICommand command) throws RuntimeException
+    public void enqueueCommand(ICommand command) throws IllegalStateException
     {
         enqueueCommand(command, null);
     }
 
-    private ICommand getCommand(String commandKey) throws RuntimeException
+    private ICommand getCommand(String commandKey)  throws IllegalStateException
     {
-        ICommand rv = null;
+        ICommand commond = null;
 
         if (this.mCommandMap.containsKey(commandKey))
         {
-            Class<? extends ICommand> cmd = this.mCommandMap.get(commandKey);
-            if (cmd != null)
+            Class<? extends ICommand> cmdClass = this.mCommandMap.get(commandKey);
+            if (cmdClass != null)
             {
-                int modifiers = cmd.getModifiers();
+                int modifiers = cmdClass.getModifiers();
                 if ((modifiers & Modifier.ABSTRACT) == 0 && (modifiers & Modifier.INTERFACE) == 0)
                 {
                     try
                     {
-                        rv = cmd.newInstance();
+                        commond = CommondFactory.getInstance().createCommond(cmdClass);
                     } catch (Exception e)
                     {
-                        throw new RuntimeException("no such command " + commandKey);
+                        throw new IllegalStateException("No such command " + commandKey);
                     }
                 } else
                 {
-                    throw new RuntimeException("no such command " + commandKey);
+                    throw new IllegalStateException("No such command " + commandKey);
                 }
             }
         }
 
-        return rv;
+        return commond;
     }
 
-    public void registerCommand(String commandKey, Class<? extends ICommand> command)
+    public void registerCommand( Class<? extends ICommand> command)
     {
         if (command != null)
         {
-            this.mCommandMap.put(commandKey, command);
+            this.mCommandMap.put(command.getName(), command);
         }
     }
 
-    public void unregisterCommand(String commandKey)
+    public void unregisterCommand(Class<? extends ICommand> command)
     {
-        this.mCommandMap.remove(commandKey);
+        this.mCommandMap.remove(command.getName());
     }
 }

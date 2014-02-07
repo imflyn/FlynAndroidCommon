@@ -33,19 +33,13 @@ public final class CommandQueueManager
         }
     }
 
-    /**
-     * 从队列中获取Command
-     * 
-     * @return TAICommand
-     */
     public ICommand getNextCommand()
     {
         ICommand cmd = queue.getNextCommand();
         return cmd;
     }
 
-    /** 添加Command到队列中 */
-    public void enqueue(ICommand cmd)
+    public void addQueue(ICommand cmd)
     {
         queue.enqueue(cmd);
         pool.execute(new Runnable()
@@ -58,13 +52,11 @@ public final class CommandQueueManager
         });
     }
 
-    /** 清除队列 */
     public void clear()
     {
         queue.clear();
     }
 
-    /** 关闭队列 */
     public void shutdown()
     {
         if (initialized)

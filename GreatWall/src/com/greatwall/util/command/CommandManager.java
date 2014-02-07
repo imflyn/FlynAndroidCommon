@@ -1,37 +1,23 @@
 package com.greatwall.util.command;
 
-import android.content.Context;
 
 public class CommandManager extends AbstractResponseListener
 {
     private CommandExecutor mCommandExecutor;
 
-    public void registerCommand(int resID, Class<? extends ICommand> command, Context context)
-    {
-
-        String commandKey = context.getString(resID);
-        registerCommand(commandKey, command);
-
-    }
-
-    public void registerCommand(String commandKey, Class<? extends ICommand> command)
+    public void registerCommand( Class<? extends ICommand> command)
     {
         if (command != null)
         {
-            this.mCommandExecutor.registerCommand(commandKey, command);
+            this.mCommandExecutor.registerCommand( command);
         }
     }
 
-    public void unregisterCommand(int resID, Context context)
-    {
-        String commandKey = context.getString(resID);
-        unregisterCommand(commandKey);
-    }
 
-    public void unregisterCommand(String commandKey)
+    public void unregisterCommand( Class<? extends ICommand> command)
     {
 
-        this.mCommandExecutor.unregisterCommand(commandKey);
+        this.mCommandExecutor.unregisterCommand(command);
     }
 
     public void doCommand(String commandKey, Request request, AbstractResponseListener listener, boolean record, boolean resetStack)
