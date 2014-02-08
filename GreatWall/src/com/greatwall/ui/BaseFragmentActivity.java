@@ -8,11 +8,11 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greatwall.ui.interfaces.UILIstener;
+import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
-public abstract class BaseFragmentActivity extends FragmentActivity implements UILIstener
+public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
 

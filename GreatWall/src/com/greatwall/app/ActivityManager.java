@@ -2,10 +2,10 @@ package com.greatwall.app;
 
 import java.util.Stack;
 
-import com.greatwall.ui.EmptyActivity;
-
 import android.app.Activity;
 import android.content.Context;
+
+import com.greatwall.ui.EmptyActivity;
 
 public class ActivityManager implements AppManager
 {

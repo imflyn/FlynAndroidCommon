@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greatwall.ui.interfaces.UILIstener;
+import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
-public abstract class BaseActivity extends Activity implements UILIstener
+public abstract class BaseActivity extends Activity implements UIListener
 {
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
 
@@ -104,4 +104,16 @@ public abstract class BaseActivity extends Activity implements UILIstener
                                                                           super.onException(objs, e);
                                                                       }
                                                                   };
+                                                                  
+                                                                  @Override
+                                                                  public void onUpdate(Object... obj)
+                                                                  {
+                                                                      
+                                                                  }
+
+                                                                  @Override
+                                                                  public void onError(Throwable error)
+                                                                  {
+                                                                      
+                                                                  }
 }

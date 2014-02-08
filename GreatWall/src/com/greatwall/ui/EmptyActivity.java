@@ -3,12 +3,7 @@ package com.greatwall.ui;
 public class EmptyActivity extends BaseActivity
 {
 
-    @Override
-    public void onUpdate(Object... obj)
-    {
-        
-    }
-
+    
     @Override
     protected int layoutId()
     {
@@ -26,5 +21,7 @@ public class EmptyActivity extends BaseActivity
     {
         
     }
+
+   
 
 }
