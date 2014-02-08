@@ -3,36 +3,92 @@ package com.greatwall.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.greatwall.app.ActivityManager;
 import com.greatwall.ui.interfaces.UIListener;
+import com.greatwall.ui.interfaces.UIListenerManager;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
+    
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        ActivityManager.getInstance().addActivity(this);
+        UIListenerManager.getInstance().addClass(this);
         super.onCreate(savedInstanceState);
         setContentView(layoutId());
         initView();
         setListener();
     }
+    
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+    }
+    
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void startActivity(Intent intent)
+    {
+        super.startActivity(intent);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode)
+    {
+        super.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onDestroy()
     {
+        ActivityManager.getInstance().removeActivity(this);
+        UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
-        
-        if(this.asynctask!=null&&!this.asynctask.isCancelled())
-        this.asynctask.cancel(true);
-        
+
+        if (this.asynctask != null && !this.asynctask.isCancelled())
+            this.asynctask.cancel(true);
+
         ViewUtils.recycleViewGroupAndChildViews(this.viewList, true);
         this.viewList.clear();
     }
@@ -45,7 +101,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
 
     protected final View getViewById(int id)
     {
-        final View view = findViewById(id);
+        View view = findViewById(id);
         this.viewList.add((ViewGroup) view);
         return view;
     }
@@ -73,12 +129,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected void onLoadFinish(Object curResult)
     {
     };
-    
+
     protected void onLoadFail(Exception e)
     {
-        
+
     }
-    
 
     private final WeakAsyncTask<Object, Object, Object> asynctask = new WeakAsyncTask<Object, Object, Object>(this)
                                                                   {
@@ -104,4 +159,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
                                                                           super.onException(objs, e);
                                                                       }
                                                                   };
+
+    @Override
+    public void onUpdate(Object... obj)
+    {
+
+    }
+
+    @Override
+    public void onError(Throwable error)
+    {
+
+    }
 }
