@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greatwall.ui.interfaces.UpdataInterface;
+import com.greatwall.ui.interfaces.UILIstener;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
-public abstract class BaseActivity extends Activity implements UpdataInterface
+public abstract class BaseActivity extends Activity implements UILIstener
 {
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
 
