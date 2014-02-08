@@ -17,7 +17,6 @@ public class ViewUtils
         for (ViewGroup viewGroup : viewGroupList)
         {
             recycleViewGroupAndChildViews(viewGroup, recycleBitmap);
-            ;
         }
     }
 

@@ -1,13 +1,13 @@
 package com.greatwall.ui.interfaces;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 import com.greatwall.app.AppManager;
 
 public class UIListenerManager implements AppManager
 {
-    private static UIListenerManager              instance;
-    private ConcurrentHashMap<String, UIListener> mUIListeners = new ConcurrentHashMap<String, UIListener>();
+    private static UIListenerManager instance;
+    private ArrayList<UIListener>    mUIListeners;
 
     public static UIListenerManager getInstance()
     {
@@ -24,35 +24,61 @@ public class UIListenerManager implements AppManager
         return instance;
     }
 
-    public void addClass(UIListener cls)
+    public void addClass(UIListener listener)
     {
-        if (null == cls)
-            throw new IllegalStateException("Happened when addClass " + cls + " is null.");
+        if (null == listener)
+            throw new IllegalStateException("Happened when add Class " + listener + " is null.");
 
         if (null != this.mUIListeners)
-            this.mUIListeners = new ConcurrentHashMap<String, UIListener>();
+            this.mUIListeners = new ArrayList<UIListener>(5);
 
-        if (!this.mUIListeners.contains(cls))
-            this.mUIListeners.put(cls.getClass().getName(), cls);
+        this.mUIListeners.remove(listener);
+        this.mUIListeners.add(listener);
+    }
+
+    public void removeClass(UIListener listener)
+    {
+        if (null == listener)
+            throw new IllegalStateException("Happened when remove Class " + listener + " is null.");
+
+        if (null != this.mUIListeners)
+            this.mUIListeners = new ArrayList<UIListener>(5);
+
+            this.mUIListeners.remove(listener);
     }
 
     public void update(Class<? extends UIListener> cls, Object... obj)
     {
-        if (null == this.mUIListeners)
-            return;
-
-        if (this.mUIListeners.contains(cls))
-            this.mUIListeners.get(cls.getClass().getName()).onUpdate(obj);
+        UIListener listener = getListener(cls);
+        if (null != listener)
+            listener.onUpdate(obj);
 
     }
 
     public void error(Class<? extends UIListener> cls, Throwable error)
     {
-        if (null == this.mUIListeners)
-            return;
+        UIListener listener = getListener(cls);
+        if (null != listener)
+            listener.onError(error);
+    }
 
-        if (this.mUIListeners.contains(cls))
-            this.mUIListeners.get(cls.getClass().getName()).onError(error);
+    private UIListener getListener(Class<? extends UIListener> cls)
+    {
+        UIListener listener = null;
+        if (null == this.mUIListeners || cls == null)
+            return listener;
+
+        String className = cls.getName();
+        for (int i = 0; i < mUIListeners.size(); i++)
+        {
+            UIListener uiListener = mUIListeners.get(i);
+            if (className.equals(uiListener.getClass().getName()))
+            {
+                listener = uiListener;
+            }
+        }
+
+        return listener;
     }
 
     @Override
