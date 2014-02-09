@@ -138,6 +138,13 @@ public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivit
         return view;
     }
 
+    protected final View getViewById(View rootView, int id)
+    {
+        View view = rootView.findViewById(id);
+        this.viewList.add((ViewGroup) view);
+        return view;
+    }
+
     protected final void doLoad(Object... objs)
     {
         this.asynctask.execute(objs);

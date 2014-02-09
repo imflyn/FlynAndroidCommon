@@ -54,7 +54,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         {
             reload();
         }
-        
+
     }
 
     private void reload()
@@ -135,6 +135,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected final View getViewById(int id)
     {
         View view = findViewById(id);
+        this.viewList.add((ViewGroup) view);
+        return view;
+    }
+
+    protected final View getViewById(View rootView, int id)
+    {
+        View view = rootView.findViewById(id);
         this.viewList.add((ViewGroup) view);
         return view;
     }

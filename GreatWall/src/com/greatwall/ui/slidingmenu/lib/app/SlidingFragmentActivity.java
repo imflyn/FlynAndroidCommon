@@ -24,7 +24,7 @@ public class SlidingFragmentActivity extends ActionBarActivity implements Slidin
         super.onCreate(savedInstanceState);
         mHelper = new SlidingActivityHelper(this);
         mHelper.onCreate(savedInstanceState);
-        
+
     }
 
     /*
