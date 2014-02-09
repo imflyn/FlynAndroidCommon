@@ -54,6 +54,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         {
             reload();
         }
+        
     }
 
     private void reload()
