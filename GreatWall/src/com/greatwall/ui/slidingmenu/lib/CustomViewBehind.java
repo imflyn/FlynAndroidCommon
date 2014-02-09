@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.flyn.greatwall.R;
+import com.greatwall.R;
 import com.greatwall.ui.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
 public class CustomViewBehind extends ViewGroup

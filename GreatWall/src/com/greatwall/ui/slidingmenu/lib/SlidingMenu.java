@@ -25,7 +25,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.flyn.greatwall.R;
+import com.greatwall.R;
 import com.greatwall.ui.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
 public class SlidingMenu extends RelativeLayout

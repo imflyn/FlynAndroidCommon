@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-import com.flyn.greatwall.R;
+import com.greatwall.R;
 import com.greatwall.ui.slidingmenu.lib.SlidingMenu;
 
 public class SlidingActivityHelper
