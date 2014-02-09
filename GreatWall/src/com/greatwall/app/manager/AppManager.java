@@ -6,7 +6,7 @@ public abstract class AppManager
 {
     public Application mContext;
 
-    protected AppManager()
+    public AppManager()
     {
         mContext = Application.getInstance();
         mContext.addManager(this);

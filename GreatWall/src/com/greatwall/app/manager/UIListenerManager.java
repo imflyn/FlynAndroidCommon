@@ -9,18 +9,13 @@ import com.greatwall.ui.interfaces.UIListener;
 
 public class UIListenerManager extends AppManager
 {
-    private static UIListenerManager                                    instance;
+    private static UIListenerManager                                    instance = new UIListenerManager();
     private HashMap<Class<? extends UIListener>, ArrayList<UIListener>> mUIListeners;
     private Handler                                                     handler;
 
     private UIListenerManager()
     {
         super();
-    }
-
-    static
-    {
-        instance = new UIListenerManager();
     }
 
     public static UIListenerManager getInstance()

@@ -11,17 +11,12 @@ import com.greatwall.ui.EmptyActivity;
 public class ActivityManager extends AppManager
 {
 
-    private static ActivityManager instance;
+    private static ActivityManager instance = new ActivityManager();
     private Stack<Activity>        mActivityStack;
 
     private ActivityManager()
     {
         super();
-    }
-
-    static
-    {
-        instance = new ActivityManager();
     }
 
     /** 单一实例 */

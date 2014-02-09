@@ -1,24 +1,18 @@
 package com.greatwall.util.command;
 
-public class CommandManager
+import com.greatwall.app.manager.AppManager;
+
+public class CommandManager extends AppManager
 {
-    private static CommandManager instance;
+    private static CommandManager instance = new CommandManager();
 
     private CommandManager()
     {
-
+        super();
     }
 
     public static CommandManager getInstance()
     {
-        if (null == instance)
-        {
-            synchronized (CommandManager.class)
-            {
-                if (null == instance)
-                    instance = new CommandManager();
-            }
-        }
         return instance;
     }
 
@@ -66,5 +60,23 @@ public class CommandManager
         {
             requests[i].cancel();
         }
+    }
+
+    @Override
+    public void onInit()
+    {
+
+    }
+
+    @Override
+    public void onClear()
+    {
+        CommandQueueManager.getInstance().clear();
+    }
+
+    @Override
+    public void onClose()
+    {
+        CommandQueueManager.getInstance().shutdown();
     }
 }
