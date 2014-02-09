@@ -12,11 +12,11 @@ public class ActivityManager implements AppManager
 
     private static ActivityManager instance;
     private Stack<Activity>        mActivityStack;
-    private  Application      mContext;
+    private Application            mContext;
 
     private ActivityManager()
     {
-        
+
     }
 
     /** 单一实例 */
@@ -131,20 +131,26 @@ public class ActivityManager implements AppManager
         stack.clear();
     }
 
-
     @Override
     public void onClose()
     {
         finishAllActivity();
         android.app.ActivityManager activityMgr = (android.app.ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         activityMgr.restartPackage(mContext.getPackageName());
+        instance = null;
     }
 
     @Override
     public void onInit()
     {
         mContext = Application.getInstance();
-        
+
+    }
+
+    @Override
+    public void onClear()
+    {
+        getActivityStack().clear();
     }
 
 }

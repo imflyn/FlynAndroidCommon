@@ -29,7 +29,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         initView();
         setListener();
     }
-    
+
     @Override
     protected void onStart()
     {
@@ -47,7 +47,7 @@ public abstract class BaseActivity extends Activity implements UIListener
     {
         super.onPause();
     }
-    
+
     @Override
     protected void onStop()
     {

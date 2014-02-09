@@ -1,11 +1,10 @@
 package com.greatwall.app;
 
-
 public class Application extends android.app.Application
 {
 
     // singleton
-    private static Application mContext                = null;
+    private static Application mContext = null;
 
     @Override
     public void onCreate()
@@ -21,5 +20,4 @@ public class Application extends android.app.Application
         return mContext;
     }
 
-   
 }

@@ -17,7 +17,7 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
-    
+
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
 
     @Override
@@ -30,7 +30,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         initView();
         setListener();
     }
-    
+
     @Override
     protected void onStart()
     {
@@ -48,7 +48,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     {
         super.onPause();
     }
-    
+
     @Override
     protected void onStop()
     {

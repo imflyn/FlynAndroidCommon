@@ -9,9 +9,9 @@ import com.greatwall.app.AppManager;
 
 public class UIListenerManager implements AppManager
 {
-    private static UIListenerManager                          instance;
+    private static UIListenerManager                                    instance;
     private HashMap<Class<? extends UIListener>, ArrayList<UIListener>> mUIListeners;
-    private Handler                                           handler;
+    private Handler                                                     handler;
 
     public static UIListenerManager getInstance()
     {
@@ -34,7 +34,7 @@ public class UIListenerManager implements AppManager
             throw new IllegalStateException("Happened when add argument " + listener + " is null.");
 
         if (null == mUIListeners)
-            mUIListeners =new HashMap<Class<? extends UIListener>, ArrayList<UIListener>>();
+            mUIListeners = new HashMap<Class<? extends UIListener>, ArrayList<UIListener>>();
 
         getListeners(listener.getClass()).add(listener);
     }
@@ -97,6 +97,8 @@ public class UIListenerManager implements AppManager
         {
             mUIListeners.clear();
             mUIListeners = null;
+            instance = null;
+            handler = null;
         }
 
     }
@@ -105,6 +107,14 @@ public class UIListenerManager implements AppManager
     public void onInit()
     {
         handler = new Handler();
+    }
+
+    @Override
+    public void onClear()
+    {
+        if (null != mUIListeners)
+            mUIListeners.clear();
+
     }
 
 }
