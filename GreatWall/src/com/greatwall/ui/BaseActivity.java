@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.greatwall.app.manager.ActivityManager;
+import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
@@ -18,6 +19,7 @@ import com.greatwall.util.WeakAsyncTask;
 public abstract class BaseActivity extends Activity implements UIListener
 {
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
+    protected int                 theme    = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,6 +27,14 @@ public abstract class BaseActivity extends Activity implements UIListener
         ActivityManager.getInstance().addActivity(this);
         UIListenerManager.getInstance().addClass(this);
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null)
+        {
+            theme = ThemeManager.getInstance().getCurrentThemeStyle();
+        } else
+        {
+            theme = savedInstanceState.getInt("theme");
+        }
+        setTheme(theme);
         setContentView(layoutId());
         initView();
         setListener();
@@ -40,6 +50,21 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected void onResume()
     {
         super.onResume();
+        if (theme != ThemeManager.getInstance().getCurrentThemeStyle())
+        {
+            reload();
+        }
+    }
+
+    private void reload()
+    {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 
     @Override
@@ -90,6 +115,14 @@ public abstract class BaseActivity extends Activity implements UIListener
 
         ViewUtils.recycleViewGroupAndChildViews(this.viewList, true);
         this.viewList.clear();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt("theme", theme);
+
     }
 
     protected abstract int layoutId();

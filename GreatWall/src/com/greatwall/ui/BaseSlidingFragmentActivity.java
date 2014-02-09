@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,16 +12,17 @@ import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
+import com.greatwall.ui.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
-public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
+public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivity implements UIListener
 {
     private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
     protected int                 theme    = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
         ActivityManager.getInstance().addActivity(this);
         UIListenerManager.getInstance().addClass(this);
