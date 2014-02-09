@@ -1,30 +1,30 @@
-package com.greatwall.ui.interfaces;
+package com.greatwall.app.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.Handler;
 
-import com.greatwall.app.AppManager;
+import com.greatwall.ui.interfaces.UIListener;
 
-public class UIListenerManager implements AppManager
+public class UIListenerManager extends AppManager
 {
     private static UIListenerManager                                    instance;
     private HashMap<Class<? extends UIListener>, ArrayList<UIListener>> mUIListeners;
     private Handler                                                     handler;
 
+    private UIListenerManager()
+    {
+        super();
+    }
+
+    static
+    {
+        instance = new UIListenerManager();
+    }
+
     public static UIListenerManager getInstance()
     {
-        if (instance == null)
-        {
-            synchronized (UIListenerManager.class)
-            {
-                if (instance == null)
-                {
-                    instance = new UIListenerManager();
-                }
-            }
-        }
         return instance;
     }
 

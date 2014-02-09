@@ -1,37 +1,32 @@
-package com.greatwall.app;
+package com.greatwall.app.manager;
 
 import java.util.Stack;
 
 import android.app.Activity;
 import android.content.Context;
 
+import com.greatwall.app.Application;
 import com.greatwall.ui.EmptyActivity;
 
-public class ActivityManager implements AppManager
+public class ActivityManager extends AppManager
 {
 
     private static ActivityManager instance;
     private Stack<Activity>        mActivityStack;
-    private Application            mContext;
 
     private ActivityManager()
     {
+        super();
+    }
 
+    static
+    {
+        instance = new ActivityManager();
     }
 
     /** 单一实例 */
     public static ActivityManager getInstance()
     {
-        if (instance == null)
-        {
-            synchronized (ActivityManager.class)
-            {
-                if (instance == null)
-                {
-                    instance = new ActivityManager();
-                }
-            }
-        }
         return instance;
     }
 

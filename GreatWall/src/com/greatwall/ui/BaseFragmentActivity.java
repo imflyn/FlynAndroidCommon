@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greatwall.app.ActivityManager;
+import com.greatwall.app.manager.ActivityManager;
+import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
-import com.greatwall.ui.interfaces.UIListenerManager;
 import com.greatwall.util.ViewUtils;
 import com.greatwall.util.WeakAsyncTask;
 
