@@ -122,7 +122,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
         Iterator<WeakReference<Object>> objIterator = this.mObjReferences.iterator();
         for (int i = 0; i < objs.length; i++)
         {
-            objs[i] = ((WeakReference<Object>) objIterator.next()).get();
+            objs[i] = objIterator.next().get();
             if (objs[i] == null)
                 return null;
         }

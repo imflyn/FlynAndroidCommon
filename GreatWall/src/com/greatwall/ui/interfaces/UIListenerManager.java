@@ -1,13 +1,17 @@
 package com.greatwall.ui.interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.os.Handler;
 
 import com.greatwall.app.AppManager;
 
 public class UIListenerManager implements AppManager
 {
-    private static UIListenerManager instance;
-    private ArrayList<UIListener>    mUIListeners;
+    private static UIListenerManager                          instance;
+    private HashMap<Class<? extends UIListener>, ArrayList<UIListener>> mUIListeners;
+    private Handler                                           handler;
 
     public static UIListenerManager getInstance()
     {
@@ -27,13 +31,12 @@ public class UIListenerManager implements AppManager
     public void addClass(UIListener listener)
     {
         if (null == listener)
-            throw new IllegalStateException("Happened when add Class " + listener + " is null.");
+            throw new IllegalStateException("Happened when add argument " + listener + " is null.");
 
-        if (null != this.mUIListeners)
-            this.mUIListeners = new ArrayList<UIListener>(5);
+        if (null == mUIListeners)
+            mUIListeners =new HashMap<Class<? extends UIListener>, ArrayList<UIListener>>();
 
-        this.mUIListeners.remove(listener);
-        this.mUIListeners.add(listener);
+        getListeners(listener.getClass()).add(listener);
     }
 
     public void removeClass(UIListener listener)
@@ -41,44 +44,50 @@ public class UIListenerManager implements AppManager
         if (null == listener)
             throw new IllegalStateException("Happened when remove Class " + listener + " is null.");
 
-        if (null != this.mUIListeners)
-            this.mUIListeners = new ArrayList<UIListener>(5);
-
-            this.mUIListeners.remove(listener);
+        if (null == this.mUIListeners)
+            return;
+        getListeners(listener.getClass()).remove(listener);
     }
 
-    public void update(Class<? extends UIListener> cls, Object... obj)
+    public void update(final Class<UIListener> cls, final Object... obj)
     {
-        UIListener listener = getListener(cls);
-        if (null != listener)
-            listener.onUpdate(obj);
-
-    }
-
-    public void error(Class<? extends UIListener> cls, Throwable error)
-    {
-        UIListener listener = getListener(cls);
-        if (null != listener)
-            listener.onError(error);
-    }
-
-    private UIListener getListener(Class<? extends UIListener> cls)
-    {
-        UIListener listener = null;
-        if (null == this.mUIListeners || cls == null)
-            return listener;
-
-        String className = cls.getName();
-        for (int i = 0; i < mUIListeners.size(); i++)
+        handler.post((new Runnable()
         {
-            UIListener uiListener = mUIListeners.get(i);
-            if (className.equals(uiListener.getClass().getName()))
+            @Override
+            public void run()
             {
-                listener = uiListener;
+                for (UIListener listener : getListeners(cls))
+                {
+                    listener.onUpdate(obj);
+                }
             }
-        }
+        }));
+    }
 
-        return listener;
+    public void error(final Class<UIListener> cls, final Throwable error)
+    {
+        handler.post((new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UIListener listener : getListeners(cls))
+                {
+                    listener.onError(error);
+                }
+            }
+        }));
+    }
+
+    private ArrayList<UIListener> getListeners(Class<? extends UIListener> cls)
+    {
+        ArrayList<UIListener> collection = (ArrayList<UIListener>) mUIListeners.get(cls);
+        if (collection == null)
+        {
+            collection = new ArrayList<UIListener>();
+            mUIListeners.put(cls, collection);
+        }
+        return collection;
     }
 
     @Override
@@ -90,6 +99,12 @@ public class UIListenerManager implements AppManager
             mUIListeners = null;
         }
 
+    }
+
+    @Override
+    public void onInit()
+    {
+        handler = new Handler();
     }
 
 }
