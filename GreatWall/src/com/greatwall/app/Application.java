@@ -17,7 +17,6 @@ public class Application extends android.app.Application
     {
         super.onCreate();
         mContext = this;
-
     }
 
     public static Application getInstance()
@@ -46,7 +45,6 @@ public class Application extends android.app.Application
         for (int i = 0; i < mAppManagerList.size(); i++)
         {
             mAppManagerList.get(i).onClear();
-            ;
         }
     }
 
