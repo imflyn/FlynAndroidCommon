@@ -36,7 +36,7 @@ public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivit
         }
         setTheme(theme);
         setContentView(layoutId());
-        initView();
+        initView(savedInstanceState);
         setListener();
     }
 
@@ -127,7 +127,7 @@ public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivit
 
     protected abstract int layoutId();
 
-    protected abstract void initView();
+    protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
 

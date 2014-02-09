@@ -1,5 +1,7 @@
 package com.greatwall.ui;
 
+import android.os.Bundle;
+
 public class EmptyActivity extends BaseActivity
 {
 
@@ -10,7 +12,7 @@ public class EmptyActivity extends BaseActivity
     }
 
     @Override
-    protected void initView()
+    protected void initView(Bundle savedInstanceState)
     {
 
     }
