@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
-
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
@@ -134,7 +132,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected final View getViewById(int id)
     {
         View view = findViewById(id);
-        this.viewList.add((ViewGroup) view);
+        this.viewList.add( view);
         return view;
     }
 

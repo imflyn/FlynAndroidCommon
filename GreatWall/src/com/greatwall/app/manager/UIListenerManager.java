@@ -76,7 +76,7 @@ public class UIListenerManager extends AppManager
 
     private ArrayList<UIListener> getListeners(Class<? extends UIListener> cls)
     {
-        ArrayList<UIListener> collection = (ArrayList<UIListener>) mUIListeners.get(cls);
+        ArrayList<UIListener> collection = mUIListeners.get(cls);
         if (collection == null)
         {
             collection = new ArrayList<UIListener>();
