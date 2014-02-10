@@ -1,14 +1,14 @@
 package com.greatwall.ui.slidingmenu.lib.app;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 import com.greatwall.ui.slidingmenu.lib.SlidingMenu;
 
-public class SlidingFragmentActivity extends ActionBarActivity implements SlidingActivityBase
+public class SlidingFragmentActivity extends FragmentActivity implements SlidingActivityBase
 {
 
     private SlidingActivityHelper mHelper;

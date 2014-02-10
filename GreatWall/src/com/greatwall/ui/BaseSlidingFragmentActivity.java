@@ -121,7 +121,6 @@ public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivit
     {
         super.onSaveInstanceState(outState);
         outState.putInt("theme", theme);
-
     }
 
     protected abstract int layoutId();
@@ -140,7 +139,7 @@ public abstract class BaseSlidingFragmentActivity extends SlidingFragmentActivit
     protected final View getViewById(View rootView, int id)
     {
         View view = rootView.findViewById(id);
-        this.viewList.add((ViewGroup) view);
+        this.viewList.add(view);
         return view;
     }
 

@@ -141,7 +141,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected final View getViewById(View rootView, int id)
     {
         View view = rootView.findViewById(id);
-        this.viewList.add((ViewGroup) view);
+        this.viewList.add( view);
         return view;
     }
 

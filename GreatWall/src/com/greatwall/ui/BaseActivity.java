@@ -140,7 +140,7 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected final View getViewById(View rootView, int id)
     {
         View view = rootView.findViewById(id);
-        this.viewList.add((ViewGroup) view);
+        this.viewList.add( view);
         return view;
     }
 
