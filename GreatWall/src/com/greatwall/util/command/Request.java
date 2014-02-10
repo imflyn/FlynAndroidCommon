@@ -1,14 +1,12 @@
 package com.greatwall.util.command;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 
-public class Request implements Serializable
+public class Request
 {
-    private static final long serialVersionUID = 1L;
-    private Object            tag;
-    private Object            data;
-    private boolean           mIsCancel;
+    private Object  tag;
+    private Object  data;
+    private boolean mIsCancel;
 
     public Request()
     {

@@ -31,8 +31,6 @@ public class Application extends android.app.Application
         this.mAppManagerList.add(appManager);
     }
 
-   
-
     public void clear()
     {
         for (int i = 0; i < mAppManagerList.size(); i++)

@@ -1,11 +1,12 @@
 package com.greatwall.ui;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
@@ -15,8 +16,8 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final ArrayList<View> viewList = new ArrayList<View>();
-    protected int                 theme    = 0;
+    private final HashMap<String, View> viewMap = new HashMap<String, View>();
+    protected int                       theme   = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -110,8 +111,8 @@ public abstract class BaseActivity extends Activity implements UIListener
         if (this.asynctask != null && !this.asynctask.isCancelled())
             this.asynctask.cancel(true);
 
-        ViewUtils.recycleViews(this.viewList, true);
-        this.viewList.clear();
+        ViewUtils.recycleViews(this.viewMap, true);
+        this.viewMap.clear();
     }
 
     @Override
@@ -130,15 +131,23 @@ public abstract class BaseActivity extends Activity implements UIListener
 
     protected final View getViewById(int id)
     {
-        View view = findViewById(id);
-        this.viewList.add(view);
+        View view = this.viewMap.get(String.valueOf(id));
+        if (null == view)
+        {
+            view = findViewById(id);
+            this.viewMap.put(String.valueOf(id), view);
+        }
         return view;
     }
 
     protected final View getViewById(View rootView, int id)
     {
-        View view = rootView.findViewById(id);
-        this.viewList.add( view);
+        View view = this.viewMap.get(String.valueOf(id));
+        if (null == view)
+        {
+            view = rootView.findViewById(id);
+            this.viewMap.put(String.valueOf(id), view);
+        }
         return view;
     }
 
