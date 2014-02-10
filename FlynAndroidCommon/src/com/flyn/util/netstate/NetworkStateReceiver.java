@@ -13,7 +13,7 @@ import com.flyn.util.netstate.NetWorkUtil.netType;
 /**
  * @Title NetworkStateReceiver
  * @Description 是一个检测网络状态改变的，需要配置 <receiver
- *              android:name="com.talkingoa.util.netstate.NetworkStateReceiver"
+ *              android:name="com.flyn.util.netstate.NetworkStateReceiver"
  *              > <intent-filter> <action
  *              android:name="android.net.conn.CONNECTIVITY_CHANGE" /> <action
  *              android:name="android.gzcpc.conn.CONNECTIVITY_CHANGE" />
@@ -34,7 +34,7 @@ public class NetworkStateReceiver extends BroadcastReceiver
     private static netType                      netType;
     private static ArrayList<NetChangeObserver> netChangeObserverArrayList          = new ArrayList<NetChangeObserver>();
     public final static String                  ANDROID_NET_CHANGE_ACTION           = "android.net.conn.CONNECTIVITY_CHANGE";
-    public final static String                  TALKINGOA_ANDROID_NET_CHANGE_ACTION = "talkingoa.android.net.conn.CONNECTIVITY_CHANGE";
+    public final static String                  FLYN_ANDROID_NET_CHANGE_ACTION = "flyn.android.net.conn.CONNECTIVITY_CHANGE";
     private static BroadcastReceiver            receiver;
     private static final String                 TAG                                 = "NetworkStateReceiver";
     private static IntentFilter                 filter;
@@ -54,7 +54,7 @@ public class NetworkStateReceiver extends BroadcastReceiver
         {
             filter = new IntentFilter();
             filter.addAction(NetworkStateReceiver.ANDROID_NET_CHANGE_ACTION);
-            filter.addAction(NetworkStateReceiver.TALKINGOA_ANDROID_NET_CHANGE_ACTION);
+            filter.addAction(NetworkStateReceiver.FLYN_ANDROID_NET_CHANGE_ACTION);
         }
         return filter;
     }
@@ -63,7 +63,7 @@ public class NetworkStateReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         receiver = NetworkStateReceiver.this;
-        if (intent.getAction().equalsIgnoreCase(ANDROID_NET_CHANGE_ACTION) || intent.getAction().equalsIgnoreCase(TALKINGOA_ANDROID_NET_CHANGE_ACTION))
+        if (intent.getAction().equalsIgnoreCase(ANDROID_NET_CHANGE_ACTION) || intent.getAction().equalsIgnoreCase(FLYN_ANDROID_NET_CHANGE_ACTION))
         {
             Log.i(TAG, "网络状态改变.");
             if (!NetWorkUtil.isNetworkAvailable(context))
@@ -89,7 +89,7 @@ public class NetworkStateReceiver extends BroadcastReceiver
     public static void registerNetworkStateReceiver(Context mContext)
     {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(TALKINGOA_ANDROID_NET_CHANGE_ACTION);
+        filter.addAction(FLYN_ANDROID_NET_CHANGE_ACTION);
         filter.addAction(ANDROID_NET_CHANGE_ACTION);
         mContext.getApplicationContext().registerReceiver(getReceiver(), filter);
     }
@@ -102,7 +102,7 @@ public class NetworkStateReceiver extends BroadcastReceiver
     public static void checkNetworkState(Context mContext)
     {
         Intent intent = new Intent();
-        intent.setAction(TALKINGOA_ANDROID_NET_CHANGE_ACTION);
+        intent.setAction(FLYN_ANDROID_NET_CHANGE_ACTION);
         mContext.sendBroadcast(intent);
     }
 
