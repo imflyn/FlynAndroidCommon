@@ -7,7 +7,7 @@ import com.greatwall.sharedpreferences.AbstractSharedPreference;
 public class ThemeManager extends AppManager
 {
 
-    private static ThemeManager   instance;
+    private static ThemeManager   instance=new ThemeManager();
     private ThemeSharedPreference mSharedPreference;
 
     private ThemeManager()
@@ -40,7 +40,7 @@ public class ThemeManager extends AppManager
 
     public int getCurrentThemeStyle()
     {
-        return this.mSharedPreference.read(ThemeSharedPreference.DEFAULT_STOREKEY, android.R.style.Theme_NoTitleBar);
+        return this.mSharedPreference.read(ThemeSharedPreference.DEFAULT_STOREKEY, android.R.style.Theme);
 
     }
 
@@ -58,7 +58,7 @@ public class ThemeManager extends AppManager
         {
             super(context, DEFAULT_STORENAME);
         }
-
+ 
     }
 
 }

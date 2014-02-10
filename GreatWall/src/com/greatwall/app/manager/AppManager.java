@@ -10,6 +10,7 @@ public abstract class AppManager
     {
         mContext = Application.getInstance();
         mContext.addManager(this);
+        onInit();
     }
 
     public abstract void onInit();

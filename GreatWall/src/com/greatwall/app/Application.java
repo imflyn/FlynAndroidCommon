@@ -31,14 +31,7 @@ public class Application extends android.app.Application
         this.mAppManagerList.add(appManager);
     }
 
-    public void init()
-    {
-        mIsRunning = true;
-        for (int i = 0; i < mAppManagerList.size(); i++)
-        {
-            mAppManagerList.get(i).onInit();
-        }
-    }
+   
 
     public void clear()
     {

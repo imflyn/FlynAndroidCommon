@@ -1,7 +1,6 @@
 package com.greatwall.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,7 +17,7 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final List<ViewGroup> viewList = new ArrayList<ViewGroup>();
+    private final ArrayList<View> viewList = new ArrayList<View>();
     protected int                 theme    = 0;
 
     @Override
@@ -113,7 +112,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         if (this.asynctask != null && !this.asynctask.isCancelled())
             this.asynctask.cancel(true);
 
-        ViewUtils.recycleViewGroupAndChildViews(this.viewList, true);
+        ViewUtils.recycleViews(this.viewList, true);
         this.viewList.clear();
     }
 
