@@ -1,10 +1,10 @@
 package com.greatwall.ui;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.SparseIntArray;
-
-import java.util.List;
 
 /**
  * User: qii Date: 13-9-8
