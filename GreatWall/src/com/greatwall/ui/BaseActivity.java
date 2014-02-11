@@ -17,7 +17,7 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final HashMap<String, View> viewMap = new HashMap<String, View>();
+    private final HashMap<String, View> viewMap = new HashMap<String, View>(8);
     protected int                       theme   = 0;
 
     @Override
@@ -113,6 +113,11 @@ public abstract class BaseActivity extends Activity implements UIListener
         if (this.asynctask != null && !this.asynctask.isCancelled())
             this.asynctask.cancel(true);
 
+        clearViewMap();
+    }
+
+    protected void clearViewMap()
+    {
         ViewUtils.recycleViews(this.viewMap, true);
         this.viewMap.clear();
     }
@@ -123,6 +128,13 @@ public abstract class BaseActivity extends Activity implements UIListener
         super.onSaveInstanceState(outState);
         outState.putInt("theme", theme);
 
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        savedInstanceState.putInt("theme", theme);
     }
 
     protected abstract int layoutId();

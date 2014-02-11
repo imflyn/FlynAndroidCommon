@@ -113,10 +113,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         if (this.asynctask != null && !this.asynctask.isCancelled())
             this.asynctask.cancel(true);
 
+        clearViewMap();
+    }
+
+    protected void clearViewMap()
+    {
         ViewUtils.recycleViews(this.viewMap, true);
         this.viewMap.clear();
     }
-
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
