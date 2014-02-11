@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.Window;
 
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
@@ -33,6 +34,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
             theme = savedInstanceState.getInt("theme");
         }
         setTheme(theme);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
