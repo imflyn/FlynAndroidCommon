@@ -3,6 +3,7 @@ package com.greatwall.app.manager;
 import android.content.Context;
 
 import com.greatwall.sharedpreferences.AbstractSharedPreference;
+import com.greatwall.sharedpreferences.SharedPreferenceFactory;
 
 public class ThemeManager extends AppManager
 {
@@ -23,7 +24,7 @@ public class ThemeManager extends AppManager
     @Override
     public void onInit()
     {
-        this.mSharedPreference = new ThemeSharedPreference(mContext);
+        this.mSharedPreference =(ThemeSharedPreference) SharedPreferenceFactory.getSharedPreference(mContext, ThemeSharedPreference.class);
     }
 
     @Override
