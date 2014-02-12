@@ -1,6 +1,6 @@
 package com.greatwall.ui;
 
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final HashMap<String, View> viewMap = new HashMap<String, View>(8);
+    private final WeakHashMap<String, View> viewMap = new WeakHashMap<String, View>(8);
     protected int                       theme   = 0;
 
     @Override

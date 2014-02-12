@@ -1,8 +1,8 @@
 package com.greatwall.util;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -63,7 +63,7 @@ public class ViewUtils
         viewGroup.setBackgroundDrawable(null);
     }
 
-    public static void recycleViews(HashMap<String, View> viewMap, boolean recycleBitmap)
+    public static void recycleViews(WeakHashMap<String, View> viewMap, boolean recycleBitmap)
     {
         for (Map.Entry<String, View> entry : viewMap.entrySet())
         {
