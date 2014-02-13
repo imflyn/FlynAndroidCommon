@@ -3,7 +3,6 @@ package com.greatwall.ui;
 import java.io.Serializable;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        view.setBackgroundColor(Color.WHITE);
         view.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -33,6 +31,8 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
                 return true;
             }
         });
+        initView(savedInstanceState);
+        setListener();
     }
 
     @Override
@@ -40,8 +40,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     {
         View view = inflater.inflate(getLayoutId(), container, false);
         this.mContextView = view;
-        initView(savedInstanceState);
-        setListener();
         return view;
     }
 
