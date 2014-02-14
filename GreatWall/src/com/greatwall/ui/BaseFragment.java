@@ -28,6 +28,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent)
             {
+                System.out.println("onTouch");
                 return true;
             }
         });
