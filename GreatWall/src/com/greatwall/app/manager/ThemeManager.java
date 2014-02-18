@@ -41,7 +41,7 @@ public class ThemeManager extends AppManager
 
     public int getCurrentThemeStyle()
     {
-        return this.mSharedPreference.read(ThemeSharedPreference.DEFAULT_STOREKEY, android.R.style.Theme_NoTitleBar);
+        return this.mSharedPreference.read(ThemeSharedPreference.DEFAULT_STOREKEY, android.R.style.Theme_Translucent_NoTitleBar);
 
     }
 
