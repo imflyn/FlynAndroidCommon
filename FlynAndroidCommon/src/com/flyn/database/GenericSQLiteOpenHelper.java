@@ -100,53 +100,9 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 		}
 	}
 
-	public List<String> rawQueryForFirstField(String sql, String[] selectionArgs, boolean closeDB) throws SQLException
-	{
-		List<String> returnVal = new LinkedList<String>();
-		Cursor cursor = null;
-		try
-		{
-			lock.lock();
-			db = getReadableDatabase();
-			cursor = db.rawQuery(sql, selectionArgs);
-			while (true)
-			{
-				if (!cursor.moveToNext())
-				{
-					List<String> localList = returnVal;
-					return localList;
-				}
-				String value = cursor.getString(0);
-				returnVal.add(value);
-			}
-		} finally
-		{
-			try
-			{
-				if (cursor != null)
-					cursor.close();
-			} finally
-			{
-				if ((db != null) && (closeDB))
-					db.close();
-			}
-			lock.unlock();
-		}
-	}
-
 	public void execSQL(String sql, boolean closeDB) throws SQLException
 	{
-		try
-		{
-			lock.lock();
-			db = getWritableDatabase();
-			db.execSQL(sql);
-		} finally
-		{
-			if ((db != null) && (closeDB))
-				db.close();
-			lock.unlock();
-		}
+		this.execSQL(sql, null, closeDB);
 	}
 
 	public void execSQL(String sql, Object[] bindArgs, boolean closeDB) throws SQLException
@@ -155,7 +111,10 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 		{
 			lock.lock();
 			db = getWritableDatabase();
-			db.execSQL(sql, bindArgs);
+			if (null != bindArgs)
+				db.execSQL(sql, bindArgs);
+			else
+				db.execSQL(sql);
 		} finally
 		{
 			if ((db != null) && (closeDB))
@@ -166,23 +125,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 
 	public void execSQLByTransaction(String sql, boolean closeDB) throws SQLException
 	{
-		try
-		{
-			lock.lock();
-			db = getWritableDatabase();
-			db.beginTransaction();
-			db.execSQL(sql);
-			db.setTransactionSuccessful();
-		} finally
-		{
-
-			if ((db != null) && (closeDB))
-			{
-				db.endTransaction();
-				db.close();
-			}
-			lock.unlock();
-		}
+		this.execSQLByTransaction(sql, null, closeDB);
 	}
 
 	public void execSQLByTransaction(String sql, Object[] bindArgs, boolean closeDB) throws SQLException
@@ -192,11 +135,13 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 			lock.lock();
 			db = getWritableDatabase();
 			db.beginTransaction();
-			db.execSQL(sql, bindArgs);
+			if (null != bindArgs)
+				db.execSQL(sql, bindArgs);
+			else
+				db.execSQL(sql);
 			db.setTransactionSuccessful();
 		} finally
 		{
-
 			if ((db != null) && (closeDB))
 			{
 				db.endTransaction();
@@ -208,15 +153,19 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 
 	public void execSQLListByTransaction(List<String> sqlList, List<Object[]> bindArgsList, boolean closeDB) throws SQLException
 	{
-
 		try
 		{
 			lock.lock();
 			db = getWritableDatabase();
 			db.beginTransaction();
+			Object[] bindArgs;
 			for (int i = 0, len = sqlList.size(); i < len; i++)
 			{
-				db.execSQL(sqlList.get(i), bindArgsList.get(i));
+				bindArgs = bindArgsList.get(i);
+				if (null != bindArgs)
+					db.execSQL(sqlList.get(i), bindArgs);
+				else
+					db.execSQL(sqlList.get(i));
 			}
 			db.setTransactionSuccessful();
 		} finally
