@@ -8,7 +8,7 @@ public class Application extends android.app.Application
 {
 
     // singleton
-    private static Application    mContext        = null;
+    private static Application    mContext        ;
     private volatile boolean      mIsRunning      = false;
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
 
