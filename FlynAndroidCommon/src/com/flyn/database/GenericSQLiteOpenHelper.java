@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -15,13 +16,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
 {
-    private SQLiteDatabase db;
-    private final Lock     lock;
+    private SQLiteDatabase                      db;
+    private final static ReentrantReadWriteLock lock      = new ReentrantReadWriteLock();
+    private final static ReadLock               readLock  = lock.readLock();
+    private final static WriteLock              writeLock = lock.writeLock();
 
     public GenericSQLiteOpenHelper(Context context, String dbName, int version)
     {
         super(context, dbName, null, version);
-        lock = new ReentrantLock();
     }
 
     public List<Map<String, String>> rawQuery(String sql, String[] selectionArgs, boolean closeDB) throws SQLException
@@ -30,7 +32,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
         Cursor cursor = null;
         try
         {
-            lock.lock();
+            lock.readLock().lock();
             db = getReadableDatabase();
             cursor = db.rawQuery(sql, selectionArgs);
             int columnCount = cursor.getColumnCount();
@@ -61,17 +63,16 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
                 if ((db != null) && (closeDB))
                     db.close();
             }
-            lock.unlock();
+            readLock.unlock();
         }
     }
 
-    public Map<String, String> rawQueryForFirstRow(String sql, String[] selectionArgs, boolean closeDB)
-            throws SQLException
+    public Map<String, String> rawQueryForFirstRow(String sql, String[] selectionArgs, boolean closeDB) throws SQLException
     {
         Cursor cursor = null;
         try
         {
-            lock.lock();
+            readLock.lock();
             db = getReadableDatabase();
             cursor = db.rawQuery(sql, selectionArgs);
             if (!cursor.moveToNext())
@@ -97,7 +98,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
                 if ((db != null) && (closeDB))
                     db.close();
             }
-            lock.unlock();
+            readLock.unlock();
         }
     }
 
@@ -110,7 +111,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
     {
         try
         {
-            lock.lock();
+            writeLock.lock();
             db = getWritableDatabase();
             if (null != bindArgs)
                 db.execSQL(sql, bindArgs);
@@ -120,7 +121,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
         {
             if ((db != null) && (closeDB))
                 db.close();
-            lock.unlock();
+            writeLock.unlock();
         }
     }
 
@@ -133,7 +134,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
     {
         try
         {
-            lock.lock();
+            writeLock.lock();
             db = getWritableDatabase();
             db.beginTransaction();
             if (null != bindArgs)
@@ -148,16 +149,15 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
                 db.endTransaction();
                 db.close();
             }
-            lock.unlock();
+            writeLock.unlock();
         }
     }
 
-    public void execSQLListByTransaction(List<String> sqlList, List<Object[]> bindArgsList, boolean closeDB)
-            throws SQLException
+    public void execSQLListByTransaction(List<String> sqlList, List<Object[]> bindArgsList, boolean closeDB) throws SQLException
     {
         try
         {
-            lock.lock();
+            writeLock.lock();
             db = getWritableDatabase();
             db.beginTransaction();
             Object[] bindArgs;
@@ -177,7 +177,7 @@ public abstract class GenericSQLiteOpenHelper extends SQLiteOpenHelper
                 db.endTransaction();
                 db.close();
             }
-            lock.unlock();
+            writeLock.unlock();
         }
     }
 }
