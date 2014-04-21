@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public final class MemoryManager
 {
@@ -132,9 +132,9 @@ public final class MemoryManager
         ActivityManager actMgr = (ActivityManager) context.getSystemService("activity");
         ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
         actMgr.getMemoryInfo(memoryInfo);
-        Logger.logI(MemoryManager.class, "Avail Memory=" + (memoryInfo.availMem >> 20) + "M");
-        Logger.logI(MemoryManager.class, "threshold=" + (memoryInfo.threshold >> 20) + "M");
-        Logger.logI(MemoryManager.class, "Is Low Memory=" + memoryInfo.lowMemory);
+        LogManager.i(MemoryManager.class, "Avail Memory=" + (memoryInfo.availMem >> 20) + "M");
+        LogManager.i(MemoryManager.class, "threshold=" + (memoryInfo.threshold >> 20) + "M");
+        LogManager.i(MemoryManager.class, "Is Low Memory=" + memoryInfo.lowMemory);
         return memoryInfo.lowMemory;
     }
 
