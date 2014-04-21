@@ -8,7 +8,7 @@ import android.view.Window;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public class ToastWindow
 {
@@ -125,7 +125,7 @@ public class ToastWindow
             this.pw.dismiss();
         } catch (RuntimeException e)
         {
-            Logger.logE(ToastWindow.class, "dismiss ToastWindow failed.", e);
+            LogManager.e(ToastWindow.class, "dismiss ToastWindow failed.", e);
         }
     }
 }
