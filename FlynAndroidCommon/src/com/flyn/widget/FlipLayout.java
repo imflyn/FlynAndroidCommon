@@ -15,7 +15,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public class FlipLayout extends ViewGroup
 {
@@ -289,7 +289,7 @@ public class FlipLayout extends ViewGroup
         switch (action)
         {
             case 0:
-                Logger.logI(FlipLayout.class, "event down!");
+                LogManager.i(FlipLayout.class, "event down!");
                 this.mScroller.forceFinished(true);
                 return true;
             case 2:
@@ -307,7 +307,7 @@ public class FlipLayout extends ViewGroup
                 return true;
             case 1:
             case 3:
-                Logger.logI(FlipLayout.class, "event up/cancel!");
+                LogManager.i(FlipLayout.class, "event up/cancel!");
                 this.mIsIntercepted = false;
                 this.mShouldResetIsFlingOutOfRangeBreak = true;
                 if (this.mIsFlingChangedWhenPressed)
@@ -323,14 +323,14 @@ public class FlipLayout extends ViewGroup
                     int velocityX = (int) this.mVelocityTracker.getXVelocity();
                     this.mVelocityTracker.recycle();
                     this.mVelocityTracker = null;
-                    Logger.logI(FlipLayout.class, "velocityX:" + velocityX);
+                    LogManager.i(FlipLayout.class, "velocityX:" + velocityX);
                     if ((velocityX > 600) && (this.mCurScreen > 0))
                     {
-                        Logger.logI(FlipLayout.class, "snap left");
+                        LogManager.i(FlipLayout.class, "snap left");
                         scrollToScreen(this.mCurScreen - 1);
                     } else if ((velocityX < -600) && (this.mCurScreen < this.mNoGoneChildren.size() - 1))
                     {
-                        Logger.logI(FlipLayout.class, "snap right");
+                        LogManager.i(FlipLayout.class, "snap right");
                         scrollToScreen(this.mCurScreen + 1);
                     } else
                     {
