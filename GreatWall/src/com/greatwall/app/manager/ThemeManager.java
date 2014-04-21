@@ -24,7 +24,7 @@ public class ThemeManager extends AppManager
     @Override
     public void onInit()
     {
-        this.mSharedPreference =(ThemeSharedPreference) SharedPreferenceFactory.getSharedPreference(mContext, ThemeSharedPreference.class);
+        this.mSharedPreference = (ThemeSharedPreference) SharedPreferenceFactory.getSharedPreference(mContext, ThemeSharedPreference.class);
     }
 
     @Override

@@ -19,7 +19,7 @@ import com.greatwall.util.WeakAsyncTask;
 public abstract class BaseActivity extends Activity implements UIListener
 {
     private final WeakHashMap<String, View> viewMap = new WeakHashMap<String, View>(8);
-    protected int                       theme   = 0;
+    protected int                           theme   = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -137,10 +137,12 @@ public abstract class BaseActivity extends Activity implements UIListener
         super.onRestoreInstanceState(savedInstanceState);
         savedInstanceState.putInt("theme", theme);
     }
-    
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             moveTaskToBack(true);
             return true;
         }

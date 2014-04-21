@@ -19,7 +19,7 @@ import com.greatwall.util.WeakAsyncTask;
 public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
     private final WeakHashMap<String, View> viewMap = new WeakHashMap<String, View>();
-    protected int                       theme   = 0;
+    protected int                           theme   = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -122,6 +122,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         ViewUtils.recycleViews(this.viewMap, true);
         this.viewMap.clear();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
@@ -129,14 +130,18 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         outState.putInt("theme", theme);
 
     }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             moveTaskToBack(true);
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+
     protected abstract int layoutId();
 
     protected abstract void initView(Bundle savedInstanceState);

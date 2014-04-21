@@ -18,7 +18,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     private View                 mContextView;
     private boolean              isViewDetached = false;
 
-    
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
@@ -87,9 +86,9 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        if(!(activity instanceof BaseFragmentActivity))
+        if (!(activity instanceof BaseFragmentActivity))
             throw new IllegalStateException("Activity must extends BaseFragmentActivity");
-        
+
         mContext = (BaseFragmentActivity) activity;
     }
 
