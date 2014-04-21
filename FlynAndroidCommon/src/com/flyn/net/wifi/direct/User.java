@@ -32,7 +32,7 @@ import android.provider.Settings;
 
 import com.flyn.net.wifi.WifiCallback;
 import com.flyn.net.wifi.WifiUtils;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 import com.flyn.util.StringUtil;
 
 public class User
@@ -382,16 +382,16 @@ public class User
                             wifiUtils.setWifiApConfiguration(User.this.preApConfig);
                         } catch (RuntimeException e)
                         {
-                            Logger.logE(User.class, "restore ap config failed.", e);
+                            LogManager.e(User.class, "restore ap config failed.", e);
                         } catch (NoSuchMethodException e)
                         {
-                            Logger.logE(User.class, "restore ap config failed.", e);
+                            LogManager.e(User.class, "restore ap config failed.", e);
                         } catch (IllegalAccessException e)
                         {
-                            Logger.logE(User.class, "restore ap config failed.", e);
+                            LogManager.e(User.class, "restore ap config failed.", e);
                         } catch (InvocationTargetException e)
                         {
-                            Logger.logE(User.class, "restore ap config failed.", e);
+                            LogManager.e(User.class, "restore ap config failed.", e);
                         }
                         if (User.this.preWifiStaticIp != -1)
                             Settings.System.putInt(context.getContentResolver(), "wifi_static_ip", User.this.preWifiStaticIp);
@@ -452,7 +452,7 @@ public class User
                                     name = new String(StringUtil.hexStringToBytes(userStr), "UTF-16");
                                 } catch (Exception e)
                                 {
-                                    Logger.logW(User.class, "decode scanned ap name failed.", e);
+                                    LogManager.w(User.class, "decode scanned ap name failed.", e);
                                 }
                             }
                             if (name == null)
@@ -636,7 +636,7 @@ public class User
                                             scPoint.close();
                                         } catch (IOException e)
                                         {
-                                            Logger.logD(User.class, "close socket channel failed.", e);
+                                            LogManager.d(User.class, "close socket channel failed.", e);
                                         }
                                         user.state = 1;
                                         User.this.handler.post(new Runnable()
@@ -660,7 +660,7 @@ public class User
                             sc.close();
                     } catch (IOException e1)
                     {
-                        Logger.logE(User.class, "close socket channel failed.", e1);
+                        LogManager.e(User.class, "close socket channel failed.", e1);
                     }
                     user.state = 1;
                     User.this.handler.post(new Runnable()
@@ -706,7 +706,7 @@ public class User
                         });
                     } catch (IOException e)
                     {
-                        Logger.logE(User.class, "close socket channel failed.", e);
+                        LogManager.e(User.class, "close socket channel failed.", e);
                     }
                 }
                 try
@@ -836,7 +836,7 @@ public class User
                                             scPoint.close();
                                     } catch (IOException e)
                                     {
-                                        Logger.logE(User.class, "close socket channel failed.", e);
+                                        LogManager.e(User.class, "close socket channel failed.", e);
                                     }
                                     User.this.handler.post(new Runnable()
                                     {
@@ -875,7 +875,7 @@ public class User
                     key.channel().close();
                 } catch (IOException e)
                 {
-                    Logger.logE(User.class, "close socket channel failed.", e);
+                    LogManager.e(User.class, "close socket channel failed.", e);
                 }
                 User.this.handler.post(new Runnable()
                 {

@@ -30,7 +30,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.flyn.telephone.TelephoneMgr;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 import com.flyn.util.MathUtil;
 import com.flyn.util.StringUtil;
 
@@ -97,11 +97,11 @@ public abstract class RemoteCallback implements Runnable
                 readyCount = this.selector.select(100L);
             } catch (IOException e)
             {
-                Logger.logW(RemoteCallback.class, "running has been stopped.", e);
+                LogManager.w(RemoteCallback.class, "running has been stopped.", e);
                 return;
             } catch (ClosedSelectorException e)
             {
-                Logger.logW(RemoteCallback.class, "running has been stopped.", e);
+                LogManager.w(RemoteCallback.class, "running has been stopped.", e);
                 return;
             }
             if (readyCount <= 0)
@@ -112,7 +112,7 @@ public abstract class RemoteCallback implements Runnable
                 keys = this.selector.selectedKeys();
             } catch (ClosedSelectorException e)
             {
-                Logger.logW(RemoteCallback.class, "running has been stopped.", e);
+                LogManager.w(RemoteCallback.class, "running has been stopped.", e);
                 return;
             }
             Iterator<SelectionKey> iter = keys.iterator();
@@ -139,9 +139,9 @@ public abstract class RemoteCallback implements Runnable
                                     sc.close();
                             } catch (IOException e1)
                             {
-                                Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                             }
-                            Logger.logE(RemoteCallback.class, "handle accept socket channel failed.", e);
+                            LogManager.e(RemoteCallback.class, "handle accept socket channel failed.", e);
                         }
                     } else if (key.isConnectable())
                     {
@@ -164,7 +164,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                 } catch (IOException e1)
                                 {
-                                    Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                    LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                 }
                                 user.state = 1;
                                 this.handler.post(new Runnable()
@@ -201,7 +201,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                 } catch (IOException e1)
                                 {
-                                    Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                    LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                 }
                                 transfer.state = 1;
                                 this.handler.post(new Runnable()
@@ -232,7 +232,7 @@ public abstract class RemoteCallback implements Runnable
                                 addr = dc.receive(buff);
                             } catch (IOException e)
                             {
-                                Logger.logE(RemoteCallback.class, "receiving remote failed.", e);
+                                LogManager.e(RemoteCallback.class, "receiving remote failed.", e);
                                 continue;
                             }
                             if (dc.socket().getLocalPort() != 7002)
@@ -248,7 +248,7 @@ public abstract class RemoteCallback implements Runnable
                                 name = Charset.forName("UTF-8").newDecoder().decode(buff).toString();
                             } catch (CharacterCodingException e)
                             {
-                                Logger.logE(RemoteCallback.class, "decode remote name failed.", e);
+                                LogManager.e(RemoteCallback.class, "decode remote name failed.", e);
                                 continue;
                             }
                             RemoteUser curUser = new RemoteUser(name);
@@ -276,7 +276,7 @@ public abstract class RemoteCallback implements Runnable
                                 len = sc.read(bb);
                             } catch (IOException e)
                             {
-                                Logger.logE(RemoteCallback.class, "reading remote failed.", e);
+                                LogManager.e(RemoteCallback.class, "reading remote failed.", e);
                             }
                             if (len == -1)
                             {
@@ -286,7 +286,7 @@ public abstract class RemoteCallback implements Runnable
                                     sc.close();
                                 } catch (IOException e)
                                 {
-                                    Logger.logE(RemoteCallback.class, "close remote user failed when remote is close.", e);
+                                    LogManager.e(RemoteCallback.class, "close remote user failed when remote is close.", e);
                                 }
                                 if (remoteUser == null)
                                     continue;
@@ -318,7 +318,7 @@ public abstract class RemoteCallback implements Runnable
                                         content = Charset.forName("UTF-8").newDecoder().decode(bb).toString();
                                     } catch (CharacterCodingException e)
                                     {
-                                        Logger.logE(RemoteCallback.class, "decode remote content failed.", e);
+                                        LogManager.e(RemoteCallback.class, "decode remote content failed.", e);
                                         key.attach(new Object[] { remoteUser, "length", ByteBuffer.allocate(4), user });
                                         continue;
                                     }
@@ -393,7 +393,7 @@ public abstract class RemoteCallback implements Runnable
                                                 sc.close();
                                             } catch (IOException e)
                                             {
-                                                Logger.logE(RemoteCallback.class, "close socket channel failed.", e);
+                                                LogManager.e(RemoteCallback.class, "close socket channel failed.", e);
                                             }
                                         } else
                                         {
@@ -443,7 +443,7 @@ public abstract class RemoteCallback implements Runnable
                                                     sc.close();
                                                 } catch (IOException e1)
                                                 {
-                                                    Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                                    LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                                 }
                                                 transfer.state = 1;
                                                 this.handler.post(new Runnable()
@@ -492,7 +492,7 @@ public abstract class RemoteCallback implements Runnable
                                         channel.close();
                                     } catch (IOException e)
                                     {
-                                        Logger.logE(RemoteCallback.class, " close file channel failed.", e);
+                                        LogManager.e(RemoteCallback.class, " close file channel failed.", e);
                                     }
                                     try
                                     {
@@ -501,7 +501,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                     } catch (IOException e)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close socket channel failed.", e);
+                                        LogManager.e(RemoteCallback.class, "close socket channel failed.", e);
                                     }
                                     transfer.state = 1;
                                     this.handler.post(new Runnable()
@@ -521,7 +521,7 @@ public abstract class RemoteCallback implements Runnable
                                         channel.close();
                                     } catch (IOException e)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close file channel failed.", e);
+                                        LogManager.e(RemoteCallback.class, "close file channel failed.", e);
                                     }
                                     try
                                     {
@@ -530,7 +530,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                     } catch (IOException e)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close socket channel failed.", e);
+                                        LogManager.e(RemoteCallback.class, "close socket channel failed.", e);
                                     }
                                     transfer.state = 1;
                                     this.handler.post(new Runnable()
@@ -572,7 +572,7 @@ public abstract class RemoteCallback implements Runnable
                                     channel.close();
                                 } catch (IOException e1)
                                 {
-                                    Logger.logE(RemoteCallback.class, " close file channel failed.", e1);
+                                    LogManager.e(RemoteCallback.class, " close file channel failed.", e1);
                                 }
                                 try
                                 {
@@ -581,7 +581,7 @@ public abstract class RemoteCallback implements Runnable
                                     sc.close();
                                 } catch (IOException e1)
                                 {
-                                    Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                    LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                 }
                                 transfer.state = 1;
                                 this.handler.post(new Runnable()
@@ -612,7 +612,7 @@ public abstract class RemoteCallback implements Runnable
                                 dc.send(buff, new InetSocketAddress(InetAddress.getByName("255.255.255.255"), 7002));
                             } catch (IOException e)
                             {
-                                Logger.logE(RemoteCallback.class, "send udp message for scanning user failed.", e);
+                                LogManager.e(RemoteCallback.class, "send udp message for scanning user failed.", e);
                             } finally
                             {
                                 key.interestOps(1);
@@ -669,7 +669,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                     } catch (IOException e1)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                        LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                     }
                                     remoteUser.state = 1;
                                     this.handler.post(new Runnable()
@@ -709,7 +709,7 @@ public abstract class RemoteCallback implements Runnable
                                     key.interestOps(1);
                                 } catch (IOException e)
                                 {
-                                    Logger.logE(RemoteCallback.class, "transfer request failed.", e);
+                                    LogManager.e(RemoteCallback.class, "transfer request failed.", e);
                                     key.attach(new Object[] { objs[0], "length", ByteBuffer.allocate(4), objs[3] });
                                     key.interestOps(1);
                                 }
@@ -740,7 +740,7 @@ public abstract class RemoteCallback implements Runnable
                                     key.interestOps(1);
                                 } catch (IOException e)
                                 {
-                                    Logger.logE(RemoteCallback.class, "transfer reply failed.", e);
+                                    LogManager.e(RemoteCallback.class, "transfer reply failed.", e);
                                     key.attach(new Object[] { objs[0], "length", ByteBuffer.allocate(4), objs[4] });
                                     key.interestOps(1);
                                 }
@@ -787,7 +787,7 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                     } catch (IOException e1)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                        LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                     }
                                     final TransferEntity transferPoint = transfer;
                                     transferPoint.state = 1;
@@ -845,14 +845,14 @@ public abstract class RemoteCallback implements Runnable
                                                 sc.close();
                                             } catch (IOException e)
                                             {
-                                                Logger.logE(RemoteCallback.class, "close socket channel failed.", e);
+                                                LogManager.e(RemoteCallback.class, "close socket channel failed.", e);
                                             }
                                             try
                                             {
                                                 channel.close();
                                             } catch (IOException e)
                                             {
-                                                Logger.logE(RemoteCallback.class, "close file channel failed.", e);
+                                                LogManager.e(RemoteCallback.class, "close file channel failed.", e);
                                             }
                                             final TransferEntity transferPoint = transfer;
                                             transferPoint.state = 1;
@@ -903,14 +903,14 @@ public abstract class RemoteCallback implements Runnable
                                         sc.close();
                                     } catch (IOException e1)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close socket channel failed.", e1);
+                                        LogManager.e(RemoteCallback.class, "close socket channel failed.", e1);
                                     }
                                     try
                                     {
                                         channel.close();
                                     } catch (IOException e1)
                                     {
-                                        Logger.logE(RemoteCallback.class, "close file channel failed.", e1);
+                                        LogManager.e(RemoteCallback.class, "close file channel failed.", e1);
                                     }
                                     final TransferEntity transferPoint = transfer;
                                     transferPoint.state = 1;
@@ -928,7 +928,7 @@ public abstract class RemoteCallback implements Runnable
                     }
                 } catch (RuntimeException e)
                 {
-                    Logger.logE(RemoteCallback.class, "deal cur selection key failed,try next one...", e);
+                    LogManager.e(RemoteCallback.class, "deal cur selection key failed,try next one...", e);
                 }
             }
         }
@@ -951,7 +951,7 @@ public abstract class RemoteCallback implements Runnable
             }
         } catch (SocketException ex)
         {
-            Logger.logE(RemoteCallback.class, "get local ip failed.", ex);
+            LogManager.e(RemoteCallback.class, "get local ip failed.", ex);
         }
         return returnVal;
     }
