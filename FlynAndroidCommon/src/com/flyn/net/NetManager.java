@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 import android.provider.Settings;
 import com.flyn.net.synchttp.HttpConnectionManager;
 import com.flyn.net.synchttp.HttpResponseResult;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 @SuppressLint("DefaultLocale")
 public final class NetManager
@@ -38,12 +38,12 @@ public final class NetManager
                 return ("www.baidu.com".equalsIgnoreCase(host)) && (content.indexOf("baidu.com") >= 0);
             } catch (IOException e)
             {
-                Logger.logE(NetManager.class, "the " + th + " time to check net for method of isNetUseful failed.", e);
+                LogManager.e(NetManager.class, "the " + th + " time to check net for method of isNetUseful failed.", e);
 
                 th++;
             }
         }
-        Logger.logE(NetManager.class, "checking net for method of isNetUseful has all failed,will return false.");
+        LogManager.e(NetManager.class, "checking net for method of isNetUseful has all failed,will return false.");
         return false;
     }
 
