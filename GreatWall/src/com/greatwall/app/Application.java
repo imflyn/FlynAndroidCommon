@@ -1,7 +1,7 @@
 package com.greatwall.app;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
@@ -17,7 +17,7 @@ public class Application extends android.app.Application
     private volatile boolean      mIsRunning      = false;
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
     private Handler               backgroundHandler;
-    private Executor              backgroundExecutor;
+    private ExecutorService       backgroundExecutor;
 
     @Override
     public void onCreate()
@@ -70,6 +70,11 @@ public class Application extends android.app.Application
         {
             mAppManagerList.get(i).onClose();
         }
+    }
+
+    public void runInBackground(final Runnable runnable)
+    {
+        backgroundExecutor.submit(runnable);
     }
 
     public Handler getHandler()
