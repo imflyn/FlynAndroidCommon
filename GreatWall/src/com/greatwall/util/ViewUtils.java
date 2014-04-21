@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 public class ViewUtils
 {
+    @SuppressWarnings("deprecation")
     public static void recycleView(View view, boolean recycleBitmap)
     {
 
@@ -44,7 +45,7 @@ public class ViewUtils
                     bitmap.recycle();
                 }
             }
-            iv.setImageBitmap(null);
+            iv.setImageDrawable(null);
             iv.setBackgroundDrawable(null);
             return;
         }
@@ -53,9 +54,10 @@ public class ViewUtils
 
     }
 
+    @SuppressWarnings("deprecation")
     public static void recycleViewGroupAndChildViews(ViewGroup viewGroup, boolean recycleBitmap)
     {
-        for (int i = 0; i < viewGroup.getChildCount(); i++)
+        for (int i = 0, len = viewGroup.getChildCount(); i < len; i++)
         {
             View child = viewGroup.getChildAt(i);
             recycleView(child, recycleBitmap);
@@ -74,7 +76,7 @@ public class ViewUtils
 
     public static void recycleViews(List<View> viewList, boolean recycleBitmap)
     {
-        for (int i = 0; i < viewList.size(); i++)
+        for (int i = 0, len = viewList.size(); i < len; i++)
         {
             View view = viewList.get(i);
             recycleView(view, recycleBitmap);
