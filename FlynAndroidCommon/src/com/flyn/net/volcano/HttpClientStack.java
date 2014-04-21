@@ -164,6 +164,7 @@ public class HttpClientStack extends NetStack
         return schemeRegistry;
     }
 
+    @Override
     protected RequestFuture get(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpGet request = new HttpGet(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
@@ -172,6 +173,7 @@ public class HttpClientStack extends NetStack
 
     }
 
+    @Override
     protected RequestFuture post(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPost request = new HttpPost(url);
@@ -185,6 +187,7 @@ public class HttpClientStack extends NetStack
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
+    @Override
     protected RequestFuture delete(Context context, String url, Map<String, String> headers, RequestParams params, IResponseHandler responseHandler)
     {
         HttpDelete request = new HttpDelete(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
@@ -192,6 +195,7 @@ public class HttpClientStack extends NetStack
         return sendRequest(context, null, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
+    @Override
     protected RequestFuture put(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpPut request = new HttpPut(url);
@@ -205,6 +209,7 @@ public class HttpClientStack extends NetStack
         return sendRequest(context, contentType, responseHandler, prepareArgument(this.httpClient, this.httpContext, request));
     }
 
+    @Override
     protected RequestFuture head(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
         HttpUriRequest request = new HttpHead(Utils.getUrlWithParams(this.isURLEncodingEnabled, url, params));
@@ -289,6 +294,7 @@ public class HttpClientStack extends NetStack
         return this.httpContext;
     }
 
+    @Override
     public void setCookieStore(CookieStore cookieStore)
     {
         this.httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
@@ -296,13 +302,16 @@ public class HttpClientStack extends NetStack
 
     /**
      * Set it befor request started
+     * 
      * @param threadPool
      */
+    @Override
     public void setThreadPool(ThreadPoolExecutor threadPool)
     {
         this.threadPool = threadPool;
     }
 
+    @Override
     public void setEnableRedirects(final boolean enableRedirects)
     {
         this.httpClient.setRedirectHandler(new DefaultRedirectHandler()
@@ -316,11 +325,13 @@ public class HttpClientStack extends NetStack
         });
     }
 
+    @Override
     public void setUserAgent(String userAgent)
     {
         HttpProtocolParams.setUserAgent(this.httpClient.getParams(), userAgent);
     }
 
+    @Override
     public void setMaxConnections(int maxConnections)
     {
         if (maxConnections < 1)
@@ -331,6 +342,7 @@ public class HttpClientStack extends NetStack
 
     }
 
+    @Override
     public void setTimeOut(int timeout)
     {
         if (timeout < 1000)
@@ -341,6 +353,7 @@ public class HttpClientStack extends NetStack
         HttpConnectionParams.setConnectionTimeout(httpParams, this.timeout);
     }
 
+    @Override
     public void setProxy(String hostname, int port)
     {
         final HttpHost proxy = new HttpHost(hostname, port);
@@ -350,6 +363,7 @@ public class HttpClientStack extends NetStack
 
     }
 
+    @Override
     public void setProxy(String hostname, int port, String username, String password)
     {
         this.httpClient.getCredentialsProvider().setCredentials(new AuthScope(hostname, port), new UsernamePasswordCredentials(username, password));
@@ -360,16 +374,19 @@ public class HttpClientStack extends NetStack
 
     }
 
+    @Override
     public void setSSLSocketFactory(SSLSocketFactory sslSocketFactory)
     {
         this.httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", sslSocketFactory, 443));
     }
 
+    @Override
     public void setMaxRetriesAndTimeout(int retries, int timeout)
     {
         this.httpClient.setHttpRequestRetryHandler(new RetryHandler(retries, timeout));
     }
 
+    @Override
     public void setBasicAuth(String username, String password, AuthScope authScope)
     {
 
@@ -378,6 +395,7 @@ public class HttpClientStack extends NetStack
 
     }
 
+    @Override
     public void setBasicAuth(String username, String password)
     {
         AuthScope scope = AuthScope.ANY;
@@ -406,6 +424,7 @@ public class HttpClientStack extends NetStack
         return entity;
     }
 
+    @Override
     public void clearBasicAuth()
     {
         this.httpClient.getCredentialsProvider().clear();

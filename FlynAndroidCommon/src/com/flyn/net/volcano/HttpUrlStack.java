@@ -26,7 +26,7 @@ public class HttpUrlStack extends NetStack
         try
         {
             URL requestURL = new URL(url);
-            this.connection=(HttpURLConnection) requestURL.openConnection();
+            this.connection = (HttpURLConnection) requestURL.openConnection();
         } catch (IOException e)
         {
             e.printStackTrace();

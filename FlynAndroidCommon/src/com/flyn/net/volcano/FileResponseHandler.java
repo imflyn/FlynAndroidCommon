@@ -146,7 +146,7 @@ public abstract class FileResponseHandler extends HttpResponseHandler
                 stopTimer();
                 if (null != this.mFile)
                     mFileList.remove(this.mFile);
-                
+
                 Utils.quickClose(accessFile);
                 Utils.quickClose(inputStream);
             }
@@ -182,7 +182,7 @@ public abstract class FileResponseHandler extends HttpResponseHandler
                     if (spendTime > 0)
                         currentSpeed = (int) ((getSize / spendTime) / 1.024);
 
-                    sendProgressMessage((int) bytesWritten, (int) bytesTotal, (int) currentSpeed);
+                    sendProgressMessage((int) bytesWritten, (int) bytesTotal, currentSpeed);
                 } else
                 {
                     stopTimer();

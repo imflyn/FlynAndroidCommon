@@ -18,19 +18,16 @@ import android.content.Context;
 public class GenericSQLiteManager
 {
 
-    private static ExecutorService      multiTaskExecutor = new ThreadPoolExecutor(1, 5, 0, TimeUnit.MILLISECONDS,
-                                                                  new LinkedBlockingQueue<Runnable>(),
-                                                                  new ThreadFactory()
-                                                                  {
-                                                                      private AtomicInteger atomicInteger = new AtomicInteger();
+    private static ExecutorService      multiTaskExecutor = new ThreadPoolExecutor(1, 5, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadFactory()
+                                                          {
+                                                              private AtomicInteger atomicInteger = new AtomicInteger();
 
-                                                                      @Override
-                                                                      public Thread newThread(Runnable runnable)
-                                                                      {
-                                                                          return new Thread(runnable, "SQLiteTask #"
-                                                                                  + atomicInteger.get());
-                                                                      }
-                                                                  });
+                                                              @Override
+                                                              public Thread newThread(Runnable runnable)
+                                                              {
+                                                                  return new Thread(runnable, "SQLiteTask #" + atomicInteger.get());
+                                                              }
+                                                          });
 
     private static GenericSQLiteManager genericSQLiteManager;
 
@@ -74,8 +71,7 @@ public class GenericSQLiteManager
     }
 
     @SuppressWarnings("unchecked")
-    public void query(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql, final String[] sqlArgus,
-            final GenericSQLiteListener genericSQLiteListener)
+    public void query(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql, final String[] sqlArgus, final GenericSQLiteListener genericSQLiteListener)
     {
         Callable<List<Map<String, String>>> callable = new Callable<List<Map<String, String>>>()
         {
@@ -99,14 +95,12 @@ public class GenericSQLiteManager
 
     }
 
-    public void query(Class<? extends GenericSQLiteOpenHelper> cls, String sql,
-            GenericSQLiteListener genericSQLiteListener)
+    public void query(Class<? extends GenericSQLiteOpenHelper> cls, String sql, GenericSQLiteListener genericSQLiteListener)
     {
         query(cls, sql, null, genericSQLiteListener);
     }
 
-    public void executeSQL(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql,
-            final Object[] sqlArgus, final GenericSQLiteListener genericSQLiteListener)
+    public void executeSQL(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql, final Object[] sqlArgus, final GenericSQLiteListener genericSQLiteListener)
     {
         Runnable runnable = new Runnable()
         {
@@ -128,14 +122,12 @@ public class GenericSQLiteManager
         execute(runnable);
     }
 
-    public void executeSQLByTransaction(Class<? extends GenericSQLiteOpenHelper> cls, String sql,
-            GenericSQLiteListener genericSQLiteListener)
+    public void executeSQLByTransaction(Class<? extends GenericSQLiteOpenHelper> cls, String sql, GenericSQLiteListener genericSQLiteListener)
     {
         executeSQL(cls, sql, null, genericSQLiteListener);
     }
 
-    public void executeSQLByTransaction(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql,
-            final Object[] sqlArgus, final GenericSQLiteListener genericSQLiteListener)
+    public void executeSQLByTransaction(final Class<? extends GenericSQLiteOpenHelper> cls, final String sql, final Object[] sqlArgus, final GenericSQLiteListener genericSQLiteListener)
     {
         Runnable runnable = new Runnable()
         {
@@ -158,8 +150,7 @@ public class GenericSQLiteManager
 
     }
 
-    public void executeSQL(Class<? extends GenericSQLiteOpenHelper> cls, String sql,
-            GenericSQLiteListener genericSQLiteListener)
+    public void executeSQL(Class<? extends GenericSQLiteOpenHelper> cls, String sql, GenericSQLiteListener genericSQLiteListener)
     {
         executeSQL(cls, sql, null, genericSQLiteListener);
     }

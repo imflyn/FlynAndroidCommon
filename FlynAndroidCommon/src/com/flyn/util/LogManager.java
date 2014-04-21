@@ -9,7 +9,7 @@ public final class LogManager
     private static final int INFO          = 4;
     private static final int WARN          = 5;
     private static final int ERROR         = 6;
-//    private static final int ASSERT        = 7;
+    // private static final int ASSERT = 7;
     private static int       LOGGING_LEVEL = VERBOSE;
 
     private static boolean   ENABLED_JLOG  = false;

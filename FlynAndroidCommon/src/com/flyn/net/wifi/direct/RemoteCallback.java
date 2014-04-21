@@ -120,7 +120,7 @@ public abstract class RemoteCallback implements Runnable
             {
                 try
                 {
-                    SelectionKey key = (SelectionKey) iter.next();
+                    SelectionKey key = iter.next();
                     iter.remove();
                     if (key.isAcceptable())
                     {

@@ -36,17 +36,17 @@ public abstract class NetStack
     protected Map<Context, List<RequestFuture>> requestMap;
     protected Map<String, String>               httpHeaderMap;
     protected boolean                           isURLEncodingEnabled            = true;
-    
+
     public NetStack()
     {
         this.threadPool = Executors.newCachedThreadPool();
         this.requestMap = new WeakHashMap<Context, List<RequestFuture>>();
         this.httpHeaderMap = new HashMap<String, String>();
     }
-    
+
     public NetStack(Context context, String url, Map<String, String> headers, RequestParams params, String contentType, IResponseHandler responseHandler)
     {
-        
+
     }
 
     protected abstract RequestFuture sendRequest(Context context, String contentType, IResponseHandler responseHandler, Object[] objs);

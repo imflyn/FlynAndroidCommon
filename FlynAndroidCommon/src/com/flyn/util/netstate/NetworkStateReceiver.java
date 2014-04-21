@@ -13,8 +13,8 @@ import com.flyn.util.netstate.NetWorkUtil.netType;
 /**
  * @Title NetworkStateReceiver
  * @Description 是一个检测网络状态改变的，需要配置 <receiver
- *              android:name="com.flyn.util.netstate.NetworkStateReceiver"
- *              > <intent-filter> <action
+ *              android:name="com.flyn.util.netstate.NetworkStateReceiver" >
+ *              <intent-filter> <action
  *              android:name="android.net.conn.CONNECTIVITY_CHANGE" /> <action
  *              android:name="android.gzcpc.conn.CONNECTIVITY_CHANGE" />
  *              </intent-filter> </receiver>
@@ -30,13 +30,13 @@ import com.flyn.util.netstate.NetWorkUtil.netType;
  */
 public class NetworkStateReceiver extends BroadcastReceiver
 {
-    private static Boolean                      networkAvailable                    = false;
+    private static Boolean                      networkAvailable               = false;
     private static netType                      netType;
-    private static ArrayList<NetChangeObserver> netChangeObserverArrayList          = new ArrayList<NetChangeObserver>();
-    public final static String                  ANDROID_NET_CHANGE_ACTION           = "android.net.conn.CONNECTIVITY_CHANGE";
+    private static ArrayList<NetChangeObserver> netChangeObserverArrayList     = new ArrayList<NetChangeObserver>();
+    public final static String                  ANDROID_NET_CHANGE_ACTION      = "android.net.conn.CONNECTIVITY_CHANGE";
     public final static String                  FLYN_ANDROID_NET_CHANGE_ACTION = "flyn.android.net.conn.CONNECTIVITY_CHANGE";
     private static BroadcastReceiver            receiver;
-    private static final String                 TAG                                 = "NetworkStateReceiver";
+    private static final String                 TAG                            = "NetworkStateReceiver";
     private static IntentFilter                 filter;
 
     public static BroadcastReceiver getReceiver()

@@ -1,4 +1,3 @@
-
 package com.flyn.sharedpreferences;
 
 import android.app.ActivityManager;

@@ -534,15 +534,15 @@ public abstract class AbstractSharedPreference
         editor.clear();
         apply(editor);
     }
-    
+
     @SuppressLint("NewApi")
     private void apply(Editor editor)
     {
-        if(VERSION.SDK_INT>=9)
+        if (VERSION.SDK_INT >= 9)
             editor.apply();
         else
             editor.commit();
-        
+
     }
 
 }

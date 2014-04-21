@@ -349,10 +349,10 @@ public final class WifiUtils
             }
             return;
         }
-        List<WifiConfiguration>  oldList = getConfiguration(sr, false);
+        List<WifiConfiguration> oldList = getConfiguration(sr, false);
         if ((oldList != null) && (oldList.size() != 0))
         {
-            WifiConfiguration old = (WifiConfiguration) oldList.get(0);
+            WifiConfiguration old = oldList.get(0);
             String security = getScanResultSecurity(sr);
             setupSecurity(old, security, password);
             if (!this.wifiManager.saveConfiguration())
