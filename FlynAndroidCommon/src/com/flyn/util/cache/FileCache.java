@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import android.content.Context;
 
 import com.flyn.util.AndroidVersionCheckUtils;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 /**
  * @Description 文件的缓存操作类,包括内存缓存，与磁盘缓存
@@ -118,7 +118,7 @@ public class FileCache
                         } catch (final IOException e)
                         {
                             mCacheParams.diskCacheDir = null;
-                            Logger.logE(FileCache.class, "initDiskCache - " + e);
+                            LogManager.e(FileCache.class, "initDiskCache - " + e);
                         }
                     }
                 }
@@ -182,10 +182,10 @@ public class FileCache
                     }
                 } catch (final IOException e)
                 {
-                    Logger.logE(FileCache.class, "addBufferToCache - " + e);
+                    LogManager.e(FileCache.class, "addBufferToCache - " + e);
                 } catch (Exception e)
                 {
-                    Logger.logE(FileCache.class, "addBufferToCache - " + e);
+                    LogManager.e(FileCache.class, "addBufferToCache - " + e);
                 } finally
                 {
                     try
@@ -228,7 +228,7 @@ public class FileCache
         } catch (Exception e)
         {
             e.printStackTrace();
-            Logger.logE(FileCache.class, "获取缓存数据失败！");
+            LogManager.e(FileCache.class, "获取缓存数据失败！");
         }
         return memValue;
     }
@@ -283,11 +283,11 @@ public class FileCache
                 } catch (final IOException e)
                 {
 
-                    Logger.logE(FileCache.class, "getBufferFromDiskCache - " + e);
+                    LogManager.e(FileCache.class, "getBufferFromDiskCache - " + e);
                 } catch (Exception e)
                 {
                     e.printStackTrace();
-                    Logger.logE(FileCache.class, "getBufferFromDiskCache - " + e);
+                    LogManager.e(FileCache.class, "getBufferFromDiskCache - " + e);
                 } finally
                 {
 
@@ -335,7 +335,7 @@ public class FileCache
 
                 } catch (IOException e)
                 {
-                    Logger.logE(FileCache.class, "clearCache - " + e);
+                    LogManager.e(FileCache.class, "clearCache - " + e);
                 }
                 mDiskLruCache = null;
                 initDiskCache();
@@ -357,7 +357,7 @@ public class FileCache
                     mDiskLruCache.flush();
                 } catch (IOException e)
                 {
-                    Logger.logE(FileCache.class, "flush - " + e);
+                    LogManager.e(FileCache.class, "flush - " + e);
                 }
             }
         }
@@ -385,7 +385,7 @@ public class FileCache
                     }
                 } catch (IOException e)
                 {
-                    Logger.logE(FileCache.class, "close" + e);
+                    LogManager.e(FileCache.class, "close" + e);
                 }
             }
         }
