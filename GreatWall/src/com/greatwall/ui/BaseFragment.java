@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.greatwall.app.Application;
 import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
@@ -17,6 +19,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     private BaseFragmentActivity mContext;
     private View                 mContextView;
     private boolean              isViewDetached = false;
+    protected Handler            mHandler;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -27,7 +30,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent)
             {
-                System.out.println("onTouch");
                 return true;
             }
         });
@@ -83,6 +85,13 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        this.mHandler = Application.getInstance().getHandler();
+    }
+
+    @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
@@ -90,6 +99,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
             throw new IllegalStateException("Activity must extends BaseFragmentActivity");
 
         mContext = (BaseFragmentActivity) activity;
+
     }
 
     @Override

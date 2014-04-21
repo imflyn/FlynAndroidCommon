@@ -5,10 +5,12 @@ import java.util.WeakHashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 
+import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
@@ -20,6 +22,7 @@ public abstract class BaseActivity extends Activity implements UIListener
 {
     private final WeakHashMap<String, View> viewMap = new WeakHashMap<String, View>(8);
     protected int                           theme   = 0;
+    protected Handler                       mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -27,6 +30,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         ActivityManager.getInstance().addActivity(this);
         UIListenerManager.getInstance().addClass(this);
         super.onCreate(savedInstanceState);
+        this.mHandler = Application.getInstance().getHandler();
         if (savedInstanceState == null)
         {
             theme = ThemeManager.getInstance().getCurrentThemeStyle();
