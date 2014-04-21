@@ -11,7 +11,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public class Wifi
 {
@@ -322,7 +322,7 @@ public class Wifi
             return "WPA";
         }
 
-        Logger.logW(Wifi.class, "Unknown security type from WifiConfiguration, falling back on open.");
+        LogManager.w(Wifi.class, "Unknown security type from WifiConfiguration, falling back on open.");
         return "Open";
     }
 
@@ -337,7 +337,7 @@ public class Wifi
         if (TextUtils.isEmpty(security))
         {
             security = "Open";
-            Logger.logW(Wifi.class, "Empty security, assuming open");
+            LogManager.w(Wifi.class, "Empty security, assuming open");
         }
 
         if (security.equals("WEP"))
