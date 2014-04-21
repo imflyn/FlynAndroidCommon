@@ -13,7 +13,7 @@ import android.net.wifi.WifiManager;
 
 import com.flyn.net.NetManager;
 import com.flyn.net.wifi.support.Wifi;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public final class WifiUtils
 {
@@ -129,27 +129,27 @@ public final class WifiUtils
             @Override
             public void onWifiEnabled()
             {
-                Logger.logD(WifiUtils.class, "revert to previous wifi state...");
+                LogManager.d(WifiUtils.class, "revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
                     @Override
                     public void onWifiDisabled()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state successfully.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state successfully.");
                         callback.onCheckWifiExist();
                     }
 
                     @Override
                     public void onWifiFailed()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
                         callback.onCheckWifiExist();
                     }
 
                     @Override
                     public void onTimeout()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state time out.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state time out.");
                         callback.onCheckWifiExist();
                     }
                 }, timeout);
@@ -164,27 +164,27 @@ public final class WifiUtils
             @Override
             public void onTimeout()
             {
-                Logger.logD(WifiUtils.class, "revert to previous wifi state...");
+                LogManager.d(WifiUtils.class, "revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
                     @Override
                     public void onWifiDisabled()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state successfully.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state successfully.");
                         callback.onTimeout();
                     }
 
                     @Override
                     public void onWifiFailed()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
                         callback.onTimeout();
                     }
 
                     @Override
                     public void onTimeout()
                     {
-                        Logger.logD(WifiUtils.class, "revert to previous wifi state time out.");
+                        LogManager.d(WifiUtils.class, "revert to previous wifi state time out.");
                         callback.onTimeout();
                     }
                 }, timeout);
@@ -237,7 +237,7 @@ public final class WifiUtils
                 }, thisTimeout);
             } catch (Exception e)
             {
-                Logger.logW(WifiUtils.class, "disable wifi ap failed.", e);
+                LogManager.w(WifiUtils.class, "disable wifi ap failed.", e);
                 setWifiEnabledImpl(enabled, callback, timeout);
             }
         } else
@@ -476,7 +476,7 @@ public final class WifiUtils
                         WifiUtils.this.setWifiApEnabledImpl(apConfig, enabled, callback, timeout);
                     } catch (RuntimeException e)
                     {
-                        Logger.logE(WifiUtils.class, "set wifi ap enabled failed.", e);
+                        LogManager.e(WifiUtils.class, "set wifi ap enabled failed.", e);
                         if (callback != null)
                             callback.onWifiApFailed();
                     }
@@ -522,7 +522,7 @@ public final class WifiUtils
                         WifiUtils.this.setWifiApEnabledImpl(apConfig, enabled, callback, timeout);
                     } catch (RuntimeException e)
                     {
-                        Logger.logE(WifiUtils.class, "set wifi ap enabled failed.", e);
+                        LogManager.e(WifiUtils.class, "set wifi ap enabled failed.", e);
                         if (callback != null)
                             callback.onWifiApFailed();
                     }

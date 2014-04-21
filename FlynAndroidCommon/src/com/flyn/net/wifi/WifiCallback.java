@@ -16,7 +16,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public abstract class WifiCallback
 {
@@ -80,7 +80,7 @@ public abstract class WifiCallback
                             WifiCallback.this.prevNetworkDetailed = networkInfo.getDetailedState();
                         }
                     }
-                    Logger.logD(WifiCallback.class, "ignore initial sticky state");
+                    LogManager.d(WifiCallback.class, "ignore initial sticky state");
                     return;
                 }
                 WifiUtils wifiUtils = new WifiUtils(context);
@@ -89,7 +89,7 @@ public abstract class WifiCallback
                     int state = intent.getIntExtra("wifi_state", 0);
                     if (state == 3)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi state -> WIFI_STATE_ENABLED");
+                        LogManager.d(WifiCallback.class, "receive wifi state -> WIFI_STATE_ENABLED");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 0) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -99,7 +99,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiEnabled();
                     } else if (state == 2)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi state -> WIFI_STATE_ENABLING");
+                        LogManager.d(WifiCallback.class, "receive wifi state -> WIFI_STATE_ENABLING");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 1) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -109,7 +109,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiEnabling();
                     } else if (state == 1)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi state -> WIFI_STATE_DISABLED");
+                        LogManager.d(WifiCallback.class, "receive wifi state -> WIFI_STATE_DISABLED");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 2) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -119,7 +119,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiDisabled();
                     } else if (state == 0)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi state -> WIFI_STATE_DISABLING");
+                        LogManager.d(WifiCallback.class, "receive wifi state -> WIFI_STATE_DISABLING");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 3) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -129,7 +129,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiDisabling();
                     } else if (state == 4)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi state -> WIFI_STATE_UNKNOWN");
+                        LogManager.d(WifiCallback.class, "receive wifi state -> WIFI_STATE_UNKNOWN");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 4) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -140,7 +140,7 @@ public abstract class WifiCallback
                     }
                 } else if (action.equals("android.net.wifi.SCAN_RESULTS"))
                 {
-                    Logger.logD(WifiCallback.class, "receive scan state -> SCAN_RESULTS_AVAILABLE");
+                    LogManager.d(WifiCallback.class, "receive scan state -> SCAN_RESULTS_AVAILABLE");
                     if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 5) > -1)
                     {
                         WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -209,7 +209,7 @@ public abstract class WifiCallback
                                     if ((WifiCallback.this.prevNetworkDetailed == null) || (WifiCallback.this.prevNetworkDetailed == NetworkInfo.DetailedState.SCANNING))
                                     {
                                         WifiCallback.this.prevNetworkDetailed = detailed;
-                                        Logger.logD(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_SCANNING");
+                                        LogManager.d(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_SCANNING");
                                         return;
                                     }
                                     WifiCallback.this.isInitialNetworkAction = false;
@@ -219,7 +219,7 @@ public abstract class WifiCallback
                                             || (WifiCallback.this.prevNetworkDetailed == NetworkInfo.DetailedState.OBTAINING_IPADDR))
                                     {
                                         WifiCallback.this.prevNetworkDetailed = detailed;
-                                        Logger.logD(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_OBTAININGIP");
+                                        LogManager.d(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_OBTAININGIP");
                                         return;
                                     }
                                     WifiCallback.this.isInitialNetworkAction = false;
@@ -228,7 +228,7 @@ public abstract class WifiCallback
                                     if (detailed == NetworkInfo.DetailedState.DISCONNECTED)
                                     {
                                         WifiCallback.this.isInitialNetworkAction = false;
-                                        Logger.logD(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_DISCONNECTED");
+                                        LogManager.d(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_DISCONNECTED");
                                         return;
                                     }
                                     if (detailed == NetworkInfo.DetailedState.CONNECTED)
@@ -237,7 +237,7 @@ public abstract class WifiCallback
                                     } else if (detailed == NetworkInfo.DetailedState.FAILED)
                                     {
                                         WifiCallback.this.isInitialNetworkAction = false;
-                                        Logger.logD(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_FAILED");
+                                        LogManager.d(WifiCallback.class, "ignore initial network state -> NETWORK_STATE_FAILED");
                                         return;
                                     }
                                 }
@@ -245,7 +245,7 @@ public abstract class WifiCallback
                         }
                         if (detailed == NetworkInfo.DetailedState.IDLE)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_IDLE");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_IDLE");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 6) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -255,7 +255,7 @@ public abstract class WifiCallback
                             WifiCallback.this.onNetworkIdle(wifiUtils.getConnectionInfo());
                         } else if (detailed == NetworkInfo.DetailedState.SCANNING)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_SCANNING");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_SCANNING");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 7) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -265,7 +265,7 @@ public abstract class WifiCallback
                             WifiCallback.this.onNetworkScanning(wifiUtils.getConnectionInfo());
                         } else if (detailed == NetworkInfo.DetailedState.OBTAINING_IPADDR)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_OBTAININGIP");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_OBTAININGIP");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 8) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -275,7 +275,7 @@ public abstract class WifiCallback
                             WifiCallback.this.onNetworkObtainingIp(wifiUtils.getConnectionInfo());
                         } else if (detailed == NetworkInfo.DetailedState.DISCONNECTED)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_DISCONNECTED");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_DISCONNECTED");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 9) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -285,7 +285,7 @@ public abstract class WifiCallback
                             WifiCallback.this.onNetworkDisconnected(wifiUtils.getConnectionInfo());
                         } else if (detailed == NetworkInfo.DetailedState.CONNECTED)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_CONNECTED");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_CONNECTED");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 10) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -295,7 +295,7 @@ public abstract class WifiCallback
                             WifiCallback.this.onNetworkConnected(wifiUtils.getConnectionInfo());
                         } else if (detailed == NetworkInfo.DetailedState.FAILED)
                         {
-                            Logger.logD(WifiCallback.class, "receive network state -> NETWORK_STATE_FAILED");
+                            LogManager.d(WifiCallback.class, "receive network state -> NETWORK_STATE_FAILED");
                             if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 11) > -1)
                             {
                                 WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -312,7 +312,7 @@ public abstract class WifiCallback
                     int state = intent.getIntExtra(WifiCallback.EXTRA_WIFI_AP_STATE, 0);
                     if (state == WifiCallback.WIFI_AP_STATE_ENABLED)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_ENABLED");
+                        LogManager.d(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_ENABLED");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 12) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -322,7 +322,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiApEnabled();
                     } else if (state == WifiCallback.WIFI_AP_STATE_ENABLING)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_ENABLING");
+                        LogManager.d(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_ENABLING");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 13) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -332,7 +332,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiApEnabling();
                     } else if (state == WifiCallback.WIFI_AP_STATE_DISABLED)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_DISABLED");
+                        LogManager.d(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_DISABLED");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 14) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -342,7 +342,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiApDisabled();
                     } else if (state == WifiCallback.WIFI_AP_STATE_DISABLING)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_DISABLING");
+                        LogManager.d(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_DISABLING");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 15) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -352,7 +352,7 @@ public abstract class WifiCallback
                         WifiCallback.this.onWifiApDisabling();
                     } else if (state == WifiCallback.WIFI_AP_STATE_FAILED)
                     {
-                        Logger.logD(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_FAILED");
+                        LogManager.d(WifiCallback.class, "receive wifi ap state -> WIFI_AP_STATE_FAILED");
                         if (Arrays.binarySearch(WifiCallback.this.autoUnregisterActions, 16) > -1)
                         {
                             WifiCallback.this.isDoneForAutoUnregisterActions = true;
@@ -390,10 +390,10 @@ public abstract class WifiCallback
             WIFI_AP_STATE_FAILED = field.getInt(null);
         } catch (NoSuchFieldException e)
         {
-            Logger.logW(WifiCallback.class, "reflect wifi ap field failed.", e);
+            LogManager.w(WifiCallback.class, "reflect wifi ap field failed.", e);
         } catch (IllegalAccessException e)
         {
-            Logger.logW(WifiCallback.class, "reflect wifi ap field failed.", e);
+            LogManager.w(WifiCallback.class, "reflect wifi ap field failed.", e);
         }
     }
 
@@ -572,7 +572,7 @@ public abstract class WifiCallback
             return true;
         } catch (IllegalArgumentException e)
         {
-            Logger.logW(WifiCallback.class, "unregister receiver failed.", e);
+            LogManager.w(WifiCallback.class, "unregister receiver failed.", e);
         }
         return false;
     }
