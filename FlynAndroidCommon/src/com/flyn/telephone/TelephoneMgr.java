@@ -12,7 +12,7 @@ import android.os.StatFs;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public final class TelephoneMgr
 {
@@ -228,7 +228,7 @@ public final class TelephoneMgr
             return Integer.valueOf(Build.VERSION.SDK_INT).intValue();
         } catch (NumberFormatException e)
         {
-            Logger.logW(TelephoneMgr.class, "can not convert SDK", e);
+            LogManager.w(TelephoneMgr.class, "can not convert SDK", e);
         }
         return 0;
     }
