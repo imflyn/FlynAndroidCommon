@@ -41,7 +41,7 @@ import com.flyn.net.NetManager;
 import com.flyn.net.URLManager;
 import com.flyn.telephone.TelephoneMgr;
 import com.flyn.util.FileUtil;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public final class HttpConnectionManager
 {
@@ -287,7 +287,7 @@ public final class HttpConnectionManager
         OutputStream output = null;
         try
         {
-            Logger.logI(HttpConnectionManager.class, "request url ".concat(myURL.toString()).concat("..."));
+            LogManager.i(HttpConnectionManager.class, "request url ".concat(myURL.toString()).concat("..."));
             if ("https".equals(myURL.getProtocol()))
             {
                 SSLContext sslCont = SSLContext.getInstance("TLS");
@@ -337,7 +337,7 @@ public final class HttpConnectionManager
             String cookies = getCookies(url);
             if (cookies != null)
             {
-                Logger.logI(HttpConnectionManager.class, "set cookies(" + cookies + ") to url " + url);
+                LogManager.i(HttpConnectionManager.class, "set cookies(" + cookies + ") to url " + url);
                 httpConn.setRequestProperty("Cookie", cookies);
             }
             if ((method.equalsIgnoreCase("POST")) && (postData != null))
@@ -365,7 +365,7 @@ public final class HttpConnectionManager
                 if (location.toLowerCase().indexOf(originalURL.getProtocol() + "://") < 0)
                     location = originalURL.getProtocol() + "://" + originalURL.getHost() + location;
                 httpConn.disconnect();
-                Logger.logI(HttpConnectionManager.class, "follow redirects...");
+                LogManager.i(HttpConnectionManager.class, "follow redirects...");
                 currentRedirectCount++;
                 return openConnection(location, "GET", followRedirects, connOrReadTimeout, currentRedirectCount, currentCMWapChargePageCount, requestHeaders, null);
             }
@@ -392,7 +392,7 @@ public final class HttpConnectionManager
                             tempOutput.write(b, 0, len);
                         }
                         String wmlStr = new String(tempOutput.toByteArray(), "UTF-8");
-                        Logger.logI(HttpConnectionManager.class, "parse the cmwap charge page...(utf-8 content:".concat(wmlStr).concat(")"));
+                        LogManager.i(HttpConnectionManager.class, "parse the cmwap charge page...(utf-8 content:".concat(wmlStr).concat(")"));
 
                         String parseURL = null;
                         try
@@ -430,11 +430,11 @@ public final class HttpConnectionManager
                             }
                         } catch (Exception e)
                         {
-                            Logger.logW(HttpConnectionManager.class, "parse cmwap charge page failed", e);
+                            LogManager.w(HttpConnectionManager.class, "parse cmwap charge page failed", e);
                         }
                         if ((parseURL == null) || (parseURL.equals("")))
                         {
-                            Logger.logW(HttpConnectionManager.class, "could not parse url from cmwap charge page,would use the original url to try again...");
+                            LogManager.w(HttpConnectionManager.class, "could not parse url from cmwap charge page,would use the original url to try again...");
                             parseURL = url;
                         }
                         currentCMWapChargePageCount++;
@@ -558,7 +558,7 @@ public final class HttpConnectionManager
                 if (cookie == null)
                     continue;
                 shouldSync = true;
-                Logger.logI(HttpConnectionManager.class, "got cookie(" + cookie + ") from url " + url);
+                LogManager.i(HttpConnectionManager.class, "got cookie(" + cookie + ") from url " + url);
                 cookieManager.setCookie(url, cookie);
             }
 
