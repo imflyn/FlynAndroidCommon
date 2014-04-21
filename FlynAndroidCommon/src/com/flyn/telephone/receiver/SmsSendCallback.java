@@ -11,7 +11,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 
 import com.flyn.telephone.SmsUtils;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public abstract class SmsSendCallback
 {
@@ -185,7 +185,7 @@ public abstract class SmsSendCallback
             return true;
         } catch (IllegalArgumentException e)
         {
-            Logger.logW(SmsSendCallback.class, "unregister receiver failed.", e);
+            LogManager.w(SmsSendCallback.class, "unregister receiver failed.", e);
         }
         return false;
     }

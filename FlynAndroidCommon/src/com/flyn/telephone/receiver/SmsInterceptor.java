@@ -12,7 +12,7 @@ import android.os.Handler;
 import android.telephony.SmsMessage;
 
 import com.flyn.telephone.SmsFilter;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public abstract class SmsInterceptor
 {
@@ -79,7 +79,7 @@ public abstract class SmsInterceptor
     {
         if (this.isUnregistered)
         {
-            Logger.logI(SmsInterceptor.class, "current interceptor has been invalid,resend sms broadcast what has been intercepted already.");
+            LogManager.i(SmsInterceptor.class, "current interceptor has been invalid,resend sms broadcast what has been intercepted already.");
             this.context.sendBroadcast(smsIntent);
             return;
         }
@@ -88,7 +88,7 @@ public abstract class SmsInterceptor
             this.isDoneForAutoUnregisterWhenIntercept = true;
             if (!unregisterMe())
             {
-                Logger.logI(SmsInterceptor.class, "current interceptor has been invalid,resend sms broadcast what has been intercepted already.");
+                LogManager.i(SmsInterceptor.class, "current interceptor has been invalid,resend sms broadcast what has been intercepted already.");
                 this.context.sendBroadcast(smsIntent);
                 return;
             }
@@ -180,7 +180,7 @@ public abstract class SmsInterceptor
             return true;
         } catch (IllegalArgumentException e)
         {
-            Logger.logW(SmsInterceptor.class, "unregister receiver failed.", e);
+            LogManager.w(SmsInterceptor.class, "unregister receiver failed.", e);
         }
         return false;
     }

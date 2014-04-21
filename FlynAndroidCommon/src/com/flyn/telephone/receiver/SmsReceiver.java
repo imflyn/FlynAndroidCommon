@@ -12,7 +12,7 @@ import android.os.Handler;
 import android.telephony.SmsMessage;
 
 import com.flyn.telephone.SmsFilter;
-import com.flyn.util.Logger;
+import com.flyn.util.LogManager;
 
 public abstract class SmsReceiver
 {
@@ -165,7 +165,7 @@ public abstract class SmsReceiver
             return true;
         } catch (IllegalArgumentException e)
         {
-            Logger.logW(SmsReceiver.class, "unregister receiver failed.", e);
+            LogManager.w(SmsReceiver.class, "unregister receiver failed.", e);
         }
         return false;
     }
