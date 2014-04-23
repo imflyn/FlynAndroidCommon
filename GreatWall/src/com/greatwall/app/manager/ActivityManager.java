@@ -37,7 +37,6 @@ public class ActivityManager extends AppManager
     /** 添加Activity到堆栈 */
     public void addActivity(Activity activity)
     {
-
         getActivityStack().add(activity);
     }
 
@@ -121,6 +120,7 @@ public class ActivityManager extends AppManager
         stack.clear();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onClose()
     {
@@ -133,7 +133,6 @@ public class ActivityManager extends AppManager
     @Override
     public void onInit()
     {
-        mContext = Application.getInstance();
 
     }
 

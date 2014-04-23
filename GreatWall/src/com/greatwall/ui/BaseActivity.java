@@ -159,7 +159,7 @@ public abstract class BaseActivity extends Activity implements UIListener
 
     protected abstract void setListener();
 
-    protected final View getViewById(int id)
+    public final View findViewById(int id)
     {
         View view = this.viewMap.get(String.valueOf(id));
         if (null == view)
@@ -170,7 +170,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         return view;
     }
 
-    protected final View getViewById(View rootView, int id)
+    public final View findViewById(View rootView, int id)
     {
         View view = this.viewMap.get(String.valueOf(id));
         if (null == view)

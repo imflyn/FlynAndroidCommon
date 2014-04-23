@@ -14,7 +14,7 @@ public class Application extends android.app.Application
 
     // singleton
     private static Application    mContext;
-    private volatile boolean      mIsRunning      = false;
+    private volatile boolean      mRunning        = false;
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
     private Handler               backgroundHandler;
     private ExecutorService       backgroundExecutor;
@@ -41,6 +41,7 @@ public class Application extends android.app.Application
                 return thread;
             }
         });
+
     }
 
     public static Application getInstance()
@@ -48,6 +49,16 @@ public class Application extends android.app.Application
         if (mContext == null)
             throw new IllegalStateException();
         return mContext;
+    }
+
+    public boolean isRunning()
+    {
+        return mRunning;
+    }
+
+    public void running()
+    {
+        this.mRunning = true;
     }
 
     public void addManager(AppManager appManager)
@@ -65,7 +76,7 @@ public class Application extends android.app.Application
 
     public void close()
     {
-        mIsRunning = false;
+        mRunning = false;
         for (int i = 0, len = mAppManagerList.size(); i < len; i++)
         {
             mAppManagerList.get(i).onClose();

@@ -124,14 +124,14 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         mContext.clearViewMap();
     }
 
-    protected final View getViewById(int id)
+    protected final View findViewById(int id)
     {
-        return mContext.getViewById(this.mContextView, id);
+        return mContext.findViewById(this.mContextView, id);
     }
 
-    protected final View getViewById(View rootView, int id)
+    protected final View findViewById(View rootView, int id)
     {
-        return mContext.getViewById(rootView, id);
+        return mContext.findViewById(rootView, id);
     }
 
     public boolean isViewDetached()
