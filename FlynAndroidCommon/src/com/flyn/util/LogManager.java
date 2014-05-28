@@ -15,7 +15,7 @@ public final class LogManager
     private static boolean   ENABLED_JLOG  = false;
     private static boolean   ENABLED       = true;
 
-    public static void v(Class<? extends Object> tag, String msg)
+    public static void v(Class<?> tag, String msg)
     {
         if (!ENABLED)
             return;
@@ -31,7 +31,7 @@ public final class LogManager
         }
     }
 
-    public static void v(Class<? extends Object> tag, String msg, Throwable tr)
+    public static void v(Class<?> tag, String msg, Throwable tr)
     {
         if (!ENABLED)
             return;
@@ -55,7 +55,7 @@ public final class LogManager
         }
     }
 
-    public static void d(Class<? extends Object> tag, String msg)
+    public static void d(Class<?> tag, String msg)
     {
         if (!ENABLED)
             return;
@@ -71,7 +71,7 @@ public final class LogManager
         }
     }
 
-    public static void d(Class<? extends Object> tag, String msg, Throwable tr)
+    public static void d(Class<?> tag, String msg, Throwable tr)
     {
         if (!ENABLED)
             return;
@@ -95,7 +95,7 @@ public final class LogManager
         }
     }
 
-    public static void i(Class<? extends Object> tag, String msg)
+    public static void i(Class<?> tag, String msg)
     {
         if (!ENABLED)
             return;
@@ -111,7 +111,7 @@ public final class LogManager
         }
     }
 
-    public static void i(Class<? extends Object> tag, String msg, Throwable tr)
+    public static void i(Class<?> tag, String msg, Throwable tr)
     {
         if (!ENABLED)
             return;
@@ -135,7 +135,7 @@ public final class LogManager
         }
     }
 
-    public static void w(Class<? extends Object> tag, String msg)
+    public static void w(Class<?> tag, String msg)
     {
         if (!ENABLED)
             return;
@@ -151,7 +151,7 @@ public final class LogManager
         }
     }
 
-    public static void w(Class<? extends Object> tag, Throwable tr)
+    public static void w(Class<?> tag, Throwable tr)
     {
         if (!ENABLED)
             return;
@@ -173,7 +173,7 @@ public final class LogManager
         }
     }
 
-    public static void w(Class<? extends Object> tag, String msg, Throwable tr)
+    public static void w(Class<?> tag, String msg, Throwable tr)
     {
         if (!ENABLED)
             return;
@@ -197,7 +197,7 @@ public final class LogManager
         }
     }
 
-    public static void e(Class<? extends Object> tag, String msg)
+    public static void e(Class<?> tag, String msg)
     {
         if (!ENABLED)
             return;
@@ -213,7 +213,7 @@ public final class LogManager
         }
     }
 
-    public static void e(Class<? extends Object> tag, String msg, Throwable tr)
+    public static void e(Class<?> tag, String msg, Throwable tr)
     {
         if (!ENABLED)
             return;
