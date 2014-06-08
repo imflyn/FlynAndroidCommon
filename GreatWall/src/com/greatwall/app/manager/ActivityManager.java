@@ -5,7 +5,6 @@ import java.util.Stack;
 import android.app.Activity;
 import android.content.Context;
 
-import com.greatwall.app.Application;
 import com.greatwall.ui.EmptyActivity;
 
 public class ActivityManager extends AppManager
