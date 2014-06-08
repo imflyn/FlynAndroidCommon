@@ -117,23 +117,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 
     }
 
-    @Override
-    public void onDetach()
-    {
-        super.onDetach();
-        mContext.clearViewMap();
-    }
-
-    protected final View findViewById(int id)
-    {
-        return mContext.findViewById(this.mContextView, id);
-    }
-
-    protected final View findViewById(View rootView, int id)
-    {
-        return mContext.findViewById(rootView, id);
-    }
-
     public boolean isViewDetached()
     {
         return this.isViewDetached;

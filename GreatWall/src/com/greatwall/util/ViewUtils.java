@@ -1,9 +1,5 @@
 package com.greatwall.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,15 +10,17 @@ import android.widget.ImageView;
 
 public class ViewUtils
 {
-    @SuppressWarnings("deprecation")
     public static void recycleView(View view, boolean recycleBitmap)
     {
+        if (null == view)
+            return;
 
         if (view instanceof WebView)
         {
             WebView webView = (WebView) view;
             webView.loadUrl("about:blank");
             webView.stopLoading();
+            webView.removeAllViews();
             return;
         }
 
@@ -46,40 +44,22 @@ public class ViewUtils
                 }
             }
             iv.setImageDrawable(null);
-            iv.setBackgroundDrawable(null);
+            iv.setBackgroundResource(-1);
             return;
         }
 
-        view.setBackgroundDrawable(null);
+        view.setBackgroundResource(-1);
 
     }
 
-    @SuppressWarnings("deprecation")
-    public static void recycleViewGroupAndChildViews(ViewGroup viewGroup, boolean recycleBitmap)
+    private static void recycleViewGroupAndChildViews(ViewGroup viewGroup, boolean recycleBitmap)
     {
         for (int i = 0, len = viewGroup.getChildCount(); i < len; i++)
         {
             View child = viewGroup.getChildAt(i);
             recycleView(child, recycleBitmap);
         }
-        viewGroup.setBackgroundDrawable(null);
+        viewGroup.setBackgroundResource(-1);
     }
 
-    public static void recycleViews(WeakHashMap<Integer, View> viewMap, boolean recycleBitmap)
-    {
-        for (Map.Entry<Integer, View> entry : viewMap.entrySet())
-        {
-            View view = entry.getValue();
-            recycleView(view, recycleBitmap);
-        }
-    }
-
-    public static void recycleViews(List<View> viewList, boolean recycleBitmap)
-    {
-        for (int i = 0, len = viewList.size(); i < len; i++)
-        {
-            View view = viewList.get(i);
-            recycleView(view, recycleBitmap);
-        }
-    }
 }

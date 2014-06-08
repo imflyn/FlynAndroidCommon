@@ -1,7 +1,5 @@
 package com.greatwall.ui;
 
-import java.util.WeakHashMap;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +18,9 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final WeakHashMap<Integer, View> viewMap = new WeakHashMap<Integer, View>(8);
-    protected int                            theme   = 0;
-    protected Handler                        mHandler;
+    protected int     theme = 0;
+    protected Handler mHandler;
+    protected View    rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,6 +56,15 @@ public abstract class BaseActivity extends Activity implements UIListener
         if (theme != ThemeManager.getInstance().getCurrentThemeStyle())
         {
             reload();
+        }
+    }
+
+    public void setContentView(int resId)
+    {
+        rootView = View.inflate(this, resId, null);
+        if (null != rootView)
+        {
+            setContentView(rootView);
         }
     }
 
@@ -118,13 +125,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         if (this.asynctask != null && !this.asynctask.isCancelled())
             this.asynctask.cancel(true);
 
-        clearViewMap();
-    }
-
-    protected void clearViewMap()
-    {
-        ViewUtils.recycleViews(this.viewMap, true);
-        this.viewMap.clear();
+        ViewUtils.recycleView(rootView, true);
     }
 
     @Override
@@ -158,28 +159,6 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
-
-    public final View findViewById(int id)
-    {
-        View view = this.viewMap.get(id);
-        if (null == view)
-        {
-            view = findViewById(id);
-            this.viewMap.put(id, view);
-        }
-        return view;
-    }
-
-    public final View findViewById(View rootView, int id)
-    {
-        View view = this.viewMap.get(id);
-        if (null == view)
-        {
-            view = rootView.findViewById(id);
-            this.viewMap.put(id, view);
-        }
-        return view;
-    }
 
     protected final void doLoad(Object... objs)
     {
