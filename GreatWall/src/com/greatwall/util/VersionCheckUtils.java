@@ -11,7 +11,9 @@ public class VersionCheckUtils
     private VersionCheckUtils()
     {
     };
-    public static int SDK_INT=Build.VERSION.SDK_INT;
+
+    public static int SDK_INT = Build.VERSION.SDK_INT;
+
     /**
      * 当前Android系统版本是否在（ Donut） Android 1.6或以上
      * 
@@ -81,22 +83,25 @@ public class VersionCheckUtils
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
     }
+
     /**
      * 4.1
+     * 
      * @return
      */
     public static boolean hasJellyBean()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
+
     /**
      * 4.4
+     * 
      * @return
      */
     public static boolean hasKitkat()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
-    
 
 }

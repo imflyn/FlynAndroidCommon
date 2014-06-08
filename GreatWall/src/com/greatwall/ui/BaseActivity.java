@@ -20,9 +20,9 @@ import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
-    private final WeakHashMap<String, View> viewMap = new WeakHashMap<String, View>(8);
-    protected int                           theme   = 0;
-    protected Handler                       mHandler;
+    private final WeakHashMap<Integer, View> viewMap = new WeakHashMap<Integer, View>(8);
+    protected int                            theme   = 0;
+    protected Handler                        mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -161,22 +161,22 @@ public abstract class BaseActivity extends Activity implements UIListener
 
     public final View findViewById(int id)
     {
-        View view = this.viewMap.get(String.valueOf(id));
+        View view = this.viewMap.get(id);
         if (null == view)
         {
             view = findViewById(id);
-            this.viewMap.put(String.valueOf(id), view);
+            this.viewMap.put(id, view);
         }
         return view;
     }
 
     public final View findViewById(View rootView, int id)
     {
-        View view = this.viewMap.get(String.valueOf(id));
+        View view = this.viewMap.get(id);
         if (null == view)
         {
             view = rootView.findViewById(id);
-            this.viewMap.put(String.valueOf(id), view);
+            this.viewMap.put(id, view);
         }
         return view;
     }

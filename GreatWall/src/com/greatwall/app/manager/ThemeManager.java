@@ -7,7 +7,6 @@ import com.greatwall.sharedpreferences.SharedPreferenceFactory;
 
 public class ThemeManager extends AppManager
 {
-
     private static ThemeManager   instance = new ThemeManager();
     private ThemeSharedPreference mSharedPreference;
 

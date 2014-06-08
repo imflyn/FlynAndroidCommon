@@ -65,9 +65,9 @@ public class ViewUtils
         viewGroup.setBackgroundDrawable(null);
     }
 
-    public static void recycleViews(WeakHashMap<String, View> viewMap, boolean recycleBitmap)
+    public static void recycleViews(WeakHashMap<Integer, View> viewMap, boolean recycleBitmap)
     {
-        for (Map.Entry<String, View> entry : viewMap.entrySet())
+        for (Map.Entry<Integer, View> entry : viewMap.entrySet())
         {
             View view = entry.getValue();
             recycleView(view, recycleBitmap);
