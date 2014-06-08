@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 public class ViewUtils
 {
+    @SuppressWarnings("deprecation")
     public static void recycleView(View view, boolean recycleBitmap)
     {
         if (null == view)
@@ -44,14 +45,15 @@ public class ViewUtils
                 }
             }
             iv.setImageDrawable(null);
-            iv.setBackgroundResource(-1);
+            view.setBackgroundDrawable(null);
             return;
         }
 
-        view.setBackgroundResource(-1);
+        view.setBackgroundDrawable(null);
 
     }
 
+    @SuppressWarnings("deprecation")
     private static void recycleViewGroupAndChildViews(ViewGroup viewGroup, boolean recycleBitmap)
     {
         for (int i = 0, len = viewGroup.getChildCount(); i < len; i++)
@@ -59,7 +61,7 @@ public class ViewUtils
             View child = viewGroup.getChildAt(i);
             recycleView(child, recycleBitmap);
         }
-        viewGroup.setBackgroundResource(-1);
+        viewGroup.setBackgroundDrawable(null);
     }
 
 }
