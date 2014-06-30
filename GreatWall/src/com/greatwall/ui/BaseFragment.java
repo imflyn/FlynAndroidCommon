@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.greatwall.app.Application;
-import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
@@ -132,57 +131,4 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         return this.mContextView != null ? this.mContextView : LayoutInflater.from(getActivity()).inflate(getLayoutId(), null);
     }
 
-    protected final void doLoad(Object... objs)
-    {
-        this.asynctask.execute(objs);
-    }
-
-    protected final void doLoad()
-    {
-        this.asynctask.execute();
-    }
-
-    protected Object onLoad(Object... objs)
-    {
-        return null;
-    }
-
-    protected Object onLoad()
-    {
-        return null;
-    }
-
-    protected void onLoadFinish(Object curResult)
-    {
-    };
-
-    protected void onLoadFail(Exception e)
-    {
-
-    }
-
-    private final WeakAsyncTask<Object, Object, Object> asynctask = new WeakAsyncTask<Object, Object, Object>(this)
-                                                                  {
-                                                                      @Override
-                                                                      protected Object doInBackgroundImpl(Object... objs) throws Exception
-                                                                      {
-                                                                          if (null != objs && objs.length > 1)
-                                                                              return onLoad(objs);
-                                                                          else
-                                                                              return onLoad();
-                                                                      }
-
-                                                                      @Override
-                                                                      protected void onPostExecute(Object[] objs, Object curResult)
-                                                                      {
-                                                                          super.onPostExecute(objs, curResult);
-                                                                          onLoadFinish(curResult);
-                                                                      }
-
-                                                                      @Override
-                                                                      protected void onException(Object[] objs, Exception e)
-                                                                      {
-                                                                          super.onException(objs, e);
-                                                                      }
-                                                                  };
 }

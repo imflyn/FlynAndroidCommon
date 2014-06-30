@@ -14,7 +14,6 @@ import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
-import com.greatwall.util.WeakAsyncTask;
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
@@ -122,9 +121,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        if (this.asynctask != null && !this.asynctask.isCancelled())
-            this.asynctask.cancel(true);
-
         ViewUtils.recycleView(rootView, true);
     }
 
@@ -152,60 +148,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
-
-    protected final void doLoad(Object... objs)
-    {
-        this.asynctask.execute(objs);
-    }
-
-    protected final void doLoad()
-    {
-        this.asynctask.execute();
-    }
-
-    protected Object onLoad(Object... objs)
-    {
-        return null;
-    }
-
-    protected Object onLoad()
-    {
-        return null;
-    }
-
-    protected void onLoadFinish(Object curResult)
-    {
-    };
-
-    protected void onLoadFail(Exception e)
-    {
-
-    }
-
-    private final WeakAsyncTask<Object, Object, Object> asynctask = new WeakAsyncTask<Object, Object, Object>(this)
-                                                                  {
-                                                                      @Override
-                                                                      protected Object doInBackgroundImpl(Object... objs) throws Exception
-                                                                      {
-                                                                          if (null != objs && objs.length > 1)
-                                                                              return onLoad(objs);
-                                                                          else
-                                                                              return onLoad();
-                                                                      }
-
-                                                                      @Override
-                                                                      protected void onPostExecute(Object[] objs, Object curResult)
-                                                                      {
-                                                                          super.onPostExecute(objs, curResult);
-                                                                          onLoadFinish(curResult);
-                                                                      }
-
-                                                                      @Override
-                                                                      protected void onException(Object[] objs, Exception e)
-                                                                      {
-                                                                          super.onException(objs, e);
-                                                                      }
-                                                                  };
 
     @Override
     public void onUpdate(Object... obj)
