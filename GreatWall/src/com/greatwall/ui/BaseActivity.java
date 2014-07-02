@@ -1,6 +1,7 @@
 package com.greatwall.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import com.greatwall.util.ViewUtils;
 
 public abstract class BaseActivity extends Activity implements UIListener
 {
+    protected Context mContext;
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
@@ -27,6 +29,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         ActivityManager.getInstance().addActivity(this);
         UIListenerManager.getInstance().addClass(this);
         super.onCreate(savedInstanceState);
+        this.mContext = this;
         this.mHandler = Application.getInstance().getHandler();
         if (savedInstanceState == null)
         {
@@ -155,7 +158,6 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
-
 
     @Override
     public void onUpdate(Object... obj)

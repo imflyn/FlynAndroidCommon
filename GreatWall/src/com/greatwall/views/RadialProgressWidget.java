@@ -86,16 +86,16 @@ public class RadialProgressWidget extends View
 
     private OnRadialViewValueChanged mCallback;
 
-    protected static final int         HOLO_LIGHT_BLUE           = 0xff33b5e5;
-    protected static final int         HOLO_DARK_BLUE            = 0xff0099cc;
-    protected static final int         HOLO_LIGHT_PURPLE         = 0xffaa66cc;
-    protected static final int         HOLO_DARK_PURPLE          = 0xff9933cc;
-    protected static final int         HOLO_LIGHT_GREEN          = 0xff99cc00;
-    protected static final int         HOLO_DARK_GREEN           = 0xff669900;
-    protected static final int         HOLO_LIGHT_ORANGE         = 0xffffbb33;
-    protected static final int         HOLO_DARK_ORANGE          = 0xffff8800;
-    protected static final int         HOLO_LIGHT_RED            = 0xffff4444;
-    protected static final int         HOLO_DARK_RED             = 0xffcc0000;
+    protected static final int       HOLO_LIGHT_BLUE           = 0xff33b5e5;
+    protected static final int       HOLO_DARK_BLUE            = 0xff0099cc;
+    protected static final int       HOLO_LIGHT_PURPLE         = 0xffaa66cc;
+    protected static final int       HOLO_DARK_PURPLE          = 0xff9933cc;
+    protected static final int       HOLO_LIGHT_GREEN          = 0xff99cc00;
+    protected static final int       HOLO_DARK_GREEN           = 0xff669900;
+    protected static final int       HOLO_LIGHT_ORANGE         = 0xffffbb33;
+    protected static final int       HOLO_DARK_ORANGE          = 0xffff8800;
+    protected static final int       HOLO_LIGHT_RED            = 0xffff4444;
+    protected static final int       HOLO_DARK_RED             = 0xffcc0000;
 
     public interface OnRadialViewValueChanged
     {
