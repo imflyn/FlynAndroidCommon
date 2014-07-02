@@ -31,22 +31,19 @@ public class KeyboardRelativeLayout extends RelativeLayout
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        LogManager.i(KeyboardRelativeLayout.class, "onMeasure-----------");
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         super.onLayout(changed, l, t, r, b);
-        LogManager.i(KeyboardRelativeLayout.class, "onLayout-----------");
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         super.onSizeChanged(w, h, oldw, oldh);
-        LogManager.d(KeyboardRelativeLayout.class, "--------------------------------------------------------------");
-        LogManager.d(KeyboardRelativeLayout.class, "w----" + w + "\n" + "h-----" + h + "\n" + "oldW-----" + oldw + "\noldh----" + oldh);
+        LogManager.d(KeyboardRelativeLayout.class, "w----" + w + "  h-----" + h + "  oldW-----" + oldw + "  oldh----" + oldh);
         if (null != mChangedListener && 0 != oldw && 0 != oldh)
         {
             if (h < oldh)
