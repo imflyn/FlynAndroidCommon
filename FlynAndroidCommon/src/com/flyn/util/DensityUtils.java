@@ -16,7 +16,7 @@ public class DensityUtils
      *            dp值
      * @return 返回像素值
      */
-    public static int dipTopx(Context context, float dpValue)
+    public static int dip2px(Context context, float dpValue)
     {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -30,7 +30,7 @@ public class DensityUtils
      *            像素值
      * @return 返回dp值
      */
-    public static int pxTodip(Context context, float pxValue)
+    public static int px2dip(Context context, float pxValue)
     {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
