@@ -66,7 +66,7 @@ public class KeyboardRelativeLayout extends RelativeLayout
         mChangedListener = listener;
     }
 
-    interface onSizeChangedListener
+    public interface onSizeChangedListener
     {
 
         void onChanged(boolean showKeyboard);
