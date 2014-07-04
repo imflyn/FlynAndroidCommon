@@ -23,7 +23,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
-    protected Dialog    mDialog;
+    protected Dialog  mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -132,7 +132,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
             mDialog.dismiss();
         }
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState)

@@ -20,7 +20,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     private View                 mContextView;
     private boolean              isViewDetached = false;
     protected Handler            mHandler;
-    protected Dialog               mDialog;
+    protected Dialog             mDialog;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
