@@ -23,7 +23,7 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
-    protected Dialog    mDialog;
+    protected Dialog  mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
