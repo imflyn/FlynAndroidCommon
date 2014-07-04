@@ -93,7 +93,7 @@ public class ViewUtils
                 if (f.isAccessible() == false)
                 {
                     f.setAccessible(true);
-                } 
+                }
                 obj_get = f.get(imm);
                 if (obj_get != null && obj_get instanceof View)
                 {

@@ -15,16 +15,16 @@ import com.greatwall.util.DensityUtils;
 
 public class WindowToast
 {
-    private static final int  TOAST_CANCEL          = 0;
-    private static final int  TOAST_SHOW            = 1;
+    private static final int   TOAST_CANCEL          = 0;
+    private static final int   TOAST_SHOW            = 1;
 
-    private TextView          tv;
-    private WindowManager     mWindowManager;
-    private int               mBackGroundResourceId = com.greatwall.R.drawable.toast_bg;
-    private int               mBackGroundColor      = 0;
+    private TextView           tv;
+    private WindowManager      mWindowManager;
+    private int                mBackGroundResourceId = com.greatwall.R.drawable.toast_bg;
+    private int                mBackGroundColor      = 0;
 
-    private Handler           mHandler;
-    private Context           mContext;
+    private Handler            mHandler;
+    private Context            mContext;
 
     private static WindowToast window;
 
@@ -109,7 +109,6 @@ public class WindowToast
             tv.setPadding(5, 5, 5, 5);
             tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         }
-    
 
         if (tv.getParent() == null)
         {

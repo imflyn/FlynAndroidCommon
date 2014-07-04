@@ -3,6 +3,7 @@ package com.greatwall.ui;
 import java.io.Serializable;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     private View                 mContextView;
     private boolean              isViewDetached = false;
     protected Handler            mHandler;
+    private Dialog               dialog;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -106,6 +108,11 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     {
         super.onDestroyView();
         this.isViewDetached = true;
+
+        if (null != dialog && dialog.isShowing())
+        {
+            dialog.dismiss();
+        }
     }
 
     @Override
@@ -114,6 +121,16 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         super.onDestroy();
         this.isViewDetached = false;
 
+    }
+
+    protected Dialog getDialog()
+    {
+        if (dialog == null)
+        {
+            throw new NullPointerException("dialog is null.");
+        }
+
+        return dialog;
     }
 
     public boolean isViewDetached()

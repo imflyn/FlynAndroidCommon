@@ -1,6 +1,7 @@
 package com.greatwall.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public abstract class BaseActivity extends Activity implements UIListener
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
+    private Dialog    dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -125,6 +127,20 @@ public abstract class BaseActivity extends Activity implements UIListener
         super.onDestroy();
 
         ViewUtils.recycleView(rootView, true);
+        if (null != dialog && dialog.isShowing())
+        {
+            dialog.dismiss();
+        }
+    }
+
+    protected Dialog getDialog()
+    {
+        if (dialog == null)
+        {
+            throw new NullPointerException("dialog is null.");
+        }
+
+        return dialog;
     }
 
     @Override
