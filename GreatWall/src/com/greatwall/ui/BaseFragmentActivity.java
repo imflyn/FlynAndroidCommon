@@ -23,7 +23,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
-    private Dialog    dialog;
+    protected Dialog    mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -127,21 +127,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         super.onDestroy();
 
         ViewUtils.recycleView(rootView, true);
-        if (null != dialog && dialog.isShowing())
+        if (null != mDialog && mDialog.isShowing())
         {
-            dialog.dismiss();
+            mDialog.dismiss();
         }
     }
 
-    protected Dialog getDialog()
-    {
-        if (dialog == null)
-        {
-            throw new NullPointerException("dialog is null.");
-        }
-
-        return dialog;
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState)
