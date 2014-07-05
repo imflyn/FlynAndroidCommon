@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greatwall.R;
+import com.greatwall.app.Application;
 import com.greatwall.util.DensityUtils;
 
 public class TopTipToast extends Toast
@@ -20,8 +21,9 @@ public class TopTipToast extends Toast
 
     }
 
-    public static Toast makeToast(Context context, CharSequence text, int duration)
+    public static Toast makeToast(CharSequence text, int top)
     {
+        Context context = Application.getInstance();
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
 
         LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -32,15 +34,24 @@ public class TopTipToast extends Toast
 
         Toast toast = new Toast(context);
         toast.setView(view);
-        toast.setDuration(duration);
-        toast.setGravity(Gravity.TOP, 0, DensityUtils.dip2px(context, 45));
+        toast.setGravity(Gravity.TOP, 0, top);
 
         return toast;
     }
 
-    public static Toast makeToast(Context context, int resId, int duration)
+    public static Toast makeToast(int resId, int top)
     {
-        return makeToast(context, context.getString(resId), duration);
+        return makeToast(Application.getInstance().getString(resId), top);
+    }
+
+    public static Toast makeToast(CharSequence text)
+    {
+        return makeToast(text, DensityUtils.dip2px(Application.getInstance(), 48));
+    }
+
+    public static Toast makeToast(int resId)
+    {
+        return makeToast(Application.getInstance().getString(resId));
     }
 
 }

@@ -109,6 +109,19 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         super.onDestroyView();
         this.isViewDetached = true;
 
+        dismissDialog();
+    }
+
+    protected void showDialog()
+    {
+        if (mDialog != null && !mDialog.isShowing() && !getActivity().isFinishing())
+        {
+            mDialog.show();
+        }
+    }
+
+    protected void dismissDialog()
+    {
         if (null != mDialog && mDialog.isShowing())
         {
             mDialog.dismiss();

@@ -127,6 +127,19 @@ public abstract class BaseActivity extends Activity implements UIListener
         super.onDestroy();
 
         ViewUtils.recycleView(rootView, true);
+        dismissDialog();
+    }
+
+    protected void showDialog()
+    {
+        if (mDialog != null && !mDialog.isShowing() && !isFinishing())
+        {
+            mDialog.show();
+        }
+    }
+
+    protected void dismissDialog()
+    {
         if (null != mDialog && mDialog.isShowing())
         {
             mDialog.dismiss();
