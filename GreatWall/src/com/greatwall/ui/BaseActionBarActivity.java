@@ -11,7 +11,6 @@ import android.view.View;
 
 import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
-import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
@@ -32,13 +31,13 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         this.mContext = this;
         this.mHandler = Application.getInstance().getHandler();
-        if (savedInstanceState == null)
-        {
-            theme = ThemeManager.getInstance().getCurrentThemeStyle();
-        } else
-        {
-            theme = savedInstanceState.getInt("theme");
-        }
+//        if (savedInstanceState == null)
+//        {
+//            theme = ThemeManager.getInstance().getCurrentThemeStyle();
+//        } else
+//        {
+//            theme = savedInstanceState.getInt("theme");
+//        }
 //        setTheme(theme);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId());
@@ -56,10 +55,10 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     protected void onResume()
     {
         super.onResume();
-        if (theme != ThemeManager.getInstance().getCurrentThemeStyle())
-        {
-            reload();
-        }
+//        if (theme != ThemeManager.getInstance().getCurrentThemeStyle())
+//        {
+//            reload();
+//        }
     }
 
     public void setContentView(int resId)
