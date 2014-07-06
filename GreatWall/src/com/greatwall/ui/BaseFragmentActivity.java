@@ -126,7 +126,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        ViewUtils.recycleView(rootView, true);
+        ViewUtils.recycleView(rootView, false);
         dismissDialog();
     }
 

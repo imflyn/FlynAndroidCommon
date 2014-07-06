@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 
 import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
@@ -40,8 +39,8 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         {
             theme = savedInstanceState.getInt("theme");
         }
-        setTheme(theme);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        setTheme(theme);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
@@ -126,7 +125,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        ViewUtils.recycleView(rootView, true);
+        ViewUtils.recycleView(rootView, false);
         dismissDialog();
     }
 

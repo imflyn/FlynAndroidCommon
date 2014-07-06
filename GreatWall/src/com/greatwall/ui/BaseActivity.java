@@ -126,7 +126,7 @@ public abstract class BaseActivity extends Activity implements UIListener
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        ViewUtils.recycleView(rootView, true);
+        ViewUtils.recycleView(rootView, false);
         dismissDialog();
     }
 
