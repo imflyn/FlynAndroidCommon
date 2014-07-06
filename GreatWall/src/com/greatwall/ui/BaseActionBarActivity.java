@@ -218,7 +218,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         }
 
         /* The following are each of the ActionBar.TabListener callbacks */
-
+        @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft)
         {
             // Check if the fragment is already initialized
@@ -233,7 +233,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
                 ft.attach(mFragment);
             }
         }
-
+        @Override
         public void onTabUnselected(Tab tab, FragmentTransaction ft)
         {
             if (mFragment != null)
@@ -242,7 +242,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
                 ft.detach(mFragment);
             }
         }
-
+        @Override
         public void onTabReselected(Tab tab, FragmentTransaction ft)
         {
             // User selected the already selected tab. Usually do nothing.
