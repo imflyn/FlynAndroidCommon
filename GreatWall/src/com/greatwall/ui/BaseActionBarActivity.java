@@ -1,11 +1,11 @@
 package com.greatwall.ui;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -17,7 +17,7 @@ import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
 import com.greatwall.util.ViewUtils;
 
-public abstract class BaseActivity extends Activity implements UIListener
+public abstract class BaseActionBarActivity extends ActionBarActivity implements UIListener
 {
     protected Context mContext;
     protected int     theme = 0;
