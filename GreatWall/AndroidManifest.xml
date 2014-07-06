@@ -12,16 +12,15 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
         android:allowClearUserData="false"
         android:killAfterRestore="false"
-        android:label="@string/app_name"
         android:largeHeap="true"
         android:persistent="true"
-        android:theme="@style/AppTheme" >
+        >
     </application>
 
 </manifest>
