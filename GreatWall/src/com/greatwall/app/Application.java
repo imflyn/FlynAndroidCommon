@@ -50,6 +50,7 @@ public class Application extends android.app.Application
             throw new IllegalStateException();
         return mContext;
     }
+    
 
     public boolean isRunning()
     {
