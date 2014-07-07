@@ -6,6 +6,11 @@ import android.widget.RelativeLayout;
 
 import com.greatwall.util.LogManager;
 
+/**
+ * 键盘弹起关闭监听的布局
+ * @author V
+ *
+ */
 public class KeyboardRelativeLayout extends RelativeLayout
 {
 

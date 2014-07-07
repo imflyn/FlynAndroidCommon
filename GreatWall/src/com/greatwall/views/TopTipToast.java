@@ -12,6 +12,11 @@ import com.greatwall.R;
 import com.greatwall.app.Application;
 import com.greatwall.util.DensityUtils;
 
+/**
+ * 顶部toast
+ * @author V
+ *
+ */
 public class TopTipToast extends Toast
 {
 
