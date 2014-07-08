@@ -61,6 +61,7 @@ public class AutoScrollListView extends ListView
     public AutoScrollListView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        if (isInEditMode()) return;
     }
 
     /**

@@ -112,6 +112,7 @@ public class RadialProgressWidget extends View
     {
         super(context, attrs, defStyle);
         initView();
+        if (isInEditMode()) return;
     }
 
     private void initView()

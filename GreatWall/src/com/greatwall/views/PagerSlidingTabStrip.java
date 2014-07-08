@@ -96,6 +96,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
     public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        
+        if (isInEditMode()) return;
 
         setFillViewport(true);
         setWillNotDraw(false);

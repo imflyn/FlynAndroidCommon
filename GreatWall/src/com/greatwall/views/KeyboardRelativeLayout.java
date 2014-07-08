@@ -20,6 +20,7 @@ public class KeyboardRelativeLayout extends RelativeLayout
     public KeyboardRelativeLayout(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        if (isInEditMode()) return;
     }
 
     public KeyboardRelativeLayout(Context context, AttributeSet attrs)
