@@ -30,7 +30,7 @@ public class Application extends android.app.Application
     private void init()
     {
         this.backgroundHandler = new Handler();
-        this.backgroundExecutor = Executors.newSingleThreadExecutor(new ThreadFactory()
+        this.backgroundExecutor = Executors.newCachedThreadPool(new ThreadFactory()
         {
             @Override
             public Thread newThread(Runnable runnable)
