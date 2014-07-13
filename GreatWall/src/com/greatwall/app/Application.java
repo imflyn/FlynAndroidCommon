@@ -18,7 +18,7 @@ public class Application extends android.app.Application
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
     private Handler               backgroundHandler;
     private ExecutorService       backgroundExecutor;
-
+1123
     @Override
     public void onCreate()
     {
