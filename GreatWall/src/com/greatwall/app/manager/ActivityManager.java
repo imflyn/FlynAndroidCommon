@@ -124,9 +124,10 @@ public class ActivityManager extends AppManager
     {
         finishAllActivity();
         android.app.ActivityManager activityMgr = (android.app.ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-//        activityMgr.restartPackage(mContext.getPackageName());
+        // activityMgr.restartPackage(mContext.getPackageName());
         activityMgr.killBackgroundProcesses(mContext.getPackageName());
-        //需加入权限  <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/> 
+        // 需加入权限 <uses-permission
+        // android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
         instance = null;
     }
 

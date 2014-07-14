@@ -8,6 +8,7 @@ import com.greatwall.util.LogManager;
 
 /**
  * 键盘弹起关闭监听的布局
+ * 
  * @author V
  *
  */
@@ -20,7 +21,8 @@ public class KeyboardRelativeLayout extends RelativeLayout
     public KeyboardRelativeLayout(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        if (isInEditMode()) return;
+        if (isInEditMode())
+            return;
     }
 
     public KeyboardRelativeLayout(Context context, AttributeSet attrs)

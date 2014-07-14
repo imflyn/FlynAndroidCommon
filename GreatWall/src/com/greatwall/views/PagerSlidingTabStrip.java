@@ -1,4 +1,3 @@
-
 package com.greatwall.views;
 
 import java.util.Locale;
@@ -96,8 +95,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
     public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        
-        if (isInEditMode()) return;
+
+        if (isInEditMode())
+            return;
 
         setFillViewport(true);
         setWillNotDraw(false);
@@ -293,7 +293,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
                     {
                         tab.setText(tab.getText().toString().toUpperCase(locale));
                     }
-                    
+
                     if (i == currentPosition)
                     {
                         tab.setTextColor(tabTextSelectedColor);
@@ -596,7 +596,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
     {
         return tabPadding;
     }
-    
+
     public void setSelectedTextColor(int textColor)
     {
         this.tabTextSelectedColor = textColor;
@@ -613,7 +613,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
     {
         return tabTextSelectedColor;
     }
-
 
     @Override
     public void onRestoreInstanceState(Parcelable state)

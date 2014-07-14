@@ -1,6 +1,5 @@
 package com.greatwall.views;
 
-
 /**
  * 带进度的progressbar
  */
@@ -112,7 +111,8 @@ public class RadialProgressWidget extends View
     {
         super(context, attrs, defStyle);
         initView();
-        if (isInEditMode()) return;
+        if (isInEditMode())
+            return;
     }
 
     private void initView()

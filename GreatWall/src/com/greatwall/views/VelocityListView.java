@@ -83,7 +83,8 @@ public class VelocityListView extends AutoScrollListView
     public VelocityListView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
-        if (isInEditMode()) return;
+        if (isInEditMode())
+            return;
         init();
     }
 
@@ -184,8 +185,7 @@ public class VelocityListView extends AutoScrollListView
                                                    }
 
                                                    @Override
-                                                   public void onScroll(AbsListView view, int firstVisiblePosition, int visibleItemCount,
-                                                           int totalItemCount)
+                                                   public void onScroll(AbsListView view, int firstVisiblePosition, int visibleItemCount, int totalItemCount)
                                                    {
 
                                                        final long now = AnimationUtils.currentAnimationTimeMillis();
@@ -199,17 +199,13 @@ public class VelocityListView extends AutoScrollListView
                                                            {
                                                                int distance = 0;
                                                                // @formatter:off
-                                                               if (mFirstVisiblePosition >= firstVisiblePosition
-                                                                       && mFirstVisiblePosition <= lastVisiblePosition)
+                                                               if (mFirstVisiblePosition >= firstVisiblePosition && mFirstVisiblePosition <= lastVisiblePosition)
                                                                {
-                                                                   distance = getChildAt(mFirstVisiblePosition - firstVisiblePosition)
-                                                                           .getTop() - mFirstVisibleViewTop;
+                                                                   distance = getChildAt(mFirstVisiblePosition - firstVisiblePosition).getTop() - mFirstVisibleViewTop;
 
-                                                               } else if (mLastVisiblePosition >= firstVisiblePosition
-                                                                       && mLastVisiblePosition <= lastVisiblePosition)
+                                                               } else if (mLastVisiblePosition >= firstVisiblePosition && mLastVisiblePosition <= lastVisiblePosition)
                                                                {
-                                                                   distance = getChildAt(mLastVisiblePosition - firstVisiblePosition)
-                                                                           .getTop() - mLastVisibleViewTop;
+                                                                   distance = getChildAt(mLastVisiblePosition - firstVisiblePosition).getTop() - mLastVisibleViewTop;
                                                                    // @formatter:on
                                                                } else
                                                                {
@@ -233,8 +229,7 @@ public class VelocityListView extends AutoScrollListView
                                                                        heightSum += getChildAt(i).getHeight();
                                                                    }
 
-                                                                   distance = heightSum / visibleItemCount
-                                                                           * (mFirstVisiblePosition - firstVisiblePosition);
+                                                                   distance = heightSum / visibleItemCount * (mFirstVisiblePosition - firstVisiblePosition);
                                                                }
 
                                                                setVelocity((int) (1000d * distance / delta));

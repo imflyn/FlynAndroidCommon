@@ -11,6 +11,7 @@ import android.widget.Scroller;
 
 /**
  * viewpager上添加tab滑动条
+ * 
  * @author V
  *
  */
@@ -65,7 +66,7 @@ public class ViewPagerTab extends ViewGroup
             postInvalidate();
         }
     }
-    
+
     public void setTabResource(int res)
     {
         ImageView childView = new ImageView(getContext());

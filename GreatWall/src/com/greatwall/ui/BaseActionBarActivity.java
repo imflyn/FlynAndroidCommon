@@ -233,6 +233,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
                 ft.attach(mFragment);
             }
         }
+
         @Override
         public void onTabUnselected(Tab tab, FragmentTransaction ft)
         {
@@ -242,6 +243,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
                 ft.detach(mFragment);
             }
         }
+
         @Override
         public void onTabReselected(Tab tab, FragmentTransaction ft)
         {
