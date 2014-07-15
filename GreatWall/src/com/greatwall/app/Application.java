@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.os.Handler;
 
@@ -32,10 +33,11 @@ public class Application extends android.app.Application
         this.backgroundHandler = new Handler();
         this.backgroundExecutor = Executors.newCachedThreadPool(new ThreadFactory()
         {
+            private AtomicInteger atomicInteger=new AtomicInteger();
             @Override
             public Thread newThread(Runnable runnable)
             {
-                Thread thread = new Thread(runnable, "Background executor service");
+                Thread thread = new Thread(runnable, "Background executor service #"+atomicInteger.getAndIncrement());
                 thread.setPriority(Thread.MIN_PRIORITY);
                 thread.setDaemon(true);
                 return thread;
