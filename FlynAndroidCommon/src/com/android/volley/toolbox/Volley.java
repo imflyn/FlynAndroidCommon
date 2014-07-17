@@ -36,7 +36,7 @@ public class Volley
     /**
      * Creates a default instance of the worker pool and calls
      * {@link RequestQueue#start()} on it.
-     * 
+     *
      * @param context
      *            A {@link Context} to use for creating the cache dir.
      * @param stack
@@ -83,7 +83,7 @@ public class Volley
     /**
      * Creates a default instance of the worker pool and calls
      * {@link RequestQueue#start()} on it.
-     * 
+     *
      * @param context
      *            A {@link Context} to use for creating the cache dir.
      * @return A started {@link RequestQueue} instance.

@@ -25,7 +25,7 @@ public interface Authenticator
 {
     /**
      * Synchronously retrieves an auth token.
-     * 
+     *
      * @throws AuthFailureError
      *             If authentication did not succeed
      */

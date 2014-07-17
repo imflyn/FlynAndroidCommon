@@ -27,7 +27,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * A Future that represents a Volley request.
- * 
+ *
  * Used by providing as your response and error listeners. For example:
  * 
  * <pre>
@@ -52,7 +52,7 @@ import java.util.concurrent.TimeoutException;
  *     // handle the error
  * }
  * </pre>
- * 
+ *
  * @param <T>
  *            The type of parsed response this future expects.
  */

@@ -30,12 +30,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A request dispatch queue with a thread pool of dispatchers.
- * 
+ *
  * Calling {@link #add(Request)} will enqueue the given Request for dispatch,
  * resolving from either cache or network on a worker thread, and then
  * delivering a parsed response on the main thread.
  */
-@SuppressWarnings("rawtypes")
 public class RequestQueue
 {
 
@@ -43,12 +42,12 @@ public class RequestQueue
      * Used for generating monotonically-increasing sequence numbers for
      * requests.
      */
-    private AtomicInteger                        mSequenceGenerator               = new AtomicInteger();
+    private AtomicInteger                           mSequenceGenerator               = new AtomicInteger();
 
     /**
      * Staging area for requests that already have a duplicate request in
      * flight.
-     * 
+     *
      * <ul>
      * <li>containsKey(cacheKey) indicates that there is a request in flight for
      * the given cache key.</li>
@@ -57,43 +56,43 @@ public class RequestQueue
      * requests are staged.</li>
      * </ul>
      */
-    private final Map<String, Queue<Request>>    mWaitingRequests                 = new HashMap<String, Queue<Request>>();
+    private final Map<String, Queue<Request<?>>>    mWaitingRequests                 = new HashMap<String, Queue<Request<?>>>();
 
     /**
      * The set of all requests currently being processed by this RequestQueue. A
      * Request will be in this set if it is waiting in any queue or currently
      * being processed by any dispatcher.
      */
-    private final Set<Request>                   mCurrentRequests                 = new HashSet<Request>();
+    private final Set<Request<?>>                   mCurrentRequests                 = new HashSet<Request<?>>();
 
     /** The cache triage queue. */
-    private final PriorityBlockingQueue<Request> mCacheQueue                      = new PriorityBlockingQueue<Request>();
+    private final PriorityBlockingQueue<Request<?>> mCacheQueue                      = new PriorityBlockingQueue<Request<?>>();
 
     /** The queue of requests that are actually going out to the network. */
-    private final PriorityBlockingQueue<Request> mNetworkQueue                    = new PriorityBlockingQueue<Request>();
+    private final PriorityBlockingQueue<Request<?>> mNetworkQueue                    = new PriorityBlockingQueue<Request<?>>();
 
     /** Number of network request dispatcher threads to start. */
-    private static final int                     DEFAULT_NETWORK_THREAD_POOL_SIZE = 4;
+    private static final int                        DEFAULT_NETWORK_THREAD_POOL_SIZE = 4;
 
-    /** Cache interface for retrieving and storing respones. */
-    private final Cache                          mCache;
+    /** Cache interface for retrieving and storing responses. */
+    private final Cache                             mCache;
 
     /** Network interface for performing requests. */
-    private final Network                        mNetwork;
+    private final Network                           mNetwork;
 
     /** Response delivery mechanism. */
-    private final ResponseDelivery               mDelivery;
+    private final ResponseDelivery                  mDelivery;
 
     /** The network dispatchers. */
-    private NetworkDispatcher[]                  mDispatchers;
+    private NetworkDispatcher[]                     mDispatchers;
 
     /** The cache dispatcher. */
-    private CacheDispatcher                      mCacheDispatcher;
+    private CacheDispatcher                         mCacheDispatcher;
 
     /**
      * Creates the worker pool. Processing will not begin until {@link #start()}
      * is called.
-     * 
+     *
      * @param cache
      *            A Cache to use for persisting responses to disk
      * @param network
@@ -114,7 +113,7 @@ public class RequestQueue
     /**
      * Creates the worker pool. Processing will not begin until {@link #start()}
      * is called.
-     * 
+     *
      * @param cache
      *            A Cache to use for persisting responses to disk
      * @param network
@@ -130,7 +129,7 @@ public class RequestQueue
     /**
      * Creates the worker pool. Processing will not begin until {@link #start()}
      * is called.
-     * 
+     *
      * @param cache
      *            A Cache to use for persisting responses to disk
      * @param network
@@ -251,7 +250,7 @@ public class RequestQueue
      *            The request to service
      * @return The passed-in request
      */
-    public Request add(Request request)
+    public <T> Request<T> add(Request<T> request)
     {
         // Tag the request as belonging to this queue and add it to the set of
         // current requests.
@@ -281,10 +280,10 @@ public class RequestQueue
             if (mWaitingRequests.containsKey(cacheKey))
             {
                 // There is already a request in flight. Queue up.
-                Queue<Request> stagedRequests = mWaitingRequests.get(cacheKey);
+                Queue<Request<?>> stagedRequests = mWaitingRequests.get(cacheKey);
                 if (stagedRequests == null)
                 {
-                    stagedRequests = new LinkedList<Request>();
+                    stagedRequests = new LinkedList<Request<?>>();
                 }
                 stagedRequests.add(request);
                 mWaitingRequests.put(cacheKey, stagedRequests);
@@ -307,13 +306,13 @@ public class RequestQueue
     /**
      * Called from {@link Request#finish(String)}, indicating that processing of
      * the given request has finished.
-     * 
+     *
      * <p>
      * Releases waiting requests for <code>request.getCacheKey()</code> if
      * <code>request.shouldCache()</code>.
      * </p>
      */
-    void finish(Request request)
+    void finish(Request<?> request)
     {
         // Remove from the set of requests currently being processed.
         synchronized (mCurrentRequests)
@@ -326,7 +325,7 @@ public class RequestQueue
             synchronized (mWaitingRequests)
             {
                 String cacheKey = request.getCacheKey();
-                Queue<Request> waitingRequests = mWaitingRequests.remove(cacheKey);
+                Queue<Request<?>> waitingRequests = mWaitingRequests.remove(cacheKey);
                 if (waitingRequests != null)
                 {
                     if (VolleyLog.DEBUG)

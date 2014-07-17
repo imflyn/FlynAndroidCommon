@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * A request for retrieving a T type response body at a given URL that also
  * optionally sends along a JSON body in the request specified.
- * 
+ *
  * @param <T>
  *            JSON type of response expected
  */
@@ -47,12 +47,11 @@ public abstract class JsonRequest<T> extends Request<T>
      * Deprecated constructor for a JsonRequest which defaults to GET unless
      * {@link #getPostBody()} or {@link #getPostParams()} is overridden (which
      * defaults to POST).
-     * 
+     *
      * @deprecated Use
      *             {@link #JsonRequest(int, String, String, Listener, ErrorListener)}
      *             .
      */
-    @Deprecated
     public JsonRequest(String url, String requestBody, Listener<T> listener, ErrorListener errorListener)
     {
         this(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);
@@ -77,7 +76,6 @@ public abstract class JsonRequest<T> extends Request<T>
     /**
      * @deprecated Use {@link #getBodyContentType()}.
      */
-    @Deprecated
     @Override
     public String getPostBodyContentType()
     {
@@ -87,7 +85,6 @@ public abstract class JsonRequest<T> extends Request<T>
     /**
      * @deprecated Use {@link #getBody()}.
      */
-    @Deprecated
     @Override
     public byte[] getPostBody()
     {

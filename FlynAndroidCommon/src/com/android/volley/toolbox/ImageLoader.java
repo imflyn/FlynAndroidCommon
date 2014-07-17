@@ -33,7 +33,7 @@ import java.util.LinkedList;
 
 /**
  * Helper that handles loading and caching images from remote URLs.
- * 
+ *
  * The simple way to use this class is to call
  * {@link ImageLoader#get(String, ImageListener)} and to pass in the default
  * image listener provided by
@@ -142,12 +142,12 @@ public class ImageLoader
 
     /**
      * Interface for the response handlers on image requests.
-     * 
+     *
      * The call flow is this: 1. Upon being attached to a request,
      * onResponse(response, true) will be invoked to reflect any cached data
      * that was already available. If the data was available,
      * response.getBitmap() will be non-null.
-     * 
+     *
      * 2. After a network response returns, only one of the following cases will
      * happen: - onResponse(response, false) will be called if the image was
      * loaded. or - onErrorResponse will be called if there was an error loading
@@ -157,7 +157,7 @@ public class ImageLoader
     {
         /**
          * Listens for non-error changes to the loading of the image request.
-         * 
+         *
          * @param response
          *            Holds all information pertaining to the request, as well
          *            as the bitmap (if it is loaded).
@@ -192,11 +192,11 @@ public class ImageLoader
 
     /**
      * Returns an ImageContainer for the requested URL.
-     * 
+     *
      * The ImageContainer will contain either the specified default bitmap or
      * the loaded bitmap. If the default was returned, the {@link ImageLoader}
      * will be invoked when the request is fulfilled.
-     * 
+     *
      * @param requestUrl
      *            The URL of the image to be loaded.
      * @param defaultImage
@@ -334,11 +334,11 @@ public class ImageLoader
         // Remove this request from the list of in-flight requests.
         BatchedImageRequest request = mInFlightRequests.remove(cacheKey);
 
-        // Set the error for this request
-        request.setError(error);
-
         if (request != null)
         {
+            // Set the error for this request
+            request.setError(error);
+
             // Send the batched response
             batchResponse(cacheKey, request);
         }

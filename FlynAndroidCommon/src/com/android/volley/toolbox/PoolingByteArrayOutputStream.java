@@ -48,7 +48,7 @@ public class PoolingByteArrayOutputStream extends ByteArrayOutputStream
      * Constructs a new {@code ByteArrayOutputStream} with a default size of
      * {@code size} bytes. If more than {@code size} bytes are written to this
      * instance, the underlying byte array will expand.
-     * 
+     *
      * @param size
      *            initial size for the underlying byte array. The value will be
      *            pinned to a default minimum size.
