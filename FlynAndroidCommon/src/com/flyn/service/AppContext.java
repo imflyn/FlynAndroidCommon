@@ -38,7 +38,6 @@ public class AppContext extends Application
     private void doOncreate()
     {
         appContext = this;
-        // 注册App异常崩溃处理器
         backgroundExecutor = Executors.newSingleThreadExecutor(new ThreadFactory()
         {
             @Override
