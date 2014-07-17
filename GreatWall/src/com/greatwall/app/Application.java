@@ -84,6 +84,7 @@ public class Application extends android.app.Application
         {
             mAppManagerList.get(i).onClose();
         }
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     public void runInBackground(final Runnable runnable)
