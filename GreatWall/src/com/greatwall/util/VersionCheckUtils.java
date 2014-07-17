@@ -1,5 +1,9 @@
 package com.greatwall.util;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
 /**
@@ -13,6 +17,50 @@ public class VersionCheckUtils
     };
 
     public static int SDK_INT = Build.VERSION.SDK_INT;
+
+    /**
+     * 获取版本名称
+     */
+    public static String getVersionName(Context context)
+    {
+        PackageManager packageManager = context.getApplicationContext().getPackageManager();
+
+        PackageInfo packInfo;
+        String version = "";
+        try
+        {
+            packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            version = packInfo.versionName;
+        } catch (NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return version;
+    }
+
+    /**
+     * 获取版本号
+     * 
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context)
+    {
+        PackageManager packageManager = context.getApplicationContext().getPackageManager();
+        PackageInfo packInfo;
+        int version = 0;
+        try
+        {
+            packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            version = packInfo.versionCode;
+        } catch (NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return version;
+    }
 
     /**
      * 当前Android系统版本是否在（ Donut） Android 1.6或以上

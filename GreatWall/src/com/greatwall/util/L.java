@@ -4,191 +4,81 @@ import android.util.Log;
 
 public final class L
 {
-    private static final int    VERBOSE       = 2;
-    private static final int    DEBUG         = 3;
-    private static final int    INFO          = 4;
-    private static final int    WARN          = 5;
-    private static final int    ERROR         = 6;
-    private static int          LOGGING_LEVEL = VERBOSE;
 
-    private static boolean      ENABLED       = true;
-    private static final String TAG           = "GreatWall";
+    private static final String    LOG_FORMAT = "%1$s\n%2$s";
+    public static volatile boolean DISABLED   = false;
+    private static final String    TAG        = "GreatWall";
 
-    public static void v(String msg)
+    private L()
     {
-        if (!ENABLED)
-            return;
-
-        if (2 >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            Log.v(TAG, createMessage(msg));
-        }
     }
 
-    public static void v(String msg, Throwable tr)
+    public static void enableLogging()
     {
-        if (!ENABLED)
-            return;
-
-        if (VERBOSE >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            if (tr == null)
-            {
-                Log.v(TAG, createMessage(msg));
-            } else
-            {
-                Log.v(TAG, msg, tr);
-            }
-        }
+        DISABLED = false;
     }
 
-    public static void d(String msg)
+    public static void disableLogging()
     {
-        if (!ENABLED)
-            return;
-
-        if (DEBUG >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            Log.d(TAG, createMessage(msg));
-        }
+        DISABLED = true;
     }
 
-    public static void d(String msg, Throwable tr)
+    public static void d(String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (DEBUG >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            if (tr == null)
-            {
-                Log.d(TAG, createMessage(msg));
-            } else
-            {
-                Log.d(TAG, createMessage(msg), tr);
-            }
-        }
+        log(Log.DEBUG, null, message, args);
     }
 
-    public static void i(String msg)
+    public static void v(String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (INFO >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            Log.i(TAG, createMessage(msg));
-        }
+        log(Log.VERBOSE, null, message, args);
     }
 
-    public static void i(String msg, Throwable tr)
+    public static void i(String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (4 >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            if (tr == null)
-            {
-                Log.i(TAG, createMessage(msg));
-            } else
-            {
-                Log.i(TAG, msg, tr);
-            }
-        }
+        log(Log.INFO, null, message, args);
     }
 
-    public static void w(String msg)
+    public static void w(String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (WARN >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            Log.w(TAG, createMessage(msg));
-        }
+        log(Log.WARN, null, message, args);
     }
 
-    public static void w(Throwable tr)
+    public static void e(Throwable ex)
     {
-        if (!ENABLED)
-            return;
-
-        if (WARN >= LOGGING_LEVEL)
-        {
-            if (tr == null)
-            {
-                Log.w(TAG, "");
-            } else
-            {
-                Log.w(TAG, tr);
-            }
-        }
+        log(Log.ERROR, ex, null);
     }
 
-    public static void w(String msg, Throwable tr)
+    public static void e(String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (WARN >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            if (tr == null)
-            {
-                Log.w(TAG, createMessage(msg));
-            } else
-            {
-                Log.w(TAG, createMessage(msg), tr);
-            }
-        }
+        log(Log.ERROR, null, message, args);
     }
 
-    public static void e(String msg)
+    public static void e(Throwable ex, String message, Object... args)
     {
-        if (!ENABLED)
-            return;
-
-        if (ERROR >= LOGGING_LEVEL)
-        {
-            if (msg == null)
-                msg = "";
-            Log.e(TAG, createMessage(msg));
-        }
+        log(Log.ERROR, ex, message, args);
     }
 
-    public static void e(String msg, Throwable tr)
+    private static void log(int priority, Throwable ex, String message, Object... args)
     {
-        if (!ENABLED)
+        if (DISABLED)
             return;
-
-        if (ERROR >= LOGGING_LEVEL)
+        if (args.length > 0)
         {
-            if (msg == null)
-                msg = "";
-            if (tr == null)
-            {
-                Log.e(TAG, createMessage(msg));
-            } else
-            {
-                Log.e(TAG, createMessage(msg), tr);
-            }
+            message = String.format("" + message, args);
         }
+
+        String log;
+        if (ex == null)
+        {
+            log = message;
+        } else
+        {
+            String logMessage = message == null ? ex.getMessage() : message;
+            String logBody = Log.getStackTraceString(ex);
+            log = String.format(LOG_FORMAT, logMessage, logBody);
+        }
+
+        Log.println(priority, TAG, createMessage(log));
     }
 
     private static String getFunctionName()
@@ -216,8 +106,7 @@ public final class L
             {
                 continue;
             }
-
-            return "line:" + st.getLineNumber();
+            return "[" + st.getFileName() + "] line:" + st.getLineNumber() + "==";
         }
 
         return null;
@@ -226,7 +115,7 @@ public final class L
     private static String createMessage(String msg)
     {
         String functionName = getFunctionName();
-        String message = (functionName == null ? msg : (functionName + "[" + msg + "]"));
+        String message = (functionName == null ? msg : (functionName + msg));
         return message;
     }
 

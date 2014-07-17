@@ -42,7 +42,8 @@ public abstract class BaseActivity extends Activity implements UIListener
         }
         setTheme(theme);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(layoutId());
+        if (layoutId() > 0)
+            setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
     }
