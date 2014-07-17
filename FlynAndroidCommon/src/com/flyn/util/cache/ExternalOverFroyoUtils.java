@@ -4,13 +4,13 @@ import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.flyn.util.AndroidVersionCheckUtils;
-
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
+
+import com.flyn.util.AndroidVersionCheckUtils;
 
 /**
  * @Description 缓存的工具类,Android 2.2以上版本使用

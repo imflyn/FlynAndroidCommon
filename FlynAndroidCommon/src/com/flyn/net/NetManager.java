@@ -1,12 +1,14 @@
 package com.flyn.net;
 
 import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+
 import com.flyn.net.synchttp.HttpConnectionManager;
 import com.flyn.net.synchttp.HttpResponseResult;
 import com.flyn.util.LogManager;

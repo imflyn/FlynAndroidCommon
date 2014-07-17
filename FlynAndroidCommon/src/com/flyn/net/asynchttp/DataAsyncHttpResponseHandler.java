@@ -18,14 +18,14 @@ package com.flyn.net.asynchttp;
  limitations under the License.
  */
 
-import android.os.Message;
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.util.ByteArrayBuffer;
 
-import java.io.IOException;
-import java.io.InputStream;
+import android.os.Message;
+import android.util.Log;
 
 public abstract class DataAsyncHttpResponseHandler extends AsyncHttpResponseHandler
 {

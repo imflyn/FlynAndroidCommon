@@ -1,11 +1,13 @@
 package com.flyn.util.xmlpull;
 
-import android.util.Xml;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+
 import org.xmlpull.v1.XmlSerializer;
+
+import android.util.Xml;
 
 public final class SimpleDomManager
 {

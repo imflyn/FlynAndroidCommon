@@ -18,10 +18,10 @@
 
 package com.flyn.net.asynchttp;
 
-import android.util.Log;
-
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
+
+import android.util.Log;
 
 /**
  * Class meant to be used with custom JSON parser (such as GSON or Jackson JSON)
