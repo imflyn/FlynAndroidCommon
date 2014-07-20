@@ -15,6 +15,8 @@
  */
 package com.greatwall.ui.interfaces;
 
+import com.greatwall.util.L;
+
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
@@ -82,4 +84,23 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D>
 
         data = null;
     }
+
+    @Override
+    public D loadInBackground()
+    {
+        D data = null;
+
+        try
+        {
+            data = loadData();
+        } catch (Exception e)
+        {
+            L.e(e);
+        }
+
+        return data;
+    }
+
+    protected abstract D loadData() throws Exception;
+
 }
