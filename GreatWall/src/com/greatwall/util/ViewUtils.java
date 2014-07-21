@@ -126,4 +126,24 @@ public class ViewUtils
         InputMethodManager imm = ((InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE));
         imm.showSoftInput(view, 0);
     }
+
+    private static long lastClickTime;
+
+    /**
+     * 判断按钮是否为重复点击
+     * 
+     * @return
+     */
+    public static boolean isFastDoubleClick()
+    {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 600)
+        {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
+
 }
