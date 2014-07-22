@@ -69,6 +69,10 @@ public class ViewUtils
         viewGroup.setBackgroundDrawable(null);
     }
 
+    /**
+     * 修复键盘内存泄露
+     * @param destContext
+     */
     public static void fixInputMethodManagerLeak(Context destContext)
     {
         if (destContext == null)
