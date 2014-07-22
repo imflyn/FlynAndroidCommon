@@ -17,9 +17,6 @@ public class EmptyActivity extends BaseActivity
     @Override
     protected void initView(Bundle savedInstanceState)
     {
-        View view=new View(this);
-        view.setBackgroundColor(getResources().getColor(R.color.black));
-        setContentView(view);
     }
 
     @Override
