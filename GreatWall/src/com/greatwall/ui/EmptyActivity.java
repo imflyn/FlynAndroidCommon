@@ -1,9 +1,6 @@
 package com.greatwall.ui;
 
-import com.greatwall.R;
-
 import android.os.Bundle;
-import android.view.View;
 
 public class EmptyActivity extends BaseActivity
 {
