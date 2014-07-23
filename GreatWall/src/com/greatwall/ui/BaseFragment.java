@@ -16,11 +16,10 @@ import com.greatwall.app.Application;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
-    private BaseFragmentActivity mContext;
-    private View                 mContextView;
-    private boolean              isViewDetached = false;
-    protected Handler            mHandler;
-    protected Dialog             mDialog;
+    private View      mContextView;
+    private boolean   isViewDetached = false;
+    protected Handler mHandler;
+    protected Dialog  mDialog;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
@@ -96,10 +95,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        if (!(activity instanceof BaseFragmentActivity))
-            throw new IllegalStateException("Activity must extends BaseFragmentActivity");
-
-        mContext = (BaseFragmentActivity) activity;
 
     }
 
@@ -139,11 +134,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public boolean isViewDetached()
     {
         return this.isViewDetached;
-    }
-
-    public BaseFragmentActivity getContext()
-    {
-        return this.mContext != null ? this.mContext : (BaseFragmentActivity) getActivity();
     }
 
     public View getContextView()
