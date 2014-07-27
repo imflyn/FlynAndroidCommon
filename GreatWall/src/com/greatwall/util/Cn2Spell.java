@@ -20,12 +20,9 @@ public class Cn2Spell
 
     public Cn2Spell()
     {
-        if (null == defaultFormat)
-        {
-            this.defaultFormat = new HanyuPinyinOutputFormat();
-            defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
-            defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-        }
+        this.defaultFormat = new HanyuPinyinOutputFormat();
+        defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
+        defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
     }
 
     public String converterToFirstSpell(String chines)
