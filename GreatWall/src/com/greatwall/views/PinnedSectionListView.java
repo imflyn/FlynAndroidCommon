@@ -84,19 +84,19 @@ public class PinnedSectionListView extends ListView
     private int                    mShadowHeight;
 
     /** Delegating listener, can be null. */
-    OnScrollListener               mDelegateOnScrollListener;
+    private OnScrollListener       mDelegateOnScrollListener;
 
     /** Shadow for being recycled, can be null. */
-    PinnedSection                  mRecycleSection;
+    private PinnedSection          mRecycleSection;
 
     /** shadow instance with a pinned view, can be null. */
-    PinnedSection                  mPinnedSection;
+    private PinnedSection          mPinnedSection;
 
     /**
      * Pinned view Y-translation. We use it to stick pinned view to the next
      * section.
      */
-    int                            mTranslateY;
+    private int                    mTranslateY;
 
     /** Scroll listener which does the magic */
     private final OnScrollListener mOnScrollListener = new OnScrollListener()
@@ -202,12 +202,16 @@ public class PinnedSectionListView extends ListView
     public PinnedSectionListView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        if (isInEditMode())
+            return;
         initView();
     }
 
     public PinnedSectionListView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
+        if (isInEditMode())
+            return;
         initView();
     }
 
@@ -252,7 +256,7 @@ public class PinnedSectionListView extends ListView
     }
 
     /** Create shadow wrapper with a pinned view for a view at given position */
-    void createPinnedShadow(int position)
+    private void createPinnedShadow(int position)
     {
 
         // try to recycle shadow
@@ -299,7 +303,7 @@ public class PinnedSectionListView extends ListView
     }
 
     /** Destroy shadow wrapper for currently pinned view */
-    void destroyPinnedShadow()
+    private void destroyPinnedShadow()
     {
         if (mPinnedSection != null)
         {
@@ -310,7 +314,7 @@ public class PinnedSectionListView extends ListView
     }
 
     /** Makes sure we have an actual pinned shadow for given position. */
-    void ensureShadowForPosition(int sectionPosition, int firstVisibleItem, int visibleItemCount)
+    private void ensureShadowForPosition(int sectionPosition, int firstVisibleItem, int visibleItemCount)
     {
         if (visibleItemCount < 2)
         { // no need for creating shadow at all, we have a single visible item
@@ -357,7 +361,7 @@ public class PinnedSectionListView extends ListView
 
     }
 
-    int findFirstVisibleSectionPosition(int firstVisibleItem, int visibleItemCount)
+    private int findFirstVisibleSectionPosition(int firstVisibleItem, int visibleItemCount)
     {
         ListAdapter adapter = getAdapter();
         for (int childIndex = 0; childIndex < visibleItemCount; childIndex++)
@@ -370,7 +374,7 @@ public class PinnedSectionListView extends ListView
         return -1;
     }
 
-    int findCurrentSectionPosition(int fromPosition)
+    private int findCurrentSectionPosition(int fromPosition)
     {
         ListAdapter adapter = getAdapter();
 
@@ -397,7 +401,7 @@ public class PinnedSectionListView extends ListView
         return -1; // no candidate found
     }
 
-    void recreatePinnedShadow()
+    private void recreatePinnedShadow()
     {
         destroyPinnedShadow();
         ListAdapter adapter = getAdapter();
