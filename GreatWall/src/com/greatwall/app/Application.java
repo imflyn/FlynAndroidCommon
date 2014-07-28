@@ -25,7 +25,7 @@ public class Application extends android.app.Application
     {   
         super.onCreate();
         mContext = this;
-        init();
+        init();init();
     }
 
     private void init()
