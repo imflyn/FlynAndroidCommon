@@ -195,4 +195,10 @@ public abstract class MapBaseAdapter<Key, T> extends android.widget.BaseExpandab
         return false;
     }
 
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition)
+    {
+        return false;
+    }
+
 }
