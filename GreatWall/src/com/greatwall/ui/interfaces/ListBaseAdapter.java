@@ -1,17 +1,82 @@
 package com.greatwall.ui.interfaces;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import android.view.View;
+import android.view.ViewGroup;
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
-    private List<T> data = new ArrayList<T>();
+    private ArrayList<T> data = new ArrayList<T>();
+    private ViewGroup    viewGroup;
+
+    public ListBaseAdapter(ViewGroup viewGroup)
+    {
+        this.viewGroup = viewGroup;
+    }
 
     public synchronized void setData(List<T> data)
     {
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public synchronized void addItem(T item)
+    {
+        this.data.add(item);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void addItem(int location, T item)
+    {
+        this.data.add(location, item);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void addAll(List<T> items)
+    {
+        this.data.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void addAll(int location, List<T> items)
+    {
+        this.data.addAll(location, items);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void removeItem(T item)
+    {
+        this.data.remove(item);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void removeItem(int location)
+    {
+        this.data.remove(location);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void removeAll(List<T> items)
+    {
+        this.data.remove(items);
+        notifyDataSetChanged();
+    }
+
+    public synchronized void swap(int index1, int index2)
+    {
+        Collections.swap(this.data, index1, index2);
+        notifyDataSetChanged();
+    }
+
+    public View updateView(int index)
+    {
+        View view = viewGroup.getChildAt(index);
+
+        return view;
     }
 
     @Override
@@ -31,6 +96,5 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
     {
         return position;
     }
-
 
 }
