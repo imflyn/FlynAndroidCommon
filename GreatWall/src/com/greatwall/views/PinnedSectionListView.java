@@ -98,7 +98,6 @@ public class PinnedSectionListView extends ListView
      */
     private int                    mTranslateY;
 
-    private boolean                mfillScrollView;
 
     /** Scroll listener which does the magic */
     private final OnScrollListener mOnScrollListener = new OnScrollListener()
@@ -486,17 +485,6 @@ public class PinnedSectionListView extends ListView
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        int expandSpec = heightMeasureSpec;
-        if (mfillScrollView)
-        {
-            expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-        }
-        super.onMeasure(widthMeasureSpec, expandSpec);
-    }
-
-    @Override
     protected void dispatchDraw(Canvas canvas)
     {
         super.dispatchDraw(canvas);
@@ -648,9 +636,5 @@ public class PinnedSectionListView extends ListView
         return ((PinnedSectionListAdapter) adapter).isItemViewTypePinned(viewType);
     }
 
-    public void setfillScrollView(boolean fillScrollView)
-    {
-        this.mfillScrollView = fillScrollView;
-    }
 
 }
