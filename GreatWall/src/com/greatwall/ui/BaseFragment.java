@@ -16,8 +16,7 @@ import com.greatwall.app.Application;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
-    protected View    mContextView;
-    private boolean   isViewDetached = false;
+    private View      mContextView;
     protected Handler mHandler;
     protected Dialog  mDialog;
 
@@ -40,9 +39,11 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        this.mContextView = view;
-        return view;
+        if (mContextView == null)
+        {
+            mContextView = inflater.inflate(getLayoutId(), container, false);
+        }
+        return mContextView;
     }
 
     protected abstract int getLayoutId();
@@ -102,8 +103,10 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onDestroyView()
     {
         super.onDestroyView();
-        this.isViewDetached = true;
-
+        if(null!=mContextView)
+        {
+            ((ViewGroup)mContextView.getParent()).removeView(mContextView);
+        }
         dismissDialog();
     }
 
@@ -127,13 +130,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onDestroy()
     {
         super.onDestroy();
-        this.isViewDetached = false;
 
-    }
-
-    public boolean isViewDetached()
-    {
-        return this.isViewDetached;
     }
 
     public View getContextView()
