@@ -40,9 +40,8 @@ import android.widget.SectionIndexer;
 import com.greatwall.BuildConfig;
 
 /**
- * https://github.com/beworker/pinned-section-listview
- * ListView, which is capable to pin section views at its top while the rest is
- * still scrolled.
+ * https://github.com/beworker/pinned-section-listview ListView, which is
+ * capable to pin section views at its top while the rest is still scrolled.
  */
 public class PinnedSectionListView extends ListView
 {
@@ -98,6 +97,8 @@ public class PinnedSectionListView extends ListView
      * section.
      */
     private int                    mTranslateY;
+
+    private boolean                mfillScrollView;
 
     /** Scroll listener which does the magic */
     private final OnScrollListener mOnScrollListener = new OnScrollListener()
@@ -485,6 +486,17 @@ public class PinnedSectionListView extends ListView
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        int expandSpec = heightMeasureSpec;
+        if (mfillScrollView)
+        {
+            expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        }
+        super.onMeasure(widthMeasureSpec, expandSpec);
+    }
+
+    @Override
     protected void dispatchDraw(Canvas canvas)
     {
         super.dispatchDraw(canvas);
@@ -634,6 +646,11 @@ public class PinnedSectionListView extends ListView
             adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
         }
         return ((PinnedSectionListAdapter) adapter).isItemViewTypePinned(viewType);
+    }
+
+    public void setfillScrollView(boolean fillScrollView)
+    {
+        this.mfillScrollView = fillScrollView;
     }
 
 }
