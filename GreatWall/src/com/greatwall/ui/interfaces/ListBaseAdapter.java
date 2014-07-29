@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
-    protected ArrayList<T> data = new ArrayList<T>();
-    protected ViewGroup    viewGroup;
+    protected LayoutInflater mInflater;
+    protected ArrayList<T>   data = new ArrayList<T>();
+    protected ViewGroup      viewGroup;
 
     public ListBaseAdapter(ViewGroup viewGroup)
     {
         this.viewGroup = viewGroup;
+        this.mInflater = LayoutInflater.from(viewGroup.getContext());
     }
 
     public synchronized void setData(List<T> data)
