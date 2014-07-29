@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 
 /**
+ * https://github.com/cyrilmottier/ListViewTipsAndTricks
  * An extension of the framework's {@link ListView} that can determine an
  * approximate value of its current velocity on the Y-axis.
  * 

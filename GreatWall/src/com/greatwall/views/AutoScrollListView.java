@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.widget.ListView;
 
 /**
+ * https://github.com/cyrilmottier/ListViewTipsAndTricks
  * A ListView that can be asked to scroll (smoothly or otherwise) to a specific
  * position. This class takes advantage of similar functionality that exists in
  * {@link ListView} and enhances it.
