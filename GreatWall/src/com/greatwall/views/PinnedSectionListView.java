@@ -40,6 +40,7 @@ import android.widget.SectionIndexer;
 import com.greatwall.BuildConfig;
 
 /**
+ * https://github.com/beworker/pinned-section-listview
  * ListView, which is capable to pin section views at its top while the rest is
  * still scrolled.
  */
