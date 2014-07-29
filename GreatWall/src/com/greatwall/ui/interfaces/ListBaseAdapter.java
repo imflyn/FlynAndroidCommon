@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
-    private ArrayList<T> data = new ArrayList<T>();
-    private ViewGroup    viewGroup;
+    protected ArrayList<T> data = new ArrayList<T>();
+    protected ViewGroup    viewGroup;
 
     public ListBaseAdapter(ViewGroup viewGroup)
     {
