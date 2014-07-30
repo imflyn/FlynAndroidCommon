@@ -16,8 +16,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * 圆形imageview
- * https://github.com/hdodenhof/CircleImageView
+ * 圆形imageview https://github.com/hdodenhof/CircleImageView
  *
  */
 public class CircleImageView extends ImageView
@@ -55,6 +54,8 @@ public class CircleImageView extends ImageView
     public CircleImageView(Context context)
     {
         super(context);
+        if (isInEditMode())
+            return;
     }
 
     public CircleImageView(Context context, AttributeSet attrs)
@@ -67,8 +68,11 @@ public class CircleImageView extends ImageView
         super(context, attrs, defStyle);
         super.setScaleType(SCALE_TYPE);
 
-        mBorderWidth =  DEFAULT_BORDER_WIDTH;
-        mBorderColor =  DEFAULT_BORDER_COLOR;
+        if (isInEditMode())
+            return;
+
+        mBorderWidth = DEFAULT_BORDER_WIDTH;
+        mBorderColor = DEFAULT_BORDER_COLOR;
 
         mReady = true;
 
