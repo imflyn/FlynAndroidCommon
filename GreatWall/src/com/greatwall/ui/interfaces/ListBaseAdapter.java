@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
     protected LayoutInflater mInflater;
     protected ArrayList<T>   data = new ArrayList<T>();
     protected ViewGroup      viewGroup;
+    protected Context        mContext;
 
     public ListBaseAdapter(ViewGroup viewGroup)
     {
         this.viewGroup = viewGroup;
-        this.mInflater = LayoutInflater.from(viewGroup.getContext());
+        this.mContext = viewGroup.getContext();
+        this.mInflater = LayoutInflater.from(mContext);
     }
 
     public synchronized void setData(List<T> data)
