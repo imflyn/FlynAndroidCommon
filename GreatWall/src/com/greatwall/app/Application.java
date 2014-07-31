@@ -22,10 +22,11 @@ public class Application extends android.app.Application
 
     @Override
     public void onCreate()
-    {   
+    {
         super.onCreate();
         mContext = this;
-        init();init();
+        init();
+        init();
     }
 
     private void init()

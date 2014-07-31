@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 public abstract class MapBaseAdapter<Key, T> extends android.widget.BaseExpandableListAdapter
 {
-    private LinkedHashMap<Key, List<T>> data    = new LinkedHashMap<Key, List<T>>();
+    private LinkedHashMap<Key, List<T>> data = new LinkedHashMap<Key, List<T>>();
     private ViewGroup                   viewGroup;
 
     public MapBaseAdapter(ViewGroup viewGroup)

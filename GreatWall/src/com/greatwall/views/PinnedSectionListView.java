@@ -98,7 +98,6 @@ public class PinnedSectionListView extends ListView
      */
     private int                    mTranslateY;
 
-
     /** Scroll listener which does the magic */
     private final OnScrollListener mOnScrollListener = new OnScrollListener()
                                                      {
@@ -635,6 +634,5 @@ public class PinnedSectionListView extends ListView
         }
         return ((PinnedSectionListAdapter) adapter).isItemViewTypePinned(viewType);
     }
-
 
 }

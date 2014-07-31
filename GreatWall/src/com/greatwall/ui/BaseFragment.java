@@ -103,9 +103,9 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     public void onDestroyView()
     {
         super.onDestroyView();
-        if(null!=mContextView)
+        if (null != mContextView)
         {
-            ((ViewGroup)mContextView.getParent()).removeView(mContextView);
+            ((ViewGroup) mContextView.getParent()).removeView(mContextView);
         }
         dismissDialog();
     }
