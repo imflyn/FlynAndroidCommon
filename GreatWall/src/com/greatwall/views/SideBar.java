@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.greatwall.R;
 import com.greatwall.util.DensityUtils;
 
 public class SideBar extends View
@@ -65,33 +67,36 @@ public class SideBar extends View
         {
             mDialogText = new TextView(getContext());
             mDialogText.setTextSize(80);
-//            mDialogText.setBackgroundResource(R.drawable.btn_usually_selector);
+            // mDialogText.setBackgroundResource(R.drawable.btn_usually_selector);
             mDialogText.setGravity(Gravity.CENTER);
-//            mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
-        }
-        
-        if (!mAttached)
-        {
-            WindowManager.LayoutParams params = new LayoutParams();
-            params.gravity = Gravity.CENTER;
-            params.alpha=0.5f;
-            params.height=DensityUtils.dip2px(getContext(), 160);
-            params.width=DensityUtils.dip2px(getContext(), 160);
-            windowManager.addView(mDialogText, params);
-            mAttached=true;
+            mDialogText.setHeight(DensityUtils.dip2px(getContext(), 160));
+            mDialogText.setWidth(DensityUtils.dip2px(getContext(), 160));
+            // mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
         }
 
-        mDialogText.setVisibility(View.VISIBLE);
+        if (!mAttached)
+        {
+            mAttached = true;
+            WindowManager.LayoutParams params = new LayoutParams();
+            params.width = LayoutParams.WRAP_CONTENT;
+            params.height = LayoutParams.WRAP_CONTENT;
+            params.gravity = Gravity.CENTER;
+            params.alpha = 0.8f;
+            params.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
+            params.flags = WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW;
+            windowManager.addView(mDialogText, params);
+        }
+
         mDialogText.setText(text);
 
     }
 
     private void hiddenText()
     {
-        if(mAttached)
+        if (mAttached)
         {
             windowManager.removeView(mDialogText);
-            mAttached=false;
+            mAttached = false;
         }
     }
 
@@ -125,7 +130,7 @@ public class SideBar extends View
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
         {
 
-//            setBackgroundResource(R.color.transparent_cover);
+            setBackgroundResource(R.color.transparent_cover);
 
             showText(String.valueOf(indexs[idx]));
             int position = getSectionIndexer().getPositionForSection(indexs[idx]);
@@ -134,7 +139,7 @@ public class SideBar extends View
             {
                 return true;
             }
-            list.setSelection(position);
+            list.setSelection(position + 1);
         } else
         {
             hiddenText();
@@ -167,7 +172,7 @@ public class SideBar extends View
         {
             paint = new Paint();
             paint.setColor(color);
-            paint.setTextSize(18*getResources().getDisplayMetrics().density);
+            paint.setTextSize(18 * getResources().getDisplayMetrics().density);
             paint.setStyle(Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);
         }
