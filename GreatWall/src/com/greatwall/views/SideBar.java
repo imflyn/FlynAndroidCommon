@@ -167,7 +167,7 @@ public class SideBar extends View
         {
             paint = new Paint();
             paint.setColor(color);
-            paint.setTextSize(22);
+            paint.setTextSize(18*getResources().getDisplayMetrics().density);
             paint.setStyle(Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);
         }
