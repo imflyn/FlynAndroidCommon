@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.greatwall.R;
 import com.greatwall.util.DensityUtils;
+import com.greatwall.util.L;
 
 public class SideBar extends View
 {
@@ -67,15 +68,17 @@ public class SideBar extends View
         {
             mDialogText = new TextView(getContext());
             mDialogText.setTextSize(80);
-            // mDialogText.setBackgroundResource(R.drawable.btn_usually_selector);
+//            mDialogText.setBackgroundResource(R.drawable.theme_btn_usually_selector);
             mDialogText.setGravity(Gravity.CENTER);
             mDialogText.setHeight(DensityUtils.dip2px(getContext(), 160));
             mDialogText.setWidth(DensityUtils.dip2px(getContext(), 160));
-            // mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
+//            mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
         }
 
         if (!mAttached)
         {
+            L.i("showText");
+
             mAttached = true;
             WindowManager.LayoutParams params = new LayoutParams();
             params.width = LayoutParams.WRAP_CONTENT;
@@ -85,6 +88,8 @@ public class SideBar extends View
             params.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
             params.flags = WindowManager.LayoutParams.FIRST_APPLICATION_WINDOW;
             windowManager.addView(mDialogText, params);
+
+            setBackgroundResource(R.color.transparent_cover);
         }
 
         mDialogText.setText(text);
@@ -95,7 +100,9 @@ public class SideBar extends View
     {
         if (mAttached)
         {
+            L.i("hiddenText");
             windowManager.removeView(mDialogText);
+            setBackgroundResource(android.R.color.transparent);
             mAttached = false;
         }
     }
@@ -103,8 +110,6 @@ public class SideBar extends View
     public void setListView(ListView listview)
     {
         list = listview;
-        sectionIndexter = (SectionIndexer) listview.getAdapter();
-
     }
 
     public void setTextView(TextView mDialogText)
@@ -117,8 +122,15 @@ public class SideBar extends View
     {
 
         super.onTouchEvent(event);
+        L.i("event:" + event.getAction());
+        
+        if (event.getAction() == MotionEvent.ACTION_UP|| event.getAction() == MotionEvent.ACTION_CANCEL)
+        {
+            hiddenText();
+            return true;
+        }
+        
         int i = (int) event.getY();
-
         int idx = i / (getMeasuredHeight() / indexs.length);
         if (idx >= indexs.length)
         {
@@ -130,8 +142,6 @@ public class SideBar extends View
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
         {
 
-            setBackgroundResource(R.color.transparent_cover);
-
             showText(String.valueOf(indexs[idx]));
             int position = getSectionIndexer().getPositionForSection(indexs[idx]);
 
@@ -139,15 +149,9 @@ public class SideBar extends View
             {
                 return true;
             }
-            list.setSelection(position + 1);
-        } else
-        {
-            hiddenText();
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP)
-        {
-            setBackgroundResource(android.R.color.transparent);
-        }
+            list.setSelection(position);
+        } 
+           
         return true;
     }
 
