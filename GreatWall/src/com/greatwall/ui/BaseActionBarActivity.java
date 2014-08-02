@@ -45,6 +45,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         // }
         // setTheme(theme);
         // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(layoutId()!=0)
         setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
