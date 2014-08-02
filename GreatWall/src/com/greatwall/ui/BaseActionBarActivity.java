@@ -36,16 +36,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         this.mContext = this;
         this.mHandler = Application.getInstance().getHandler();
-        // if (savedInstanceState == null)
-        // {
-        // theme = ThemeManager.getInstance().getCurrentThemeStyle();
-        // } else
-        // {
-        // theme = savedInstanceState.getInt("theme");
-        // }
-        // setTheme(theme);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(layoutId()!=0)
+        if (layoutId() > 0)
         setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
@@ -61,10 +52,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     protected void onResume()
     {
         super.onResume();
-        // if (theme != ThemeManager.getInstance().getCurrentThemeStyle())
-        // {
-        // reload();
-        // }
     }
 
     public void setContentView(int resId)
