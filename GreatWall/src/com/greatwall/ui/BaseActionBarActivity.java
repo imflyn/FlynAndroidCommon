@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.greatwall.app.Application;
@@ -37,7 +36,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         this.mContext = this;
         this.mHandler = Application.getInstance().getHandler();
         if (layoutId() > 0)
-        setContentView(layoutId());
+            setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
     }
@@ -139,17 +138,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     {
         super.onRestoreInstanceState(savedInstanceState);
         savedInstanceState.putInt("theme", theme);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     protected abstract int layoutId();

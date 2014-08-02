@@ -68,11 +68,11 @@ public class SideBar extends View
         {
             mDialogText = new TextView(getContext());
             mDialogText.setTextSize(80);
-//            mDialogText.setBackgroundResource(R.drawable.theme_btn_usually_selector);
+            // mDialogText.setBackgroundResource(R.drawable.theme_btn_usually_selector);
             mDialogText.setGravity(Gravity.CENTER);
             mDialogText.setHeight(DensityUtils.dip2px(getContext(), 160));
             mDialogText.setWidth(DensityUtils.dip2px(getContext(), 160));
-//            mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
+            // mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
         }
 
         if (!mAttached)
@@ -123,13 +123,13 @@ public class SideBar extends View
 
         super.onTouchEvent(event);
         L.i("event:" + event.getAction());
-        
-        if (event.getAction() == MotionEvent.ACTION_UP|| event.getAction() == MotionEvent.ACTION_CANCEL)
+
+        if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL)
         {
             hiddenText();
             return true;
         }
-        
+
         int i = (int) event.getY();
         int idx = i / (getMeasuredHeight() / indexs.length);
         if (idx >= indexs.length)
@@ -150,8 +150,8 @@ public class SideBar extends View
                 return true;
             }
             list.setSelection(position);
-        } 
-           
+        }
+
         return true;
     }
 

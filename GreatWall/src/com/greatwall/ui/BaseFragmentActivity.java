@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 
@@ -153,17 +152,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         super.onSaveInstanceState(outState);
         outState.putInt("theme", theme);
 
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     protected abstract int layoutId();
