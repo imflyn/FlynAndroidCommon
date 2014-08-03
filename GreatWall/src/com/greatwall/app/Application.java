@@ -14,7 +14,6 @@ import com.greatwall.sharedpreferences.SharedPreferenceFactory;
 public class Application extends android.app.Application
 {
 
-    // singleton
     private static Application    mContext;
     private volatile boolean      mRunning        = false;
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
@@ -77,17 +76,13 @@ public class Application extends android.app.Application
         {
             mAppManagerList.get(i).onClear();
         }
+        SharedPreferenceFactory.clear();
     }
 
-    public void close(boolean killProcess)
+    public void close()
     {
         mRunning = false;
-        for (int i = 0, len = mAppManagerList.size(); i < len; i++)
-        {
-            mAppManagerList.get(i).onClose();
-        }
-        SharedPreferenceFactory.clear();
-        if(killProcess)
+        clear();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
