@@ -17,7 +17,6 @@ import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
-import com.greatwall.util.ViewUtils;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity implements UIListener
 {
@@ -105,7 +104,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        ViewUtils.recycleView(rootView, false);
         dismissDialog();
     }
 

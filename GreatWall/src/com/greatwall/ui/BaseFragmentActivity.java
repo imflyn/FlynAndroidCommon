@@ -14,7 +14,6 @@ import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.app.manager.ThemeManager;
 import com.greatwall.app.manager.UIListenerManager;
 import com.greatwall.ui.interfaces.UIListener;
-import com.greatwall.util.ViewUtils;
 
 public abstract class BaseFragmentActivity extends FragmentActivity implements UIListener
 {
@@ -126,7 +125,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements U
         UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
 
-        ViewUtils.recycleView(rootView, false);
         dismissDialog();
     }
 
