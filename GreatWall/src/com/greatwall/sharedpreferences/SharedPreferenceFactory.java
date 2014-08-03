@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
 
-public class SharedPreferenceFactory
+public class SharedPreferenceFactory 
 {
 
     // singleton registry
@@ -38,6 +38,11 @@ public class SharedPreferenceFactory
             }
         }
         return asp;
+    }
+    
+    public static void clear()
+    {
+        cache.clear();
     }
 
 }

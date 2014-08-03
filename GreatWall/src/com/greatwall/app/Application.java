@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import android.os.Handler;
 
 import com.greatwall.app.manager.AppManager;
+import com.greatwall.sharedpreferences.SharedPreferenceFactory;
 
 public class Application extends android.app.Application
 {
@@ -78,13 +79,15 @@ public class Application extends android.app.Application
         }
     }
 
-    public void close()
+    public void close(boolean killProcess)
     {
         mRunning = false;
         for (int i = 0, len = mAppManagerList.size(); i < len; i++)
         {
             mAppManagerList.get(i).onClose();
         }
+        SharedPreferenceFactory.clear();
+        if(killProcess)
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
