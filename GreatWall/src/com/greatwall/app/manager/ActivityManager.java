@@ -140,6 +140,7 @@ public class ActivityManager extends AppManager
     @Override
     public void onClear()
     {
+        finishAllActivity();
         getActivityStack().clear();
     }
 
