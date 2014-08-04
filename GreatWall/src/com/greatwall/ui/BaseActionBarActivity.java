@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.greatwall.app.Application;
@@ -136,6 +137,19 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     {
         super.onRestoreInstanceState(savedInstanceState);
         savedInstanceState.putInt("theme", theme);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     protected abstract int layoutId();
