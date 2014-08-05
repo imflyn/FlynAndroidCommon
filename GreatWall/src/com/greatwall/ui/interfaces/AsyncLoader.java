@@ -103,4 +103,9 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D>
 
     protected abstract D loadData() throws Exception;
 
+    public D getData()
+    {
+        return data;
+    }
+
 }
