@@ -65,7 +65,6 @@ public class KeyboardRelativeLayout extends RelativeLayout
             LogManager.d(KeyboardRelativeLayout.class, "mShowKeyboard-----      " + mShowKeyboard);
         }
     }
-    
 
     public void setOnSizeChangedListener(onSizeChangedListener listener)
     {
