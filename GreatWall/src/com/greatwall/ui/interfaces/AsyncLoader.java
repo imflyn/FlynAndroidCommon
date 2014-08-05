@@ -84,7 +84,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D>
 
         data = null;
     }
-
+    
     @Override
     public D loadInBackground()
     {
