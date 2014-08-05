@@ -5,21 +5,22 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListView;
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
     protected LayoutInflater mInflater;
     protected ArrayList<T>   data = new ArrayList<T>();
-    protected ViewGroup      viewGroup;
+    protected ListView       mListView;
     protected Context        mContext;
 
-    public ListBaseAdapter(ViewGroup viewGroup)
+    public ListBaseAdapter(ListView mListView)
     {
-        this.viewGroup = viewGroup;
-        this.mContext = viewGroup.getContext();
+        this.mListView = mListView;
+        this.mContext = mListView.getContext();
         this.mInflater = LayoutInflater.from(mContext);
     }
 
@@ -28,6 +29,12 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public synchronized void setItem(int location, T item)
+    {
+        this.data.set(location, item);
+        // TODO 跟新单个item
     }
 
     public synchronized void addItem(T item)
@@ -78,11 +85,41 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
         notifyDataSetChanged();
     }
 
-    public View updateView(int index)
+    public SparseArray<View> getItemView(int position)
     {
-        View view = viewGroup.getChildAt(index);
 
-        return view;
+        int wantedPosition = position - mListView.getHeaderViewsCount();
+        int firstPosition = mListView.getFirstVisiblePosition() - mListView.getHeaderViewsCount();
+        int wantedChild = wantedPosition - firstPosition;
+
+        if (wantedChild < 0 || wantedChild >= mListView.getChildCount())
+        {
+            return null;
+        }
+
+        View wantedView = mListView.getChildAt(wantedChild);
+        @SuppressWarnings("unchecked")
+        SparseArray<View> sparseArray = (SparseArray<View>) wantedView.getTag();
+
+        return sparseArray;
+    }
+
+    public View getItemViewById(int position, int id)
+    {
+        int wantedPosition = position - mListView.getHeaderViewsCount();
+        int firstPosition = mListView.getFirstVisiblePosition() - mListView.getHeaderViewsCount();
+        int wantedChild = wantedPosition - firstPosition;
+
+        if (wantedChild < 0 || wantedChild >= mListView.getChildCount())
+        {
+            return null;
+        }
+
+        View wantedView = mListView.getChildAt(wantedChild);
+        @SuppressWarnings("unchecked")
+        SparseArray<View> sparseArray = (SparseArray<View>) wantedView.getTag();
+
+        return sparseArray.get(id);
     }
 
     @Override

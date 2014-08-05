@@ -138,7 +138,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
         super.onRestoreInstanceState(savedInstanceState);
         savedInstanceState.putInt("theme", theme);
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

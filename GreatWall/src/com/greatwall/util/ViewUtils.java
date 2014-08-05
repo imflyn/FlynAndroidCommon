@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 public class ViewUtils
 {
@@ -149,6 +151,25 @@ public class ViewUtils
         }
         lastClickTime = time;
         return false;
+    }
+
+    /**
+     * 计算listview的高度
+     * 
+     * @param listView
+     * @param adapter
+     * @return
+     */
+    public static int measureListViewHeight(ListView listView, BaseAdapter adapter)
+    {
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++)
+        {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        return totalHeight;
     }
 
 }
