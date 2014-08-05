@@ -2,8 +2,9 @@ package com.flyn.util.cache;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Build;
 
 /**
  * @Description 缓存的工作类
@@ -31,6 +32,7 @@ public class FileCacheWork<ResponseObject extends Object>
      * @param responseObject
      *            对缓存结果响应的类
      */
+    @SuppressLint("NewApi")
     @SuppressWarnings("unchecked")
     public void loadFormCache(Object data, ResponseObject responseObject)
     {
@@ -73,7 +75,14 @@ public class FileCacheWork<ResponseObject extends Object>
                 mCallBackHandler.onStart(responseObject, data);
             }
             cacheEntity.setAsyncEntity(asyncEntity);
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, data);
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
+            {
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, data);
+            } else
+            {
+                task.execute(data);
+            }
         }
     }
 
@@ -381,7 +390,7 @@ public class FileCacheWork<ResponseObject extends Object>
         @Override
         protected void onCancelled(byte[] inputStream)
         {
-            super.onCancelled(inputStream);
+            super.onCancelled();
             synchronized (mPauseWorkLock)
             {
                 mPauseWorkLock.notifyAll();
