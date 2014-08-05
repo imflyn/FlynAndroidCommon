@@ -103,7 +103,7 @@ public class VersionCheckUtils
     }
 
     /**
-     * 当前Android系统版本是否在（ Honeycomb） Android3.1或 Android3.1以上
+     * 当前Android系统版本是否在（ Honeycomb） Android3.0或 Android3.0以上
      * 
      * @return
      */
@@ -113,7 +113,7 @@ public class VersionCheckUtils
     }
 
     /**
-     * 当前Android系统版本是否在（ HoneycombMR1） Android3.1.1或 Android3.1.1以上
+     * 当前Android系统版本是否在（ HoneycombMR1） Android3.1.x或 Android3.1.x以上
      * 
      * @return
      */
