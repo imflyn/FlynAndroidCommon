@@ -3,8 +3,6 @@ package de.greenrobot.event;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.util.Log;
-
 public class EventFactory
 {
 
@@ -62,8 +60,6 @@ public class EventFactory
     @SuppressWarnings("unchecked")
     public void onEventMainThread(BaseEvent event)
     {
-        Log.i("aaaa", "onEventMainThread:" + event.getClass());
-
         Class<?> clz = event.getClass();
         ArrayList<EventListener<? extends BaseEvent>> listenerList = listeners.get(clz);
         if (listenerList != null)
@@ -80,7 +76,6 @@ public class EventFactory
     @SuppressWarnings("unchecked")
     public void onEventBackgroundThread(BaseEvent event)
     {
-        Log.i("aaaa", "onEventBackgroundThread:" + event.getClass());
         Class<?> clz = event.getClass();
         ArrayList<EventListener<? extends BaseEvent>> listenerList = listeners.get(clz);
         if (listenerList != null)
@@ -97,7 +92,6 @@ public class EventFactory
     @SuppressWarnings("unchecked")
     public void onEvent(BaseEvent event)
     {
-        Log.i("aaaa", "onEvent:" + event.getClass());
         Class<?> clz = event.getClass();
         ArrayList<EventListener<? extends BaseEvent>> listenerList = listeners.get(clz);
         if (listenerList != null)
@@ -114,7 +108,6 @@ public class EventFactory
     @SuppressWarnings("unchecked")
     public void onEventAsync(BaseEvent event)
     {
-        Log.i("aaaa", "onEventAsync:" + event.getClass());
         Class<?> clz = event.getClass();
         ArrayList<EventListener<? extends BaseEvent>> listenerList = listeners.get(clz);
         if (listenerList != null)
