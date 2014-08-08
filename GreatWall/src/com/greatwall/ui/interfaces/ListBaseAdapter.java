@@ -94,7 +94,7 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 
         if (wantedChild < 0 || wantedChild >= mListView.getChildCount())
         {
-            return null;
+            return new SparseArray<View>();
         }
 
         View wantedView = mListView.getChildAt(wantedChild);
