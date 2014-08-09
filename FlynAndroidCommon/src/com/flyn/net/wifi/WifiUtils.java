@@ -583,4 +583,26 @@ public final class WifiUtils
             throw new RuntimeException(e);
         }
     }
+    
+    enum Power
+    {
+        Better, Ordinary, Poor, Bad;
+
+        public Power valueOf(int value)
+        {
+            if (value <= -30)
+            {
+                return Better;
+            } else if (value <= -30 && value > -60)
+            {
+                return Ordinary;
+            } else if (value <= -60 && value > -90)
+            {
+                return Poor;
+            } else
+            {
+                return Bad;
+            }
+        }
+    }
 }
