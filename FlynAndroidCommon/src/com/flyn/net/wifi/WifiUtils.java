@@ -585,25 +585,26 @@ public final class WifiUtils
     }
     
 
-    enum Power
+    public enum Power
     {
         Better, Ordinary, Poor, Bad;
 
-        public Power valueOf(int value)
+        public static Power valueOf(int value)
         {
-            if (value < -45)
+            if (value > -55)
             {
                 return Better;
-            } else if (value <= -45 && value > -75)
+            } else if (value <= -56 && value > -70)
             {
                 return Ordinary;
-            } else if (value <= -75 && value > -90)
+            } else if (value <= -71 && value > -85)
             {
                 return Poor;
-            } else
+            } else if(value <=-86)
             {
                 return Bad;
             }
+            return Better;
         }
     }
 }
