@@ -12,9 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.app.listeners.OnUpdateListener;
 import com.greatwall.R;
 import com.greatwall.app.Application;
+import com.greatwall.app.listeners.OnUpdateListener;
 import com.greatwall.util.NetWorkUtil;
 
 public class CustomWebView extends FrameLayout
