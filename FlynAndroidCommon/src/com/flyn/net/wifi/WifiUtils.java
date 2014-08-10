@@ -13,7 +13,7 @@ import android.net.wifi.WifiManager;
 
 import com.flyn.net.NetManager;
 import com.flyn.net.wifi.support.Wifi;
-import com.flyn.util.LogManager;
+import com.flyn.util.L;
 
 public final class WifiUtils
 {
@@ -27,7 +27,7 @@ public final class WifiUtils
             throw new NullPointerException();
         this.context = context;
         this.wifiManager = ((WifiManager) context.getSystemService("wifi"));
-        this.wifiLock = this.wifiManager.createWifiLock("com.flyn.net.wifi.WifiUtils");
+        this.wifiLock = this.wifiManager.createWifiLock("com.wifibao.preciouskey.wifi.WifiUtils");
     }
 
     public boolean isWifiEnabled()
@@ -129,27 +129,27 @@ public final class WifiUtils
             @Override
             public void onWifiEnabled()
             {
-                LogManager.d(WifiUtils.class, "revert to previous wifi state...");
+                L.d("revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
                     @Override
                     public void onWifiDisabled()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state successfully.");
+                        L.d("revert to previous wifi state successfully.");
                         callback.onCheckWifiExist();
                     }
 
                     @Override
                     public void onWifiFailed()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
+                        L.d("revert to previous wifi state unsuccessfully.");
                         callback.onCheckWifiExist();
                     }
 
                     @Override
                     public void onTimeout()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state time out.");
+                        L.d("revert to previous wifi state time out.");
                         callback.onCheckWifiExist();
                     }
                 }, timeout);
@@ -164,27 +164,27 @@ public final class WifiUtils
             @Override
             public void onTimeout()
             {
-                LogManager.d(WifiUtils.class, "revert to previous wifi state...");
+                L.d("revert to previous wifi state...");
                 WifiUtils.this.setWifiEnabled(false, new WifiCallback(WifiUtils.this.context)
                 {
                     @Override
                     public void onWifiDisabled()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state successfully.");
+                        L.d("revert to previous wifi state successfully.");
                         callback.onTimeout();
                     }
 
                     @Override
                     public void onWifiFailed()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state unsuccessfully.");
+                        L.d("revert to previous wifi state unsuccessfully.");
                         callback.onTimeout();
                     }
 
                     @Override
                     public void onTimeout()
                     {
-                        LogManager.d(WifiUtils.class, "revert to previous wifi state time out.");
+                        L.d("revert to previous wifi state time out.");
                         callback.onTimeout();
                     }
                 }, timeout);
@@ -237,7 +237,7 @@ public final class WifiUtils
                 }, thisTimeout);
             } catch (Exception e)
             {
-                LogManager.w(WifiUtils.class, "disable wifi ap failed.", e);
+                L.w("disable wifi ap failed.", e);
                 setWifiEnabledImpl(enabled, callback, timeout);
             }
         } else
@@ -249,9 +249,9 @@ public final class WifiUtils
         if (callback != null)
         {
             if (enabled)
-                callback.setAutoUnregisterActions(new int[] { 0, 4 });
+                callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_WIFI_ENABLED, WifiCallback.ACTION_WIFI_FAILED });
             else
-                callback.setAutoUnregisterActions(new int[] { 2, 4 });
+                callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_WIFI_DISABLED, WifiCallback.ACTION_WIFI_FAILED });
             callback.registerMe(timeout);
         }
         boolean circs = this.wifiManager.setWifiEnabled(enabled);
@@ -276,7 +276,7 @@ public final class WifiUtils
         }
         if (callback != null)
         {
-            callback.setAutoUnregisterActions(new int[] { 5 });
+            callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_SCAN_RESULTS });
             callback.registerMe(timeout);
         }
         boolean circs = this.wifiManager.startScan();
@@ -313,7 +313,7 @@ public final class WifiUtils
         }
         if (callback != null)
         {
-            callback.setAutoUnregisterActions(new int[] { 11, 10, 9 });
+            callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_NETWORK_FAILED, WifiCallback.ACTION_NETWORK_CONNECTED, WifiCallback.ACTION_NETWORK_DISCONNECTED });
             callback.ignoreInitialNetworkActions(true);
             callback.registerMe(timeout);
         }
@@ -368,7 +368,7 @@ public final class WifiUtils
         }
         if (callback != null)
         {
-            callback.setAutoUnregisterActions(new int[] { 11, 10, 9 });
+            callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_NETWORK_FAILED, WifiCallback.ACTION_NETWORK_CONNECTED, WifiCallback.ACTION_NETWORK_DISCONNECTED });
             callback.ignoreInitialNetworkActions(true);
             callback.registerMe(timeout);
         }
@@ -476,7 +476,7 @@ public final class WifiUtils
                         WifiUtils.this.setWifiApEnabledImpl(apConfig, enabled, callback, timeout);
                     } catch (RuntimeException e)
                     {
-                        LogManager.e(WifiUtils.class, "set wifi ap enabled failed.", e);
+                        L.e("set wifi ap enabled failed.", e);
                         if (callback != null)
                             callback.onWifiApFailed();
                     }
@@ -522,7 +522,7 @@ public final class WifiUtils
                         WifiUtils.this.setWifiApEnabledImpl(apConfig, enabled, callback, timeout);
                     } catch (RuntimeException e)
                     {
-                        LogManager.e(WifiUtils.class, "set wifi ap enabled failed.", e);
+                        L.e("set wifi ap enabled failed.", e);
                         if (callback != null)
                             callback.onWifiApFailed();
                     }
@@ -549,9 +549,9 @@ public final class WifiUtils
         if (callback != null)
         {
             if (enabled)
-                callback.setAutoUnregisterActions(new int[] { 12, 16 });
+                callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_WIFI_AP_ENABLED, WifiCallback.ACTION_WIFI_AP_FAILED });
             else
-                callback.setAutoUnregisterActions(new int[] { 14, 16 });
+                callback.setAutoUnregisterActions(new int[] { WifiCallback.ACTION_WIFI_AP_DISABLED, WifiCallback.ACTION_WIFI_AP_FAILED });
             callback.registerMe(timeout);
         }
         try
@@ -583,7 +583,6 @@ public final class WifiUtils
             throw new RuntimeException(e);
         }
     }
-    
 
     public enum Power
     {
@@ -600,7 +599,7 @@ public final class WifiUtils
             } else if (value <= -71 && value > -85)
             {
                 return Poor;
-            } else if(value <=-86)
+            } else if (value <= -86)
             {
                 return Bad;
             }
