@@ -47,6 +47,7 @@ public abstract class DialogManager
 
     }
 
+    @SuppressLint("NewApi")
     public static AlertDialog.Builder createAlertDialogBuilder(Context context, String title, String[] buttons, DialogInterface.OnClickListener onClickListener, boolean cancelable)
     {
         AlertDialog.Builder ab = new AlertDialog.Builder(context);
