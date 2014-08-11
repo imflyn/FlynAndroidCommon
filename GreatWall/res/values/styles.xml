@@ -2,6 +2,8 @@
 
     <style name="AppTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:dialogTheme">@android:style/Theme.Holo.Light.Dialog</item>
+        <item name="android:alertDialogTheme">@android:style/Theme.Holo.Light.Dialog</item>
     </style>
 
     <style name="DlgWithoutBorderTitlebar" parent="android:style/Theme.Dialog">
@@ -12,6 +14,5 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-    
-    
+
 </resources>
