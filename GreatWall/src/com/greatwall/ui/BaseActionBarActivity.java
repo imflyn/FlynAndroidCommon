@@ -1,9 +1,11 @@
 package com.greatwall.ui;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -16,41 +18,83 @@ import android.view.View;
 
 import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
-import com.greatwall.app.manager.UIListenerManager;
-import com.greatwall.ui.interfaces.UIListener;
+import com.greatwall.ui.interfaces.BaseController;
 
-public abstract class BaseActionBarActivity extends ActionBarActivity implements UIListener
+public abstract class BaseActionBarActivity<T extends BaseController> extends ActionBarActivity
 {
     protected Context mContext;
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
     protected Dialog  mDialog;
+    protected T       controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         ActivityManager.getInstance().addActivity(this);
-        UIListenerManager.getInstance().addClass(this);
         super.onCreate(savedInstanceState);
         this.mContext = this;
         this.mHandler = Application.getInstance().getHandler();
+        initContorller();
         if (layoutId() > 0)
             setContentView(layoutId());
         initView(savedInstanceState);
         setListener();
     }
 
+    @SuppressWarnings("unchecked")
+    private void initContorller()
+    {
+        try
+        {
+            int index = getClass().getName().lastIndexOf(".");
+            Class<? extends BaseController> clz = (Class<? extends BaseController>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX + getClass().getSimpleName()
+                    + BaseController.SUFFIX);
+            Constructor<? extends BaseController> constructor = clz.getConstructor(Activity.class);
+            controller = (T) constructor.newInstance(this);
+        } catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e)
+        {
+            e.printStackTrace();
+        } catch (InstantiationException e)
+        {
+            e.printStackTrace();
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e)
+        {
+            e.printStackTrace();
+        } catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+        if (null != controller)
+            controller.onCreate();
+    }
+
+    protected T getController()
+    {
+        return controller;
+    }
+
     @Override
     protected void onStart()
     {
         super.onStart();
+        if (null != controller)
+            controller.onStart();
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
+        if (null != controller)
+            controller.onResume();
     }
 
     public void setContentView(int resId)
@@ -66,45 +110,25 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     protected void onPause()
     {
         super.onPause();
+        if (null != controller)
+            controller.onPause();
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void startActivity(Intent intent)
-    {
-        super.startActivity(intent);
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode)
-    {
-        super.startActivityForResult(intent, requestCode);
+        if (null != controller)
+            controller.onStop();
     }
 
     @Override
     protected void onDestroy()
     {
         ActivityManager.getInstance().removeActivity(this);
-        UIListenerManager.getInstance().removeClass(this);
         super.onDestroy();
-
+        if (null != controller)
+            controller.onDestory();
         dismissDialog();
     }
 
@@ -125,21 +149,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putInt("theme", theme);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
-        super.onRestoreInstanceState(savedInstanceState);
-        savedInstanceState.putInt("theme", theme);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -154,21 +163,11 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
 
     protected abstract int layoutId();
 
+    protected abstract void findViews(View view);
+
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
-
-    @Override
-    public void onUpdate(Object... obj)
-    {
-
-    }
-
-    @Override
-    public void onError(Throwable error)
-    {
-
-    }
 
     public static class MyTabListener<T extends Fragment> implements TabListener
     {
