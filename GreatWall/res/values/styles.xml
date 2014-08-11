@@ -1,9 +1,9 @@
 <resources>
 
-    <style name="AppTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
+    <style name="AppBaseTheme" parent="android:Theme.Light"></style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:dialogTheme">@android:style/Theme.Holo.Light.Dialog</item>
-        <item name="android:alertDialogTheme">@android:style/Theme.Holo.Light.Dialog</item>
     </style>
 
     <style name="DlgWithoutBorderTitlebar" parent="android:style/Theme.Dialog">
