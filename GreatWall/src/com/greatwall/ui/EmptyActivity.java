@@ -24,7 +24,7 @@ public class EmptyActivity extends BaseActivity
     }
 
     @Override
-    protected void findViews(View view)
+    protected void findViews()
     {
 
     }

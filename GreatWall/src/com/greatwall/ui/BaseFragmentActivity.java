@@ -36,6 +36,7 @@ public abstract class BaseFragmentActivity<T extends BaseController> extends Fra
         initContorller();
         if (layoutId() > 0)
             setContentView(layoutId());
+        findViews();
         initView(savedInstanceState);
         setListener();
     }
@@ -147,7 +148,7 @@ public abstract class BaseFragmentActivity<T extends BaseController> extends Fra
 
     protected abstract int layoutId();
 
-    protected abstract void findViews(View view);
+    protected abstract void findViews();
 
     protected abstract void initView(Bundle savedInstanceState);
 

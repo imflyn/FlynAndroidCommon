@@ -35,6 +35,7 @@ public abstract class BaseActivity<T extends BaseController> extends Activity
         initContorller();
         if (layoutId() > 0)
             setContentView(layoutId());
+        findViews();
         initView(savedInstanceState);
         setListener();
     }
@@ -146,7 +147,7 @@ public abstract class BaseActivity<T extends BaseController> extends Activity
 
     protected abstract int layoutId();
 
-    protected abstract void findViews(View view);
+    protected abstract void findViews();
 
     protected abstract void initView(Bundle savedInstanceState);
 

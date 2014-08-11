@@ -39,6 +39,7 @@ public abstract class BaseActionBarActivity<T extends BaseController> extends Ac
         initContorller();
         if (layoutId() > 0)
             setContentView(layoutId());
+        findViews();
         initView(savedInstanceState);
         setListener();
     }
@@ -163,7 +164,7 @@ public abstract class BaseActionBarActivity<T extends BaseController> extends Ac
 
     protected abstract int layoutId();
 
-    protected abstract void findViews(View view);
+    protected abstract void findViews();
 
     protected abstract void initView(Bundle savedInstanceState);
 
