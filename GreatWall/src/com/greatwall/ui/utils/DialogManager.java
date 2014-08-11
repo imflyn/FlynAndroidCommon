@@ -1,9 +1,7 @@
 package com.greatwall.ui.utils;
 
 import java.lang.reflect.Field;
-
-import com.greatwall.R;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -124,13 +122,6 @@ public abstract class DialogManager
         if (isNotAutoDismiss)
             dialog = setNotAutoDismiss(dialog);
 
-        int divierId = context.getResources().getIdentifier("android:id/titleDivider", null, null);
-
-        if (divierId > 0)
-        {
-            View divider = dialog.findViewById(divierId);
-            divider.setBackgroundColor(context.getResources().getColor(R.color.blue_light));
-        }
         return dialog;
     }
 
