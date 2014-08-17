@@ -34,7 +34,7 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
     public synchronized void setItem(int location, T item)
     {
         this.data.set(location, item);
-        // TODO 跟新单个item
+        notifyDataSetChanged();
     }
 
     public synchronized void addItem(T item)

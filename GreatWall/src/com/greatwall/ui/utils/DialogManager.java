@@ -1,6 +1,7 @@
 package com.greatwall.ui.utils;
 
 import java.lang.reflect.Field;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
