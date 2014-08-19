@@ -24,7 +24,7 @@ import android.content.Intent;
  */
 @SuppressWarnings("serial")
 public class AuthFailureError extends VolleyError
-{
+{  
     /**
      * An intent that can be used to resolve this exception. (Brings up the
      * password dialog.)
@@ -33,7 +33,7 @@ public class AuthFailureError extends VolleyError
 
     public AuthFailureError()
     {
-    }
+    }  
 
     public AuthFailureError(Intent intent)
     {
