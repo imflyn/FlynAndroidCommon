@@ -32,7 +32,7 @@ public class AuthFailureError extends VolleyError
     private Intent mResolutionIntent;
 
     public AuthFailureError()
-    {
+    {   
     }  
 
     public AuthFailureError(Intent intent)
