@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.greatwall.R;
-import com.greatwall.util.IntentUtils;
 import com.greatwall.views.NumberProgressBar.ProgressTextVisibility;
 
 public class WebViewToolBar extends LinearLayout implements OnClickListener

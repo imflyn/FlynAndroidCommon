@@ -15,10 +15,10 @@
  */
 package com.greatwall.ui.interfaces;
 
-import com.greatwall.util.L;
-
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+
+import com.greatwall.util.L;
 
 /**
  * Loader which extends AsyncTaskLoaders and handles caveats as pointed out in

@@ -1,6 +1,7 @@
 package com.greatwall.ui.utils;
 
 import java.lang.reflect.Field;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -47,6 +48,7 @@ public abstract class DialogManager
 
     }
 
+    @SuppressLint("NewApi")
     public static AlertDialog.Builder createAlertDialogBuilder(Context context, String title, String[] buttons, DialogInterface.OnClickListener onClickListener, boolean cancelable)
     {
         AlertDialog.Builder ab = new AlertDialog.Builder(context);
