@@ -34,7 +34,7 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
     public synchronized void setItem(int location, T item)
     {
         this.data.set(location, item);
-        // TODO 跟新单个item
+        notifyDataSetChanged();
     }
 
     public synchronized void addItem(T item)
@@ -85,7 +85,7 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
         notifyDataSetChanged();
     }
 
-    public SparseArray<View> getItemView(int position)
+    public SparseArray<View> getItemSparseArray(int position)
     {
 
         int wantedPosition = position - mListView.getHeaderViewsCount();
@@ -104,22 +104,26 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
         return sparseArray;
     }
 
-    public View getItemViewById(int position, int id)
+    public View getItemView(int position)
     {
+
         int wantedPosition = position - mListView.getHeaderViewsCount();
         int firstPosition = mListView.getFirstVisiblePosition() - mListView.getHeaderViewsCount();
         int wantedChild = wantedPosition - firstPosition;
 
-        if (wantedChild < 0 || wantedChild >= mListView.getChildCount())
-        {
-            return null;
-        }
-
         View wantedView = mListView.getChildAt(wantedChild);
-        @SuppressWarnings("unchecked")
-        SparseArray<View> sparseArray = (SparseArray<View>) wantedView.getTag();
 
-        return sparseArray.get(id);
+        return wantedView;
+    }
+
+    public View getItemViewById(int position, int id)
+    {
+        View view = getItemView(position);
+
+        if (view == null)
+            return null;
+
+        return view.findViewById(id);
     }
 
     @Override
