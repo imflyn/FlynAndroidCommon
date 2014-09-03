@@ -13,7 +13,7 @@ import com.greatwall.sharedpreferences.SharedPreferenceFactory;
 
 public class Application extends android.app.Application
 {
-
+  
     private static Application    mContext;
     private volatile boolean      mRunning        = false;
     private ArrayList<AppManager> mAppManagerList = new ArrayList<AppManager>();
