@@ -1,13 +1,13 @@
 package com.greatwall.ui;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 
@@ -15,14 +15,14 @@ import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.ui.interfaces.BaseController;
 
-public abstract class BaseActivity<T extends BaseController> extends Activity
+public abstract class BaseActivity extends FragmentActivity
 {
-    protected Context mContext;
-    protected int     theme = 0;
-    protected Handler mHandler;
-    protected View    rootView;
-    protected Dialog  mDialog;
-    protected T       controller;
+    protected Context           mContext;
+    protected int               theme = 0;
+    protected Handler           mHandler;
+    protected View              rootView;
+    protected Dialog            mDialog;
+    protected BaseController<?> controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,26 +46,11 @@ public abstract class BaseActivity<T extends BaseController> extends Activity
         try
         {
             int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseController> clz = (Class<? extends BaseController>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX + getClass().getSimpleName()
-                    + BaseController.SUFFIX);
-            Constructor<? extends BaseController> constructor = clz.getConstructor(Activity.class);
-            controller = (T) constructor.newInstance(this);
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e)
-        {
-            e.printStackTrace();
-        } catch (InstantiationException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e)
-        {
-            e.printStackTrace();
-        } catch (InvocationTargetException e)
+            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX
+                    + getClass().getSimpleName() + BaseController.SUFFIX);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            controller = constructor.newInstance(this);
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -73,10 +58,7 @@ public abstract class BaseActivity<T extends BaseController> extends Activity
             controller.onCreate();
     }
 
-    protected T getController()
-    {
-        return controller;
-    }
+    protected abstract BaseController<?> getController();
 
     @Override
     protected void onStart()

@@ -48,7 +48,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D>
     @Override
     public void deliverResult(final D data)
     {
-        if (isReset())
+        if (isReset() || isStarted())
             // An async query came in while the loader is stopped
             return;
 

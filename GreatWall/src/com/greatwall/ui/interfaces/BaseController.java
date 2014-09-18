@@ -2,32 +2,47 @@ package com.greatwall.ui.interfaces;
 
 import android.app.Activity;
 
-public abstract class BaseController
+import com.greatwall.ui.BaseActivity;
+
+public abstract class BaseController<D extends BaseActivity & ControllerListener>
 {
-    protected Activity         mContext;
+    protected D                mContext;
 
     public static final String PREFIX = "com.greatwall.ui.controller.";
     public static final String INFIX  = "controller.";
     public static final String SUFFIX = "Controller";
 
+    @SuppressWarnings("unchecked")
     public BaseController(Activity context)
     {
         if (!BaseController.this.getClass().getSimpleName().startsWith(context.getClass().getSimpleName()))
             throw new IllegalArgumentException("wrong controller name");
 
-        this.mContext = context;
+        mContext = (D) context;
     }
 
-    public abstract void onCreate();
+    public void onCreate()
+    {
+    };
 
-    public abstract void onDestory();
+    public void onDestory()
+    {
+    };
 
-    public abstract void onStart();
+    public void onStart()
+    {
+    };
 
-    public abstract void onResume();
+    public void onResume()
+    {
+    };
 
-    public abstract void onStop();
+    public void onStop()
+    {
+    };
 
-    public abstract void onPause();
+    public void onPause()
+    {
+    };
 
 }

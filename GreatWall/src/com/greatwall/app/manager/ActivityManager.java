@@ -5,8 +5,6 @@ import java.util.Stack;
 import android.app.Activity;
 import android.content.Context;
 
-import com.greatwall.ui.EmptyActivity;
-
 public class ActivityManager extends AppManager
 {
 
@@ -91,7 +89,7 @@ public class ActivityManager extends AppManager
                 return activity;
             }
         }
-        return new EmptyActivity();
+        return new Activity();
     }
 
     /**
