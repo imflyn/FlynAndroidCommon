@@ -1,7 +1,6 @@
 package com.greatwall.ui;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,14 +19,14 @@ import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 import com.greatwall.ui.interfaces.BaseController;
 
-public abstract class BaseActionBarActivity<T extends BaseController> extends ActionBarActivity
+public abstract class BaseActionBarActivity extends ActionBarActivity
 {
     protected Context mContext;
     protected int     theme = 0;
     protected Handler mHandler;
     protected View    rootView;
     protected Dialog  mDialog;
-    protected T       controller;
+    protected BaseController<?>       controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,26 +49,11 @@ public abstract class BaseActionBarActivity<T extends BaseController> extends Ac
         try
         {
             int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseController> clz = (Class<? extends BaseController>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX + getClass().getSimpleName()
-                    + BaseController.SUFFIX);
-            Constructor<? extends BaseController> constructor = clz.getConstructor(Activity.class);
-            controller = (T) constructor.newInstance(this);
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e)
-        {
-            e.printStackTrace();
-        } catch (InstantiationException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e)
-        {
-            e.printStackTrace();
-        } catch (InvocationTargetException e)
+            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX
+                    + getClass().getSimpleName() + BaseController.SUFFIX);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            controller = constructor.newInstance(this);
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -77,10 +61,7 @@ public abstract class BaseActionBarActivity<T extends BaseController> extends Ac
             controller.onCreate();
     }
 
-    protected T getController()
-    {
-        return controller;
-    }
+    protected abstract BaseController<?> getController();
 
     @Override
     protected void onStart()
