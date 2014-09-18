@@ -19,8 +19,7 @@ public class RegexTestHarnessV5
             boolean found = false;
             while (matcher.find())
             {
-                System.out.printf("I found the text \"%s\" starting at index %d and ending at index %d.%n", matcher.group(),
-                        matcher.start(), matcher.end());
+                System.out.printf("I found the text \"%s\" starting at index %d and ending at index %d.%n", matcher.group(), matcher.start(), matcher.end());
                 found = true;
             }
             if (!found)
