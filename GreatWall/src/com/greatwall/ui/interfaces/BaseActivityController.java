@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.greatwall.ui.BaseActivity;
 
-public abstract class BaseController<D extends BaseActivity & ControllerListener>
+public abstract class BaseActivityController<D extends BaseActivity & ControllerListener>
 {
     protected D                mContext;
 
@@ -13,9 +13,9 @@ public abstract class BaseController<D extends BaseActivity & ControllerListener
     public static final String SUFFIX = "Controller";
 
     @SuppressWarnings("unchecked")
-    public BaseController(Activity context)
+    public BaseActivityController(Activity context)
     {
-        if (!BaseController.this.getClass().getSimpleName().startsWith(context.getClass().getSimpleName()))
+        if (!BaseActivityController.this.getClass().getSimpleName().startsWith(context.getClass().getSimpleName()))
             throw new IllegalArgumentException("wrong controller name");
 
         mContext = (D) context;

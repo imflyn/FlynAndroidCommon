@@ -13,16 +13,16 @@ import android.view.Window;
 
 import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
-import com.greatwall.ui.interfaces.BaseController;
+import com.greatwall.ui.interfaces.BaseActivityController;
 
 public abstract class BaseActivity extends FragmentActivity
 {
-    protected Context           mContext;
-    protected int               theme = 0;
-    protected Handler           mHandler;
-    protected View              rootView;
-    protected Dialog            mDialog;
-    protected BaseController<?> controller;
+    protected Context                   mContext;
+    protected int                       theme = 0;
+    protected Handler                   mHandler;
+    protected View                      rootView;
+    protected Dialog                    mDialog;
+    protected BaseActivityController<?> controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,9 +46,9 @@ public abstract class BaseActivity extends FragmentActivity
         try
         {
             int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseController.INFIX
-                    + getClass().getSimpleName() + BaseController.SUFFIX);
-            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            Class<? extends BaseActivityController<?>> clz = (Class<? extends BaseActivityController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX
+                    + getClass().getSimpleName() + BaseActivityController.SUFFIX);
+            Constructor<? extends BaseActivityController<?>> constructor = clz.getConstructor(Activity.class);
             controller = constructor.newInstance(this);
         } catch (Exception e)
         {
@@ -58,7 +58,7 @@ public abstract class BaseActivity extends FragmentActivity
             controller.onCreate();
     }
 
-    protected abstract BaseController<?> getController();
+    protected abstract BaseActivityController<?> getController();
 
     @Override
     protected void onStart()

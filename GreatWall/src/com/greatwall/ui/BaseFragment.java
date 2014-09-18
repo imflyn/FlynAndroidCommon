@@ -1,40 +1,57 @@
 package com.greatwall.ui;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.greatwall.app.Application;
+import com.greatwall.ui.interfaces.BaseActivityController;
+import com.greatwall.ui.interfaces.BaseFragmentController;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
-    private View      mContextView;
-    protected Handler mHandler;
-    protected Dialog  mDialog;
+    private View                        mContextView;
+    protected Handler                   mHandler;
+    protected Dialog                    mDialog;
+    protected BaseFragmentController<?> controller;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        view.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                return true;
-            }
-        });
+        initContorller();
         initView(savedInstanceState);
         setListener();
     }
+
+    @SuppressWarnings("unchecked")
+    private void initContorller()
+    {
+        try
+        {
+            int index = getClass().getName().lastIndexOf(".");
+            Class<? extends BaseFragmentController<?>> clz = (Class<? extends BaseFragmentController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX
+                    + getClass().getSimpleName() + BaseFragmentController.SUFFIX);
+            Constructor<? extends BaseFragmentController<?>> constructor = clz.getConstructor(Fragment.class);
+            controller = constructor.newInstance(this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        if (null != controller)
+            controller.onCreate();
+    }
+
+    protected abstract BaseActivityController<?> getController();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

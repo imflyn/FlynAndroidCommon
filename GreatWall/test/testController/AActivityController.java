@@ -2,9 +2,9 @@ package testController;
 
 import android.app.Activity;
 
-import com.greatwall.ui.interfaces.BaseController;
+import com.greatwall.ui.interfaces.BaseActivityController;
 
-public class AActivityController extends BaseController<AActivity>
+public class AActivityController extends BaseActivityController<AActivity>
 {
 
     public AActivityController(Activity context)
