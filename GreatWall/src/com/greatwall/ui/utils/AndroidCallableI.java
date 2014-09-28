@@ -20,7 +20,7 @@ package com.greatwall.ui.utils;
  * @see AndroidCallable
  * @param <ResultT>
  */
-public interface AndroidCallableI<ResultT>
+public interface AndroidCallableI<Result>
 {
 
     /**
@@ -34,7 +34,7 @@ public interface AndroidCallableI<ResultT>
      * Executed in the executor's background thread. Exceptions will be handled
      * by the onException callback.
      */
-    ResultT doInBackground() throws Exception;
+    Result doInBackground() throws Exception;
 
     /**
      * Executed in the handler's thread (usually the UI thread) if
@@ -53,7 +53,7 @@ public interface AndroidCallableI<ResultT>
      * @param result
      *            the result returned by the {@link #doInBackground} method
      */
-    void onSuccess(ResultT result);
+    void onSuccess(Result result);
 
     /**
      * Executed in the handler's thread (usually the UI thread) after

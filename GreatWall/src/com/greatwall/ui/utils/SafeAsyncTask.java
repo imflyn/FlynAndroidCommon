@@ -21,9 +21,9 @@ import java.util.concurrent.*;
  * If using your own executor, you must call future() to get a runnable you can
  * execute.
  * 
- * @param <ResultT>
+ * @param <Result>
  */
-public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
+public abstract class SafeAsyncTask<Result> implements Callable<Result>
 {
     public static final int         DEFAULT_POOL_SIZE = 25;
     protected static final Executor DEFAULT_EXECUTOR  = Executors.newFixedThreadPool(DEFAULT_POOL_SIZE);
@@ -70,7 +70,7 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
         return future;
     }
 
-    public SafeAsyncTask<ResultT> executor(Executor executor)
+    public SafeAsyncTask<Result> executor(Executor executor)
     {
         this.executor = executor;
         return this;
@@ -81,7 +81,7 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
         return executor;
     }
 
-    public SafeAsyncTask<ResultT> handler(Handler handler)
+    public SafeAsyncTask<Result> handler(Handler handler)
     {
         this.handler = handler;
         return this;
@@ -119,7 +119,7 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
      * @throws Exception
      *             , captured on passed to onException() if present.
      */
-    protected void onSuccess(ResultT t) throws Exception
+    protected void onSuccess(Result t) throws Exception
     {
     }
 
@@ -171,10 +171,10 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
         return new SafeAsyncTaskAndroidCallable();
     }
 
-    public class SafeAsyncTaskAndroidCallable extends AndroidCallable<ResultT>
+    public class SafeAsyncTaskAndroidCallable extends AndroidCallable<Result>
     {
         @Override
-        public ResultT doInBackground() throws Exception
+        public Result doInBackground() throws Exception
         {
             return call();
         }
@@ -204,7 +204,7 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT>
         }
 
         @Override
-        public void onSuccess(ResultT result)
+        public void onSuccess(Result result)
         {
             try
             {

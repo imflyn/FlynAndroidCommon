@@ -9,9 +9,9 @@ package com.greatwall.ui.utils;
  * {@link java.util.concurrent.Executor}.
  * 
  * @see java.util.concurrent.Executors for some useful default executors.
- * @param <ResultT>
+ * @param <Result>
  */
-public abstract class AndroidCallable<ResultT> implements AndroidCallableI<ResultT>, Runnable
+public abstract class AndroidCallable<Result> implements AndroidCallableI<Result>, Runnable
 {
 
     /**
@@ -22,7 +22,7 @@ public abstract class AndroidCallable<ResultT> implements AndroidCallableI<Resul
     @Override
     public void run()
     {
-        new AndroidCallableWrapper<ResultT>(null, this).run();
+        new AndroidCallableWrapper<Result>(null, this).run();
     }
 
     /**

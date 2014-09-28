@@ -13,12 +13,12 @@ import java.util.concurrent.CountDownLatch;
 // - has no onInterrupted support
 // - add retry support
 
-public class AndroidCallableWrapper<ResultT> implements Runnable
+public class AndroidCallableWrapper<Result> implements Runnable
 {
     protected Handler                   handler;
-    protected AndroidCallableI<ResultT> delegate;
+    protected AndroidCallableI<Result> delegate;
 
-    public AndroidCallableWrapper(Handler handler, AndroidCallableI<ResultT> delegate)
+    public AndroidCallableWrapper(Handler handler, AndroidCallableI<Result> delegate)
     {
         this.delegate = delegate;
         this.handler = handler != null ? handler : new Handler(Looper.getMainLooper());
@@ -27,7 +27,7 @@ public class AndroidCallableWrapper<ResultT> implements Runnable
     @Override
     public void run()
     {
-        ResultT result = null;
+        Result result = null;
         Exception exception = null;
         try
         {
@@ -86,7 +86,7 @@ public class AndroidCallableWrapper<ResultT> implements Runnable
 
     }
 
-    void afterCall(final ResultT result, final Exception e)
+    void afterCall(final Result result, final Exception e)
     {
         handler.post(new Runnable()
         {
@@ -115,12 +115,12 @@ public class AndroidCallableWrapper<ResultT> implements Runnable
         delegate.onPreCall();
     }
 
-    protected ResultT doDoInBackgroundThread() throws Exception
+    protected Result doDoInBackgroundThread() throws Exception
     {
         return delegate.doInBackground();
     }
 
-    protected void doOnSuccess(ResultT result)
+    protected void doOnSuccess(Result result)
     {
         delegate.onSuccess(result);
     }
