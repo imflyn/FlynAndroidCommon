@@ -20,7 +20,7 @@ public abstract class SafeAsyncTask<Params, Progress, Result> extends AsyncTask<
 			return;
 
 		try {
-			if (mError != null) {
+			if (mError == null) {
 				onSuccess(result);
 			} else {
 				onFailure(mError);
