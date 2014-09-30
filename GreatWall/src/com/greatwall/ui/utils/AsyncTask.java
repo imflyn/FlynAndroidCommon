@@ -303,7 +303,6 @@ public abstract class AsyncTask<Params, Progress, Result> {
 	 * @see #publishProgress(Object[])
 	 * @see #doInBackground(Object[])
 	 */
-	@SuppressWarnings({ "UnusedDeclaration" })
 	public void onProgressUpdate(Progress... values) {
 	}
 
