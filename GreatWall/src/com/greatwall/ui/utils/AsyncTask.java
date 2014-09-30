@@ -487,9 +487,4 @@ public abstract class AsyncTask<Params, Progress, Result> {
 		}
 	}
 
-	public static void cancelTask(AsyncTask<?, ?, ?> userTask, boolean mayInterruptIfRunning) {
-		if (null != userTask && !userTask.isCancelled()) {
-			userTask.cancel(mayInterruptIfRunning);
-		}
-	}
 }

@@ -50,4 +50,10 @@ public abstract class SafeAsyncTask<Params, Progress, Result> extends AsyncTask<
 	public static boolean isFinished(SafeAsyncTask<?, ?, ?> asyncTask) {
 		return asyncTask == null || Status.FINISHED == asyncTask.getStatus();
 	}
+
+	public static void cancelTask(AsyncTask<?, ?, ?> userTask, boolean mayInterruptIfRunning) {
+		if (null != userTask && !userTask.isCancelled()) {
+			userTask.cancel(mayInterruptIfRunning);
+		}
+	}
 }
