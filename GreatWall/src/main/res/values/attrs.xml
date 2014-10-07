@@ -1,0 +1,49 @@
+<resources>
+
+    <declare-styleable name="SlidingMenu">
+        <attr name="mode">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
+        <attr name="viewAbove" format="reference"/>
+        <attr name="viewBehind" format="reference"/>
+        <attr name="behindOffset" format="dimension"/>
+        <attr name="behindWidth" format="dimension"/>
+        <attr name="behindScrollScale" format="float"/>
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0"/>
+            <enum name="fullscreen" value="1"/>
+        </attr>
+        <attr name="touchModeBehind">
+            <enum name="margin" value="0"/>
+            <enum name="fullscreen" value="1"/>
+        </attr>
+        <attr name="shadowDrawable" format="reference"/>
+        <attr name="shadowWidth" format="dimension"/>
+        <attr name="fadeEnabled" format="boolean"/>
+        <attr name="fadeDegree" format="float"/>
+        <attr name="selectorEnabled" format="boolean"/>
+        <attr name="selectorDrawable" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="RoundedImageView">
+        <attr name="topLeftRadius" format="dimension"/>
+        <attr name="topRightRadius" format="dimension"/>
+        <attr name="bottomLeftRadius" format="dimension"/>
+        <attr name="bottomRightRadius" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color"/>
+        <attr name="pstsUnderlineColor" format="color"/>
+        <attr name="pstsDividerColor" format="color"/>
+        <attr name="pstsIndicatorHeight" format="dimension"/>
+        <attr name="pstsUnderlineHeight" format="dimension"/>
+        <attr name="pstsDividerPadding" format="dimension"/>
+        <attr name="pstsTabPaddingLeftRight" format="dimension"/>
+        <attr name="pstsScrollOffset" format="dimension"/>
+        <attr name="pstsTabBackground" format="reference"/>
+        <attr name="pstsShouldExpand" format="boolean"/>
+        <attr name="pstsTextAllCaps" format="boolean"/>
+    </declare-styleable>
+
+</resources>

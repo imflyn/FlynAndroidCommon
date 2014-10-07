@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidCommon/AndroidCommon.iml" filepath="$PROJECT_DIR$/AndroidCommon/AndroidCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlynAndroidCommon.iml" filepath="$PROJECT_DIR$/FlynAndroidCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GreatWall/GreatWall.iml" filepath="$PROJECT_DIR$/GreatWall/GreatWall.iml" />
+    </modules>
+  </component>
+</project>
+
