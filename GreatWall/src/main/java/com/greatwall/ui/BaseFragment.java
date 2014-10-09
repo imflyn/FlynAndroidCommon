@@ -128,6 +128,8 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
             ((ViewGroup) mContextView.getParent()).removeView(mContextView);
         }
         dismissDialog();
+        rootView = null;
+        controller = null;
     }
 
     protected void showDialog()
@@ -143,6 +145,7 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         if (null != mDialog && mDialog.isShowing())
         {
             mDialog.dismiss();
+            mDialog = null;
         }
     }
 

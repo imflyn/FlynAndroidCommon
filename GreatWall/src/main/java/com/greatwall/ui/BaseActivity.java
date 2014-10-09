@@ -122,6 +122,8 @@ public abstract class BaseActivity extends FragmentActivity
             controller.onDestory();
         }
         dismissDialog();
+        rootView = null;
+        controller = null;
     }
 
     protected void showDialog()
@@ -137,6 +139,7 @@ public abstract class BaseActivity extends FragmentActivity
         if (null != mDialog && mDialog.isShowing())
         {
             mDialog.dismiss();
+            mDialog = null;
         }
     }
 
