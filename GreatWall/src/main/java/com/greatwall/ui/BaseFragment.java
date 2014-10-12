@@ -38,8 +38,8 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     {
         try
         {
-            int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseFragmentController<?>> clz = (Class<? extends BaseFragmentController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + getClass().getSimpleName() + BaseFragmentController.SUFFIX);
+            int index = ((Object) this).getClass().getName().lastIndexOf(".");
+            Class<? extends BaseFragmentController<?>> clz = (Class<? extends BaseFragmentController<?>>) Class.forName(((Object) this).getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + ((Object) this).getClass().getSimpleName() + BaseFragmentController.SUFFIX);
             Constructor<? extends BaseFragmentController<?>> constructor = clz.getConstructor(Fragment.class);
             controller = constructor.newInstance(this);
         } catch (Exception e)
@@ -128,7 +128,6 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
             ((ViewGroup) mContextView.getParent()).removeView(mContextView);
         }
         dismissDialog();
-        rootView = null;
         controller = null;
     }
 

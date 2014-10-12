@@ -50,8 +50,8 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
     {
         try
         {
-            int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseActivityController<?>> clz = (Class<? extends BaseActivityController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + getClass().getSimpleName() + BaseActivityController.SUFFIX);
+            int index = ((Object) this).getClass().getName().lastIndexOf(".");
+            Class<? extends BaseActivityController<?>> clz = (Class<? extends BaseActivityController<?>>) Class.forName(((Object) this).getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + ((Object) this).getClass().getSimpleName() + BaseActivityController.SUFFIX);
             Constructor<? extends BaseActivityController<?>> constructor = clz.getConstructor(Activity.class);
             controller = constructor.newInstance(this);
         } catch (Exception e)
