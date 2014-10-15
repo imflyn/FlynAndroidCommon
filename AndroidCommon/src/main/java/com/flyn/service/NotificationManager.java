@@ -21,10 +21,12 @@ public class NotificationManager
      */
 
     private final static NotificationManager instance;
+
     static
     {
         instance = new NotificationManager();
     }
+
     private final long startTime;
     private final android.app.NotificationManager notificationManager;
     private final Notification persistentNotification;

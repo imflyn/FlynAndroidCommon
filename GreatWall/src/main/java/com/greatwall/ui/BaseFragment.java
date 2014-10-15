@@ -4,33 +4,29 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greatwall.app.Application;
-import com.greatwall.ui.interfaces.BaseActivityController;
-import com.greatwall.ui.interfaces.BaseFragmentController;
-
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
-    protected Handler mHandler;
+
+    protected BaseController<?> controller;
+    protected View mContextView;
     protected Dialog mDialog;
-    protected BaseFragmentController<?> controller;
-    private View mContextView;
+    protected InternalHandler mHandler;
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
+    public void onCreate(Bundle savedInstanceState)
     {
-        super.onViewCreated(view, savedInstanceState);
         initContorller();
-        initView(savedInstanceState);
-        setListener();
+        super.onCreate(savedInstanceState);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,10 +34,11 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     {
         try
         {
-            int index = ((Object) this).getClass().getName().lastIndexOf(".");
-            Class<? extends BaseFragmentController<?>> clz = (Class<? extends BaseFragmentController<?>>) Class.forName(((Object) this).getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + ((Object) this).getClass().getSimpleName() + BaseFragmentController.SUFFIX);
-            Constructor<? extends BaseFragmentController<?>> constructor = clz.getConstructor(Fragment.class);
-            controller = constructor.newInstance(this);
+
+            String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "") + BaseController.NAME;
+            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            controller = constructor.newInstance(getActivity());
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -52,17 +49,18 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         }
     }
 
-    protected abstract BaseActivityController<?> getController();
+    protected abstract BaseController<?> getController();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public void onStart()
     {
-        if (mContextView == null)
+        super.onStart();
+        if (null != controller)
         {
-            mContextView = inflater.inflate(getLayoutId(), container, false);
+            controller.onStart();
         }
-        return mContextView;
     }
+
 
     protected abstract int getLayoutId();
 
@@ -106,36 +104,47 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
+    public void onResume()
     {
-        super.onActivityCreated(savedInstanceState);
-        this.mHandler = Application.getInstance().getHandler();
+        super.onResume();
+        if (null != controller)
+        {
+            controller.onResume();
+        }
     }
 
     @Override
-    public void onAttach(Activity activity)
+    public void onPause()
     {
-        super.onAttach(activity);
-
+        super.onPause();
+        if (null != controller)
+        {
+            controller.onPause();
+        }
     }
 
     @Override
-    public void onDestroyView()
+    public void onStop()
     {
-        super.onDestroyView();
+        super.onStop();
+        if (null != controller)
+        {
+            controller.onStop();
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if (null != controller)
+        {
+            controller.onDestory();
+        }
+
         if (null != mContextView)
         {
             ((ViewGroup) mContextView.getParent()).removeView(mContextView);
-        }
-        dismissDialog();
-        controller = null;
-    }
-
-    protected void showDialog()
-    {
-        if (mDialog != null && !mDialog.isShowing() && !getActivity().isFinishing())
-        {
-            mDialog.show();
         }
     }
 
@@ -148,16 +157,29 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         }
     }
 
-    @Override
-    public void onDestroy()
+    protected void handlerMessage(Message msg)
     {
-        super.onDestroy();
-
     }
 
-    public View getContextView()
+    protected static class InternalHandler extends Handler
     {
-        return this.mContextView != null ? this.mContextView : LayoutInflater.from(getActivity()).inflate(getLayoutId(), null);
-    }
 
+        private WeakReference<BaseFragment> mHandler;
+
+        public InternalHandler(BaseFragment fragment)
+        {
+            super(Looper.getMainLooper());
+            mHandler = new WeakReference<BaseFragment>(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            BaseFragment fragment = mHandler.get();
+            if (fragment != null)
+            {
+                fragment.handlerMessage(msg);
+            }
+        }
+    }
 }

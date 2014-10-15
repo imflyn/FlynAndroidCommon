@@ -2,9 +2,11 @@ package com.greatwall.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
@@ -13,33 +15,34 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
-import com.greatwall.ui.interfaces.BaseActivityController;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity
 {
-    protected Context mContext;
-    protected int theme = 0;
-    protected Handler mHandler;
+    protected Activity context;
+    protected Handler myHandler;
     protected View rootView;
     protected Dialog mDialog;
-    protected BaseActivityController<?> controller;
+    protected BaseController<?> controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         ActivityManager.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
-        this.mContext = this;
-        this.mHandler = Application.getInstance().getHandler();
-        initContorller();
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        myHandler = new InternalHandler(this);
+        context = this;
         if (layoutId() > 0)
         {
             setContentView(layoutId());
         }
+        initContorller();
         findViews();
         initView(savedInstanceState);
         setListener();
@@ -50,9 +53,11 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
     {
         try
         {
-            int index = ((Object) this).getClass().getName().lastIndexOf(".");
-            Class<? extends BaseActivityController<?>> clz = (Class<? extends BaseActivityController<?>>) Class.forName(((Object) this).getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + ((Object) this).getClass().getSimpleName() + BaseActivityController.SUFFIX);
-            Constructor<? extends BaseActivityController<?>> constructor = clz.getConstructor(Activity.class);
+
+            String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "").replace("fragment", "") + BaseController.NAME;
+
+            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
             controller = constructor.newInstance(this);
         } catch (Exception e)
         {
@@ -64,7 +69,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
         }
     }
 
-    protected abstract BaseActivityController<?> getController();
+    protected abstract BaseController<?> getController();
 
     @Override
     protected void onStart()
@@ -83,15 +88,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
         if (null != controller)
         {
             controller.onResume();
-        }
-    }
-
-    public void setContentView(int resId)
-    {
-        rootView = View.inflate(this, resId, null);
-        if (null != rootView)
-        {
-            setContentView(rootView);
         }
     }
 
@@ -125,6 +121,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
             controller.onDestory();
         }
         dismissDialog();
+        controller = null;
     }
 
     protected void showDialog()
@@ -140,6 +137,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
         if (null != mDialog && mDialog.isShowing())
         {
             mDialog.dismiss();
+            mDialog = null;
         }
     }
 
@@ -163,6 +161,33 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
     protected abstract void initView(Bundle savedInstanceState);
 
     protected abstract void setListener();
+
+    protected void handlerMessage(Message msg)
+    {
+
+    }
+
+    protected static class InternalHandler extends Handler
+    {
+
+        private WeakReference<BaseActionBarActivity> mHandler;
+
+        public InternalHandler(BaseActionBarActivity activity)
+        {
+            super(Looper.getMainLooper());
+            mHandler = new WeakReference<BaseActionBarActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            BaseActionBarActivity activity = mHandler.get();
+            if (activity != null)
+            {
+                activity.handlerMessage(msg);
+            }
+        }
+    }
 
     public static class MyTabListener<T extends Fragment> implements TabListener
     {

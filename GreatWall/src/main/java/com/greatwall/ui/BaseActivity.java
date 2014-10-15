@@ -2,41 +2,43 @@ package com.greatwall.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 
-import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
-import com.greatwall.ui.interfaces.BaseActivityController;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseActivity extends FragmentActivity
 {
-    protected Context mContext;
-    protected int theme = 0;
-    protected Handler mHandler;
-    protected View rootView;
     protected Dialog mDialog;
-    protected BaseActivityController<?> controller;
+    protected BaseController<?> controller;
+    protected Activity context;
+    protected InternalHandler myHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);// 去除标题栏
         ActivityManager.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
-        this.mContext = this;
-        this.mHandler = Application.getInstance().getHandler();
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        initContorller();
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        myHandler = new InternalHandler(this);
+        context = this;
         if (layoutId() > 0)
         {
             setContentView(layoutId());
         }
+        initContorller();
         findViews();
         initView(savedInstanceState);
         setListener();
@@ -47,9 +49,11 @@ public abstract class BaseActivity extends FragmentActivity
     {
         try
         {
-            int index = getClass().getName().lastIndexOf(".");
-            Class<? extends BaseActivityController<?>> clz = (Class<? extends BaseActivityController<?>>) Class.forName(getClass().getName().substring(0, index + 1) + BaseActivityController.INFIX + getClass().getSimpleName() + BaseActivityController.SUFFIX);
-            Constructor<? extends BaseActivityController<?>> constructor = clz.getConstructor(Activity.class);
+
+            String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "").replace("fragment", "") + BaseController.NAME;
+
+            Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
             controller = constructor.newInstance(this);
         } catch (Exception e)
         {
@@ -61,7 +65,7 @@ public abstract class BaseActivity extends FragmentActivity
         }
     }
 
-    protected abstract BaseActivityController<?> getController();
+    protected abstract BaseController<?> getController();
 
     @Override
     protected void onStart()
@@ -80,15 +84,6 @@ public abstract class BaseActivity extends FragmentActivity
         if (null != controller)
         {
             controller.onResume();
-        }
-    }
-
-    public void setContentView(int resId)
-    {
-        rootView = View.inflate(this, resId, null);
-        if (null != rootView)
-        {
-            setContentView(rootView);
         }
     }
 
@@ -122,7 +117,6 @@ public abstract class BaseActivity extends FragmentActivity
             controller.onDestory();
         }
         dismissDialog();
-        rootView = null;
         controller = null;
     }
 
@@ -143,6 +137,11 @@ public abstract class BaseActivity extends FragmentActivity
         }
     }
 
+    public void goBack(View view)
+    {
+        finish();
+    }
+
     protected abstract int layoutId();
 
     protected abstract void findViews();
@@ -151,4 +150,30 @@ public abstract class BaseActivity extends FragmentActivity
 
     protected abstract void setListener();
 
+    protected void handlerMessage(Message msg)
+    {
+
+    }
+
+    protected static class InternalHandler extends Handler
+    {
+
+        private WeakReference<BaseActivity> mHandler;
+
+        public InternalHandler(BaseActivity activity)
+        {
+            super(Looper.getMainLooper());
+            mHandler = new WeakReference<BaseActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            BaseActivity activity = mHandler.get();
+            if (activity != null)
+            {
+                activity.handlerMessage(msg);
+            }
+        }
+    }
 }

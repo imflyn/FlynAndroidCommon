@@ -400,7 +400,8 @@ public class FileCache
      */
     public static class TACacheParams
     {
-        public File diskCacheDir;        public int memCacheSize = DEFAULT_MEM_CACHE_SIZE;
+        public File diskCacheDir;
+
         /**
          * 初始化磁盘参数
          *
@@ -416,7 +417,10 @@ public class FileCache
             {
                 diskCacheDir = ExternalUnderFroyoUtils.getDiskCacheDir(context, uniqueName);
             }
-        }        public int diskCacheSize = DEFAULT_DISK_CACHE_SIZE;
+        }
+
+        public int memCacheSize = DEFAULT_MEM_CACHE_SIZE;
+
         /**
          * 初始化磁盘参数
          *
@@ -437,7 +441,9 @@ public class FileCache
                 return ExternalUnderFroyoUtils.getMemoryClass(context);
             }
 
-        }        public int compressQuality = DEFAULT_COMPRESS_QUALITY;
+        }
+
+        public int diskCacheSize = DEFAULT_DISK_CACHE_SIZE;
 
         /**
          * 设置缓存的大小
@@ -452,16 +458,16 @@ public class FileCache
                 throw new IllegalArgumentException("setMemCacheSizePercent - percent must be " + "between 0.05 and 0.8 (inclusive)");
             }
             memCacheSize = Math.round(percent * getMemoryClass(context) * 1024 * 1024);
-        }        public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;
+        }
+
+
+        public int compressQuality = DEFAULT_COMPRESS_QUALITY;
+
+
+        public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;
         public boolean diskCacheEnabled = DEFAULT_DISK_CACHE_ENABLED;
         public boolean clearDiskCacheOnStart = DEFAULT_CLEAR_DISK_CACHE_ON_START;
         public boolean initDiskCacheOnCreate = DEFAULT_INIT_DISK_CACHE_ON_CREATE;
-
-
-
-
-
-
 
 
     }
