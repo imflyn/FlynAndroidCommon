@@ -1,25 +1,12 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
-    }
-}
 apply plugin: 'com.android.library'
-
-repositories {
-    jcenter()
-}
-
 android {
-    compileSdkVersion 'android-19'
+    compileSdkVersion 'android-20'
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.flyn.androidcommon"
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
@@ -30,7 +17,6 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:20.0.0'
