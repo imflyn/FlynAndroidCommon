@@ -419,8 +419,6 @@ public class FileCache
             }
         }
 
-        public int memCacheSize = DEFAULT_MEM_CACHE_SIZE;
-
         /**
          * 初始化磁盘参数
          *
@@ -429,7 +427,7 @@ public class FileCache
         public TACacheParams(File diskCacheDir)
         {
             this.diskCacheDir = diskCacheDir;
-        }
+        }        public int memCacheSize = DEFAULT_MEM_CACHE_SIZE;
 
         private static int getMemoryClass(Context context)
         {
@@ -442,8 +440,6 @@ public class FileCache
             }
 
         }
-
-        public int diskCacheSize = DEFAULT_DISK_CACHE_SIZE;
 
         /**
          * 设置缓存的大小
@@ -459,6 +455,10 @@ public class FileCache
             }
             memCacheSize = Math.round(percent * getMemoryClass(context) * 1024 * 1024);
         }
+
+        public int diskCacheSize = DEFAULT_DISK_CACHE_SIZE;
+
+
 
 
         public int compressQuality = DEFAULT_COMPRESS_QUALITY;

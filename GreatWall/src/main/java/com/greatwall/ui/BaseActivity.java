@@ -52,7 +52,7 @@ public abstract class BaseActivity extends FragmentActivity
             String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "").replace("fragment", "") + BaseController.NAME;
 
             Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
-            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(((Object)this).getClass());
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(((Object) this).getClass());
             controller = constructor.newInstance(this);
         } catch (Exception e)
         {
