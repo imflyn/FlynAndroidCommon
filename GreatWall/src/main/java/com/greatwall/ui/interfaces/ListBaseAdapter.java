@@ -9,11 +9,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
     protected LayoutInflater mInflater;
-    protected ArrayList<T> data = new ArrayList<T>();
+    protected CopyOnWriteArrayList<T> data = new CopyOnWriteArrayList<T>();
     protected ListView mListView;
     protected Context mContext;
 
