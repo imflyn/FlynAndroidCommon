@@ -153,8 +153,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AsyncTask<Params, Progress, Result>
 {
     private static final int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors();
-    private static final int MAXIMUM_POOL_SIZE = 10;
-    private static final int KEEP_ALIVE = 10;
+    private static final int MAXIMUM_POOL_SIZE = 6;
+    private static final int KEEP_ALIVE = 6;
 
     private static final BlockingQueue<Runnable> sWorkQueue = new LinkedBlockingQueue<Runnable>();
 
@@ -165,7 +165,7 @@ public abstract class AsyncTask<Params, Progress, Result>
         @Override
         public Thread newThread(Runnable r)
         {
-            return new Thread(r, "UserTask #" + mCount.getAndIncrement());
+            return new Thread(r, "MyAsyncTask #" + mCount.getAndIncrement());
         }
     };
 
@@ -441,7 +441,7 @@ public abstract class AsyncTask<Params, Progress, Result>
          */
         RUNNING,
         /**
-         * Indicates that {@link UserTask#onPostExecute(Object)} has finished.
+         * Indicates that {@link AsyncTask#onPostExecute(Object)} has finished.
          */
         FINISHED,
     }
