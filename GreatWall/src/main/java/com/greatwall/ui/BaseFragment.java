@@ -3,29 +3,31 @@ package com.greatwall.ui;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.greatwall.app.Application;
+
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseFragment extends FixedOnActivityResultBugFragment
 {
 
     protected BaseController<?> controller;
-    protected View mContextView;
+    protected View mRootView;
     protected Dialog mDialog;
-    protected InternalHandler mHandler;
+    protected Handler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        initController();
         super.onCreate(savedInstanceState);
+        mHandler = Application.getInstance().getHandler();
+        initController();
     }
 
     @SuppressWarnings("unchecked")
@@ -51,12 +53,78 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     protected abstract BaseController<?> getController();
 
     @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        if (null == mRootView)
+        {
+            mRootView = inflater.inflate(getLayoutId(), container, false);
+            initView(savedInstanceState);
+            setListener();
+        }
+        return mRootView;
+    }
+
+    @Override
     public void onStart()
     {
         super.onStart();
         if (null != controller)
         {
             controller.onStart();
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (null != controller)
+        {
+            controller.onResume();
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if (null != controller)
+        {
+            controller.onPause();
+        }
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if (null != controller)
+        {
+            controller.onStop();
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if (null != controller)
+        {
+            controller.onDestory();
+        }
+
+        if (null != mRootView)
+        {
+            ((ViewGroup) mRootView.getParent()).removeView(mRootView);
+        }
+    }
+
+    protected void dismissDialog()
+    {
+        if (null != mDialog && mDialog.isShowing())
+        {
+            mDialog.dismiss();
+            mDialog = null;
         }
     }
 
@@ -102,83 +170,5 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
         ft.commitAllowingStateLoss();
     }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (null != controller)
-        {
-            controller.onResume();
-        }
-    }
 
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        if (null != controller)
-        {
-            controller.onPause();
-        }
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        if (null != controller)
-        {
-            controller.onStop();
-        }
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        if (null != controller)
-        {
-            controller.onDestory();
-        }
-
-        if (null != mContextView)
-        {
-            ((ViewGroup) mContextView.getParent()).removeView(mContextView);
-        }
-    }
-
-    protected void dismissDialog()
-    {
-        if (null != mDialog && mDialog.isShowing())
-        {
-            mDialog.dismiss();
-            mDialog = null;
-        }
-    }
-
-    protected void handlerMessage(Message msg)
-    {
-    }
-
-    protected static class InternalHandler extends Handler
-    {
-
-        private WeakReference<BaseFragment> mHandler;
-
-        public InternalHandler(BaseFragment fragment)
-        {
-            super(Looper.getMainLooper());
-            mHandler = new WeakReference<BaseFragment>(fragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            BaseFragment fragment = mHandler.get();
-            if (fragment != null)
-            {
-                fragment.handlerMessage(msg);
-            }
-        }
-    }
 }

@@ -5,23 +5,20 @@ import android.app.Dialog;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import android.view.Window;
 
+import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseActivity extends FragmentActivity
 {
     protected Dialog mDialog;
     protected BaseController<?> controller;
-    protected Activity context;
-    protected InternalHandler myHandler;
+    protected Activity mContext;
+    protected Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,11 +26,10 @@ public abstract class BaseActivity extends FragmentActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);// 去除标题栏
         ActivityManager.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        myHandler = new InternalHandler(this);
-        context = this;
+        mHandler = Application.getInstance().getHandler();
+        mContext = this;
         if (layoutId() > 0)
         {
             setContentView(layoutId());
@@ -136,11 +132,6 @@ public abstract class BaseActivity extends FragmentActivity
         }
     }
 
-    public void goBack(View view)
-    {
-        finish();
-    }
-
     protected abstract int layoutId();
 
     protected abstract void findViews();
@@ -149,30 +140,4 @@ public abstract class BaseActivity extends FragmentActivity
 
     protected abstract void setListener();
 
-    protected void handlerMessage(Message msg)
-    {
-
-    }
-
-    protected static class InternalHandler extends Handler
-    {
-
-        private WeakReference<BaseActivity> mHandler;
-
-        public InternalHandler(BaseActivity activity)
-        {
-            super(Looper.getMainLooper());
-            mHandler = new WeakReference<BaseActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            BaseActivity activity = mHandler.get();
-            if (activity != null)
-            {
-                activity.handlerMessage(msg);
-            }
-        }
-    }
 }

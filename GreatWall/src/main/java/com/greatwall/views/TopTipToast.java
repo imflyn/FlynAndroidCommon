@@ -51,7 +51,7 @@ public class TopTipToast extends Toast
 
     public static Toast makeToast(CharSequence text)
     {
-        return makeToast(text, DensityUtils.dip2px(Application.getInstance(), 48));
+        return makeToast(text, DensityUtils.dip2px(48));
     }
 
     public static Toast makeToast(int resId)

@@ -1,6 +1,5 @@
 package com.greatwall.util;
 
-import android.os.AsyncTask;
 import android.os.Handler;
 
 import java.lang.ref.WeakReference;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result>
+public abstract class WeakAsyncTask<Params, Progress, Result> extends com.greatwall.ui.utils.AsyncTask<Params, Progress, Result>
 {
 
     private List<WeakReference<Object>> mObjReferences = null;
@@ -56,7 +55,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     }
 
     @Override
-    protected final void onPreExecute()
+    public final void onPreExecute()
     {
         Object[] objs = getObjects();
         if (objs == null)
@@ -69,7 +68,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     }
 
     @Override
-    protected final Result doInBackground(Params... params)
+    public final Result doInBackground(Params... params)
     {
         try
         {
@@ -98,7 +97,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     }
 
     @Override
-    protected final void onProgressUpdate(Progress... values)
+    public final void onProgressUpdate(Progress... values)
     {
         Object[] objs = getObjects();
         if (objs == null)
@@ -111,7 +110,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     }
 
     @Override
-    protected final void onCancelled()
+    public final void onCancelled()
     {
         Object[] objs = getObjects();
         if (objs != null)
@@ -121,7 +120,7 @@ public abstract class WeakAsyncTask<Params, Progress, Result> extends AsyncTask<
     }
 
     @Override
-    protected final void onPostExecute(Result result)
+    public final void onPostExecute(Result result)
     {
         if (this.mIsWithoutOnPostExecute)
         {

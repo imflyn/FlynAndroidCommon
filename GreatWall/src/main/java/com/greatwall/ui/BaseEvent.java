@@ -6,7 +6,6 @@ public abstract class BaseEvent
 
     public BaseEvent(int eventCode)
     {
-        super();
         this.eventCode = eventCode;
     }
 }

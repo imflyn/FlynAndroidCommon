@@ -113,8 +113,8 @@ public class WindowToast
             params.gravity = Gravity.BOTTOM;
             params.alpha = 0.85f;
             params.type = WindowManager.LayoutParams.TYPE_PHONE;
-            params.height = DensityUtils.dip2px(mContext, 48);
-            params.width = DensityUtils.getScreenWidth(mContext) - DensityUtils.dip2px(mContext, 32);
+            params.height = DensityUtils.dip2px(48);
+            params.width = DensityUtils.getScreenWidth(mContext) - DensityUtils.dip2px(32);
             params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
             params.format = PixelFormat.TRANSLUCENT;
             params.verticalMargin = 0.17f;

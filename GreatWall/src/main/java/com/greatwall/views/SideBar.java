@@ -76,8 +76,8 @@ public class SideBar extends View
             mDialogText.setTextSize(80);
             // mDialogText.setBackgroundResource(R.drawable.theme_btn_usually_selector);
             mDialogText.setGravity(Gravity.CENTER);
-            mDialogText.setHeight(DensityUtils.dip2px(getContext(), 160));
-            mDialogText.setWidth(DensityUtils.dip2px(getContext(), 160));
+            mDialogText.setHeight(DensityUtils.dip2px(160));
+            mDialogText.setWidth(DensityUtils.dip2px(160));
             // mDialogText.setTextColor(getResources().getColor(R.color.bg_white_light));
         }
 

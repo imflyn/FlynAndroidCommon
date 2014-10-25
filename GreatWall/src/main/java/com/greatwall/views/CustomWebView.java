@@ -24,7 +24,7 @@ public class CustomWebView extends FrameLayout
     private LinearLayout ll_nonet;
     private String mUrl;
 
-    private OnUpdateListener<?> onUpdateListener;
+    private OnUpdateListener<Integer> onUpdateListener;
 
     public CustomWebView(Context context)
     {
@@ -158,7 +158,7 @@ public class CustomWebView extends FrameLayout
         ll_nonet.setVisibility(View.GONE);
     }
 
-    public void setOnUpdateListener(OnUpdateListener<?> onUpdateListener)
+    public void setOnUpdateListener(OnUpdateListener<Integer> onUpdateListener)
     {
         this.onUpdateListener = onUpdateListener;
     }

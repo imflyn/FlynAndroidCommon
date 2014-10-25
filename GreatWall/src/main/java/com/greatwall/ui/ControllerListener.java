@@ -2,5 +2,5 @@ package com.greatwall.ui;
 
 public interface ControllerListener
 {
-    void onEvent(BaseEvent event);
+    <T extends BaseEvent> void onEvent(T event);
 }

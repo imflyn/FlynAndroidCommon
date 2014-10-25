@@ -11,7 +11,7 @@ public class SharedPreferenceFactory
     // singleton registry
     private static ConcurrentHashMap<Class<? extends AbstractSharedPreference>, AbstractSharedPreference> cache = new ConcurrentHashMap<Class<? extends AbstractSharedPreference>, AbstractSharedPreference>();
 
-    public static AbstractSharedPreference getSharedPreference(Context context, Class<? extends AbstractSharedPreference> clazz)
+    public static <T extends AbstractSharedPreference> AbstractSharedPreference getSharedPreference(Context context, Class<T> clazz)
     {
         if (context == null || clazz == null)
         {

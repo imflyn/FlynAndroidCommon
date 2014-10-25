@@ -1,6 +1,6 @@
 package com.greatwall.app.listeners;
 
-public interface OnUpdateListener
+public interface OnUpdateListener<T>
 {
-    public void onUpdate(Object... data);
+    public void onUpdate(T data);
 }

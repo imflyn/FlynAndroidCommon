@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
@@ -15,15 +13,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.greatwall.app.Application;
 import com.greatwall.app.manager.ActivityManager;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 
 public abstract class BaseActionBarActivity extends ActionBarActivity
 {
-    protected Activity context;
-    protected Handler myHandler;
+    protected Activity mContext;
+    protected Handler mHandler;
     protected View rootView;
     protected Dialog mDialog;
     protected BaseController<?> controller;
@@ -33,11 +31,10 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
     {
         ActivityManager.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        myHandler = new InternalHandler(this);
-        context = this;
+        mHandler = Application.getInstance().getHandler();
+        mContext = this;
         if (layoutId() > 0)
         {
             setContentView(layoutId());
@@ -48,7 +45,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
         setListener();
     }
 
-    @SuppressWarnings("unchecked")
     private void initController()
     {
         try
@@ -162,32 +158,6 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
 
     protected abstract void setListener();
 
-    protected void handlerMessage(Message msg)
-    {
-
-    }
-
-    protected static class InternalHandler extends Handler
-    {
-
-        private WeakReference<BaseActionBarActivity> mHandler;
-
-        public InternalHandler(BaseActionBarActivity activity)
-        {
-            super(Looper.getMainLooper());
-            mHandler = new WeakReference<BaseActionBarActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg)
-        {
-            BaseActionBarActivity activity = mHandler.get();
-            if (activity != null)
-            {
-                activity.handlerMessage(msg);
-            }
-        }
-    }
 
     public static class MyTabListener<T extends Fragment> implements TabListener
     {

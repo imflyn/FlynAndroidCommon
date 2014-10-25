@@ -154,4 +154,14 @@ public class VersionCheckUtils
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
+    /**
+     * 5.0
+     *
+     * @return
+     */
+    public static boolean hasLollipop()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
 }
