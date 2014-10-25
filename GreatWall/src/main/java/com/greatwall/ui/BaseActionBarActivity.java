@@ -42,14 +42,14 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
         {
             setContentView(layoutId());
         }
-        initContorller();
+        initController();
         findViews();
         initView(savedInstanceState);
         setListener();
     }
 
     @SuppressWarnings("unchecked")
-    private void initContorller()
+    private void initController()
     {
         try
         {
@@ -57,7 +57,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity
             String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "").replace("fragment", "") + BaseController.NAME;
 
             Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
-            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(((Object)this).getClass());
             controller = constructor.newInstance(this);
         } catch (Exception e)
         {

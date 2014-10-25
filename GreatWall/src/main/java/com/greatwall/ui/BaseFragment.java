@@ -1,6 +1,5 @@
 package com.greatwall.ui;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,19 +24,19 @@ public abstract class BaseFragment extends FixedOnActivityResultBugFragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        initContorller();
+        initController();
         super.onCreate(savedInstanceState);
     }
 
     @SuppressWarnings("unchecked")
-    private void initContorller()
+    private void initController()
     {
         try
         {
 
             String pack = ((Object) this).getClass().getPackage().getName().replaceFirst("package", "").replaceAll(" ", "").replace("activity", "") + BaseController.NAME;
             Class<? extends BaseController<?>> clz = (Class<? extends BaseController<?>>) Class.forName(pack + ((Object) this).getClass().getSimpleName() + BaseController.SUFFIX);
-            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(Activity.class);
+            Constructor<? extends BaseController<?>> constructor = clz.getConstructor(((Object)this).getClass());
             controller = constructor.newInstance(getActivity());
         } catch (Exception e)
         {
