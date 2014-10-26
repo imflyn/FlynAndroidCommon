@@ -1,6 +1,7 @@
 package com.greatwall.app;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.greatwall.app.manager.AppManager;
 import com.greatwall.sharedpreferences.SharedPreferenceFactory;
@@ -33,7 +34,7 @@ public class Application extends android.app.Application
     public void onCreate()
     {
         super.onCreate();
-        mContext  = this;
+        mContext = this;
         init();
     }
 
@@ -45,7 +46,7 @@ public class Application extends android.app.Application
             private AtomicInteger atomicInteger = new AtomicInteger();
 
             @Override
-            public Thread newThread(Runnable runnable)
+            public Thread newThread(@NonNull Runnable runnable)
             {
                 Thread thread = new Thread(runnable, "Background executor service #" + atomicInteger.getAndIncrement());
                 thread.setPriority(Thread.MIN_PRIORITY);
@@ -73,9 +74,9 @@ public class Application extends android.app.Application
 
     public void clear()
     {
-        for (int i = 0, len = mAppManagerList.size(); i < len; i++)
+        for (AppManager aMAppManagerList : mAppManagerList)
         {
-            mAppManagerList.get(i).onClear();
+            aMAppManagerList.onClear();
         }
         SharedPreferenceFactory.clear();
     }
