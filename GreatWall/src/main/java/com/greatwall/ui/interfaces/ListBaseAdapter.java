@@ -1,26 +1,28 @@
 package com.greatwall.ui.interfaces;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
 {
     protected LayoutInflater mInflater;
-    protected CopyOnWriteArrayList<T> data = new CopyOnWriteArrayList<T>();
+    protected List<T> data = new ArrayList<T>();
     protected ListView mListView;
-    protected Context mContext;
+    protected Activity mContext;
+
 
     public ListBaseAdapter(ListView mListView)
     {
         this.mListView = mListView;
-        this.mContext = mListView.getContext();
+        this.mContext = (Activity) mListView.getContext();
         this.mInflater = LayoutInflater.from(mContext);
     }
 
@@ -119,12 +121,7 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
     {
         View view = getItemView(position);
 
-        if (view == null)
-        {
-            return null;
-        }
-
-        return view.findViewById(id);
+        return view == null ? null : view.findViewById(id);
     }
 
     @Override

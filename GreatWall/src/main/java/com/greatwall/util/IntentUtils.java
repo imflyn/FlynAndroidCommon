@@ -419,15 +419,15 @@ public class IntentUtils
      *              Examples:
      *              <p/>
      *              <code><pre>
-     *                                                                                                                                                // Select only from users with emails
-     *                                                                                                                                                IntentUtils.pickContact(ContactsContract.CommonDataKinds.Email.CONTENT_TYPE);
+     *                                                                                                                                                             // Select only from users with emails
+     *                                                                                                                                                             IntentUtils.pickContact(ContactsContract.CommonDataKinds.Email.CONTENT_TYPE);
      *              <p/>
-     *                                                                                                                                                // Select only from users with phone numbers on pre Eclair devices
-     *                                                                                                                                                IntentUtils.pickContact(Contacts.Phones.CONTENT_TYPE);
+     *                                                                                                                                                             // Select only from users with phone numbers on pre Eclair devices
+     *                                                                                                                                                             IntentUtils.pickContact(Contacts.Phones.CONTENT_TYPE);
      *              <p/>
-     *                                                                                                                                                // Select only from users with phone numbers on devices with Eclair and higher
-     *                                                                                                                                                IntentUtils.pickContact(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-     *                                                                                                                                                </pre></code>
+     *                                                                                                                                                             // Select only from users with phone numbers on devices with Eclair and higher
+     *                                                                                                                                                             IntentUtils.pickContact(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+     *                                                                                                                                                             </pre></code>
      */
     public static Intent pickContact(String scope)
     {
