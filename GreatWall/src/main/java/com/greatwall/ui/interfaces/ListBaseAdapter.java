@@ -80,6 +80,11 @@ public abstract class ListBaseAdapter<T> extends android.widget.BaseAdapter
         this.data.remove(items);
         notifyDataSetChanged();
     }
+    
+    public void removeAll() {
+		this.data.clear();
+		notifyDataSetChanged();
+	}
 
     public synchronized void swap(int index1, int index2)
     {
