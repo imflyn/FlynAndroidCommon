@@ -23,4 +23,11 @@ public class ViewHolder
         }
         return (T) childView;
     }
+
+    public static <T extends View> T findViewById(View rootView, int id)
+    {
+        View view = rootView.findViewById(id);
+
+        return (T) view;
+    }
 }
