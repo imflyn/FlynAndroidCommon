@@ -1,6 +1,0 @@
-<resources>
-
-    <string name="app_name">GreatWall</string>
-    <string name="can_not_open_webpage">网络信号不佳，无法打开网页</string>
-    <string name="reload">重新加载</string>
-</resources>
