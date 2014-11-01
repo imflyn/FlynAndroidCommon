@@ -34,14 +34,14 @@ public class DensityUtils
         return (int) (pxValue / scale + 0.5f);
     }
 
-    public static int getScreenWidth(Context context)
+    public static int getScreenWidth()
     {
-        return context.getResources().getDisplayMetrics().widthPixels;
+        return Application.getInstance().getResources().getDisplayMetrics().widthPixels;
     }
 
-    public static int getScreenHeigth(Context context)
+    public static int getScreenHeigth()
     {
-        return context.getResources().getDisplayMetrics().heightPixels;
+        return Application.getInstance().getResources().getDisplayMetrics().heightPixels;
     }
 
 }
