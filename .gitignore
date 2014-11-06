@@ -1,6 +1,9 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
 .DS_Store
 /build
+/gradle
+/gradlew
+/gradlew.bat
+/FlynAndroidCommon.iml
