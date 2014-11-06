@@ -250,7 +250,7 @@ public abstract class StringUtil
     {
         Pattern csvPattern = Pattern.compile("\"([^\"]*)\"|(?<=,|^)([^,]*)(?:,|$)");
         Matcher matcher = csvPattern.matcher(str);
-        List allMatches = new ArrayList();
+        List<String> allMatches = new ArrayList<String>();
 
         while (matcher.find())
         {
